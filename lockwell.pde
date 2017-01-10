@@ -1,16 +1,11 @@
 import processing.video.*;
-/*void setup() {
-  selectInput("Select a file to process:", "fileSelected");
-}
 
-void fileSelected(File selection) {
-  if (selection == null) {
-    println("Window was closed or the user hit cancel.");
-  } else {
-    println("User selected " + selection.getAbsolutePath());
-  }
-}*/
-
+//Define color palette
+final color color1 = #020122; // BG
+final color color2 = #F7B538; // Yellow
+final color color3 = #1098F7; // Blue
+final color color4 = #AEC5EB; // Pale Blue
+final color color5 = #EEEBD3; // Pale Yellow
 
 Movie myMovie;
 float imageratio = 1920.0/1080.0;
@@ -28,6 +23,7 @@ void draw() {
   
   // Draw stuff
   clear();
+  background(color1);
   if (myMovie!=null) {
     // Draw Video
     image(myMovie, 0, 0, int(videoheight*imageratio),videoheight);
@@ -35,19 +31,19 @@ void draw() {
     // Draw Timecode
     noStroke();
     textSize(11);
-    fill(255);
+    fill(color4);
     textAlign(LEFT);
     text(formatTimeCode(myMovie.time()), 10, videoheight + 32);
     textAlign(RIGHT);
     text("-" + formatTimeCode(myMovie.duration()-myMovie.time()), width-10, videoheight + 32);
-    fill(32);
+    fill(color3);
     rect(10,videoheight + 8, width-20, 2);
-    fill(255);
+    fill(color2);
     if (myMovie.duration() > 0) {
       rect(10,videoheight + 8, (width-20) * (myMovie.time()/myMovie.duration()), 2);
     }
   } else {
-    stroke(64);
+    stroke(color4);
     strokeWeight(3);
     noFill();
     rect(10,10,width-20,videoheight-20);
