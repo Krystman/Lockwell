@@ -8,14 +8,44 @@ final color color4 = #AEC5EB; // Pale Blue
 final color color5 = #EEEBD3; // Pale Yellow
 
 Movie myMovie;
-float imageratio = 1920.0/1080.0;
-int videoheight = 360;
+final float imageratio = 1920.0/1080.0;
+final int bottomUI = 40;
+
+int videoHeight = 360;
+int videoWidth = 360;
 String moviePath = "";
 boolean moviePaused = false;
+boolean pauseOnRead = false;
+
+PFont smallRobotoMono;
 
 void setup() {
-  size(640, 400);
+  //setup360();
+  //size(640, 400);
+  
+  setup480();
+  size(853, 520);
+  
+  //setup720();
+  //size(1280, 760);
+  
   selectInput("Select a file to process:", "fileSelected");
+  smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
+}
+
+void setup360() {
+  videoWidth = 640;
+  videoHeight = 360;
+}
+
+void setup480() {
+  videoWidth = 853;
+  videoHeight = 480;
+}
+
+void setup720() {
+  videoWidth = 1280;
+  videoHeight = 720;
 }
 
 void draw() {
@@ -25,30 +55,26 @@ void draw() {
   clear();
   background(color1);
   if (myMovie!=null) {
-    // Draw Video
-    image(myMovie, 0, 0, int(videoheight*imageratio),videoheight);
-    
-    // Draw Timecode
-    noStroke();
-    textSize(11);
-    fill(color4);
-    textAlign(LEFT);
-    text(formatTimeCode(myMovie.time()), 10, videoheight + 32);
-    textAlign(RIGHT);
-    text("-" + formatTimeCode(myMovie.duration()-myMovie.time()), width-10, videoheight + 32);
-    fill(color3);
-    rect(10,videoheight + 8, width-20, 2);
-    fill(color2);
-    if (myMovie.duration() > 0) {
-      rect(10,videoheight + 8, (width-20) * (myMovie.time()/myMovie.duration()), 2);
+    if (myMovie.available()) {
+      myMovie.read();
+      if (pauseOnRead) {
+        pauseOnRead = false;
+        myMovie.pause();
+      }      
     }
+    // Draw Video
+    image(myMovie, 0, 0, videoWidth,videoHeight);
+    
+    // Draw Tracker Bar
+    drawTrackerBar(0,videoHeight,width);
+
   } else {
     stroke(color4);
     strokeWeight(3);
     noFill();
-    rect(10,10,width-20,videoheight-20);
-    line(10,10,width-10,videoheight-10);
-    line(10,videoheight-10,width-10,10);
+    rect(10,10,width-20,videoHeight-20);
+    line(10,10,width-10,videoHeight-10);
+    line(10,videoHeight-10,width-10,10);
   }
 }
 
@@ -62,14 +88,17 @@ void loadMovie(String _f) {
   moviePath = _f;
   myMovie = new Movie(this, _f);
   myMovie.play();
-  myMovie.pause();
-  moviePaused=true;
-  myMovie.read();
-}
+  pauseOnRead = true;
+  moviePaused = true;
+ }
 
 // Called every time a new frame is available to read
 void movieEvent(Movie m) {
-  m.read();
+  /*m.read();
+  if (pauseOnRead) {
+    pauseOnRead = false;
+    m.pause();
+  }*/
 }
 
 void fileSelected(File selection) {
@@ -100,11 +129,8 @@ void moveHead(float _s) {
     cur = constrain(cur, 0, myMovie.duration());
     myMovie.jump(cur);
     if (moviePaused) {
+      pauseOnRead = true;
       myMovie.play();
-      myMovie.read();
-      myMovie.pause();
-    } else {
-      myMovie.read();
     }
   }  
 }
@@ -138,12 +164,14 @@ void buttPause() {
       println("Plaing...");
       myMovie.play();
       myMovie.read();
-      moviePaused=false;
+      moviePaused = false;
+      pauseOnRead = false;
     } else {
       println("Pausing...");
       myMovie.pause();
       myMovie.read();
-      moviePaused=true;
+      moviePaused = true;
+      pauseOnRead = false;
     }
   }
 }
