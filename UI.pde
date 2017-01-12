@@ -27,6 +27,8 @@ void switchToEdit() {
 }
 
 void switchToLoad() {
+  int j;
+  
   Butt tButt;
   
   UIMode="LOAD";
@@ -35,12 +37,14 @@ void switchToLoad() {
   tButt.verb = "LOAD";
   tButt.noun = "";
   butts.add(tButt);
-  for (int i = 0; i < 8; i++) {
-    tButt = new Butt("C:/netrunner/Bankjob 08 Rene v Hlinks.mp4",24,64+25*i,512,24);
+  j = 0;
+  for (int i = history.length-1; i >= 0; i--) {
+    tButt = new Butt(history[i],24,64+25*j,512,24);
     tButt.style = "LIST";
     tButt.verb = "LOAD";
-    tButt.noun = "C:/netrunner/Bankjob 08 Rene v Hlinks.mp4";
+    tButt.noun = history[i];
     butts.add(tButt);
+    j++;
   }
 }
 
@@ -51,7 +55,7 @@ void purgeButts() {
 void drawButts() {
   for (int i = 0; i < butts.size(); i++) {
     butts.get(i).drawMe();
-  }  
+  }
 }
 
 void updateMouseOver() {
@@ -89,12 +93,9 @@ void updateMouseClick() {
 void buttonCommand(String _verb, String _noun) {
   if (_verb == "LOAD") {
     if (_noun == "") {
-      if (!dialogueWaiting) {
-        selectInput("Select a video to load:", "fileSelected");
-        dialogueWaiting = true;
-      }
+      selectInput("Select a video to load:", "fileSelected");
     } else {
       loadMovie(_noun);
-    };
+    }
   }
 }

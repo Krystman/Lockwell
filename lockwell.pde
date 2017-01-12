@@ -17,12 +17,14 @@ String moviePath = "";
 String UIMode = "LOAD";
 boolean moviePaused = false;
 boolean pauseOnRead = false;
-boolean dialogueWaiting = false;
+boolean lastNoClick = true;
 
 PFont smallRobotoMono;
 PFont smallRoboto;
 
 ArrayList <Butt> butts;
+
+String[] history;
 
 void setup() {
   //setup360();
@@ -37,6 +39,7 @@ void setup() {
   smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
   smallRoboto = createFont("Roboto-Bold.ttf", 12);
   
+  loadHistory();
   switchToLoad();
 }
 
@@ -88,40 +91,15 @@ void update() {
   // Update stuff every frame
   if (mousePressed && (mouseButton == LEFT)) {
     // LMB
-    updateMouseClick();
+    if (lastNoClick) {
+      updateMouseClick();
+      lastNoClick = false;
+    }
   } else if (mousePressed && (mouseButton == RIGHT)) {
     // RMB
   } else {
     updateMouseOver();
-  }
-}
-
-void loadMovie(String _f) {
-  // loads a movie
-  println("Loading movie " + _f);
-  moviePath = _f;
-  myMovie = new Movie(this, _f);
-  myMovie.play();
-  pauseOnRead = true;
-  moviePaused = true;
-  switchToEdit();
- }
-
-// Called every time a new frame is available to read
-void movieEvent(Movie m) {
-  /*m.read();
-  if (pauseOnRead) {
-    pauseOnRead = false;
-    m.pause();
-  }*/
-}
-
-void fileSelected(File selection) {
-  dialogueWaiting = false;
-  if (selection == null) {
-    println("Window was closed or the user hit cancel.");
-  } else {
-    loadMovie(selection.getAbsolutePath());
+    lastNoClick = true;
   }
 }
 
