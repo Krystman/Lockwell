@@ -3,8 +3,10 @@
 // Not sure if this this the right name
 // I mean the progress bar below the video
 // Where you can see how far into the video you are
+final float trackerLlineThickness = 5;
+
 void drawTrackerBar(int _x, int _y, int _width) {
-  float _lineThickness = 5;
+  
   noStroke();
   textSize(11);
   fill(color4);
@@ -14,10 +16,10 @@ void drawTrackerBar(int _x, int _y, int _width) {
   textAlign(RIGHT);
   text("-" + formatTimeCode(myMovie.duration()-myMovie.time()), _width-10, _y + 28);
   fill(color4, 72);
-  rect(_x + 10, _y + 8, _width-20, _lineThickness);
+  rect(_x + 10, _y + 8, _width-20, trackerLlineThickness);
   fill(color4, 255);
   if (myMovie.duration() > 0) {
-    rect(_x + 10, _y + 8, (_width-20) * (myMovie.time()/myMovie.duration()), _lineThickness);
+    rect(_x + 10, _y + 8, (_width-20) * (myMovie.time()/myMovie.duration()), trackerLlineThickness);
   }  
 }
 
@@ -71,6 +73,10 @@ void updateMouseOver() {
     } else {
       tButt.state = "";
     }
+  }
+  
+  if (mouseY > videoHeight && mouseY < videoHeight + 8 + trackerLlineThickness) {
+  
   }
 }
 

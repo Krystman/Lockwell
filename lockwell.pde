@@ -30,11 +30,11 @@ void setup() {
   //setup360();
   //size(640, 400);
   
-  setup480();
-  size(853, 520);
+  //setup480();
+  //size(853, 520);
   
-  //setup720();
-  //size(1280, 760);
+  setup720();
+  size(1280, 760);
   
   smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
   smallRoboto = createFont("Roboto-Bold.ttf", 12);
