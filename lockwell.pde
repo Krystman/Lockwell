@@ -14,10 +14,15 @@ final int bottomUI = 40;
 int videoHeight = 360;
 int videoWidth = 360;
 String moviePath = "";
+String UIMode = "LOAD";
 boolean moviePaused = false;
 boolean pauseOnRead = false;
+boolean dialogueWaiting = false;
 
 PFont smallRobotoMono;
+PFont smallRoboto;
+
+ArrayList <Butt> butts;
 
 void setup() {
   //setup360();
@@ -29,8 +34,10 @@ void setup() {
   //setup720();
   //size(1280, 760);
   
-  selectInput("Select a file to process:", "fileSelected");
   smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
+  smallRoboto = createFont("Roboto-Bold.ttf", 12);
+  
+  switchToLoad();
 }
 
 void setup360() {
@@ -54,32 +61,39 @@ void draw() {
   // Draw stuff
   clear();
   background(color1);
-  if (myMovie!=null) {
-    if (myMovie.available()) {
-      myMovie.read();
-      if (pauseOnRead) {
-        pauseOnRead = false;
-        myMovie.pause();
-      }      
-    }
-    // Draw Video
-    image(myMovie, 0, 0, videoWidth,videoHeight);
+  
+  if (UIMode=="LOAD") {
     
+  } else if (UIMode=="EDIT") {
+    if (myMovie!=null) {
+      if (myMovie.available()) {
+        myMovie.read();
+        if (pauseOnRead) {
+          pauseOnRead = false;
+          myMovie.pause();
+        }      
+      }
+      // Draw Video
+      image(myMovie, 0, 0, videoWidth,videoHeight);
+    }
     // Draw Tracker Bar
     drawTrackerBar(0,videoHeight,width);
-
-  } else {
-    stroke(color4);
-    strokeWeight(3);
-    noFill();
-    rect(10,10,width-20,videoHeight-20);
-    line(10,10,width-10,videoHeight-10);
-    line(10,videoHeight-10,width-10,10);
   }
+  drawButts();
 }
+
+
 
 void update() {
   // Update stuff every frame
+  if (mousePressed && (mouseButton == LEFT)) {
+    // LMB
+    updateMouseClick();
+  } else if (mousePressed && (mouseButton == RIGHT)) {
+    // RMB
+  } else {
+    updateMouseOver();
+  }
 }
 
 void loadMovie(String _f) {
@@ -90,6 +104,7 @@ void loadMovie(String _f) {
   myMovie.play();
   pauseOnRead = true;
   moviePaused = true;
+  switchToEdit();
  }
 
 // Called every time a new frame is available to read
@@ -102,6 +117,7 @@ void movieEvent(Movie m) {
 }
 
 void fileSelected(File selection) {
+  dialogueWaiting = false;
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
   } else {
