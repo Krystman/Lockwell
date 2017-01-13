@@ -1,26 +1,49 @@
+final float trackerLineThickness = 5;
+float trackerMousePos = -1;
+float trackerBarX = 0;
+float trackerBarY = 0;
+float trackerBarWidth = 100;
 
 // This draws the video tracker bar
 // Not sure if this this the right name
 // I mean the progress bar below the video
 // Where you can see how far into the video you are
-final float trackerLlineThickness = 5;
 
-void drawTrackerBar(int _x, int _y, int _width) {
+void drawTrackerBar() {
+  float mousePos;
   
   noStroke();
   textSize(11);
   fill(color4);
   textFont(smallRobotoMono);
   textAlign(LEFT);
-  text(formatTimeCode(myMovie.time()), _x + 10, _y + 28);
+  text(formatTimeCode(myMovie.time()), trackerBarX + 10, trackerBarY + 28);
   textAlign(RIGHT);
-  text("-" + formatTimeCode(myMovie.duration()-myMovie.time()), _width-10, _y + 28);
+  text("-" + formatTimeCode(myMovie.duration()-myMovie.time()), trackerBarWidth-10, trackerBarY + 28);
   fill(color4, 72);
-  rect(_x + 10, _y + 8, _width-20, trackerLlineThickness);
+  rect(trackerBarX + 10, trackerBarY + 8, trackerBarWidth-20, trackerLineThickness);
   fill(color4, 255);
   if (myMovie.duration() > 0) {
-    rect(_x + 10, _y + 8, (_width-20) * (myMovie.time()/myMovie.duration()), trackerLlineThickness);
-  }  
+    rect(trackerBarX + 10, trackerBarY + 8, (trackerBarWidth-20) * (myMovie.time()/myMovie.duration()), trackerLineThickness);
+  }
+  
+  if (trackerMousePos!=-1) {
+    fill(color2, 255);
+    mousePos = 10 + (trackerMousePos * (trackerBarWidth-20));
+    ellipse(mousePos,  trackerBarY + 8 + (trackerLineThickness/2), trackerLineThickness, trackerLineThickness);
+    
+    fill(color1);
+    stroke(color4);  
+    strokeWeight(1.2);
+    rect(mousePos - (64/2), trackerBarY - 18 , 64, 18, 2);
+      
+    fill(color4);
+    noStroke();
+    textFont(smallRobotoMono);
+    textAlign(CENTER);
+    text(formatTimeCode(trackerMousePos * myMovie.duration()),mousePos,trackerBarY-5);
+
+  }
 }
 
 void switchToEdit() {
@@ -74,10 +97,19 @@ void updateMouseOver() {
       tButt.state = "";
     }
   }
-  
-  if (mouseY > videoHeight && mouseY < videoHeight + 8 + trackerLlineThickness) {
-  
+  trackerMousePos = getTrackerMousePos();
+
+}
+
+float getTrackerMousePos() {
+  float ret;
+  if (mouseY > trackerBarY && mouseY < trackerBarY + 8 + trackerLineThickness + 8) {
+    ret = (mouseX - (trackerBarX + 10)) / (trackerBarWidth -20);
+    ret = constrain(ret, 0, 1);
+  } else {
+    ret = -1;
   }
+  return ret;
 }
 
 void updateMouseClick() {
@@ -93,6 +125,13 @@ void updateMouseClick() {
     } else {
       tButt.state = "";
     }
+  }
+}
+
+void updateMousePressed() {
+  trackerMousePos = getTrackerMousePos();
+  if (trackerMousePos != -1) {
+    setHeadPercent(trackerMousePos);
   }
 }
 

@@ -39,6 +39,10 @@ void setup() {
   smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
   smallRoboto = createFont("Roboto-Bold.ttf", 12);
   
+  trackerBarX = 0;
+  trackerBarY = videoHeight;
+  trackerBarWidth = width;
+  
   loadHistory();
   switchToLoad();
 }
@@ -80,7 +84,7 @@ void draw() {
       image(myMovie, 0, 0, videoWidth,videoHeight);
     }
     // Draw Tracker Bar
-    drawTrackerBar(0,videoHeight,width);
+    drawTrackerBar();
   }
   drawButts();
 }
@@ -95,6 +99,7 @@ void update() {
       updateMouseClick();
       lastNoClick = false;
     }
+    updateMousePressed();
   } else if (mousePressed && (mouseButton == RIGHT)) {
     // RMB
   } else {
@@ -120,6 +125,28 @@ void moveHead(float _s) {
   if (moviePath != "") {
     cur = myMovie.time();
     cur += _s;
+    cur = constrain(cur, 0, myMovie.duration());
+    setHead(cur);
+  }  
+}
+
+void setHeadPercent(float _s) {
+  float cur;
+  if (moviePath != "") {
+    cur = _s * myMovie.duration();
+    cur = constrain(cur, 0, myMovie.duration());
+    myMovie.jump(cur);
+    if (moviePaused) {
+      pauseOnRead = true;
+      myMovie.play();
+    }
+  }  
+}
+
+void setHead(float _s) {
+  float cur;
+  if (moviePath != "") {
+    cur = _s;
     cur = constrain(cur, 0, myMovie.duration());
     myMovie.jump(cur);
     if (moviePaused) {
