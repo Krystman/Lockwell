@@ -27,14 +27,11 @@ ArrayList <Butt> butts;
 String[] history;
 
 void setup() {
+  size(640, 400);
+  
   //setup360();
-  //size(640, 400);
-  
   //setup480();
-  //size(853, 520);
-  
   setup720();
-  size(1280, 760);
   
   smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
   smallRoboto = createFont("Roboto-Bold.ttf", 12);
@@ -50,16 +47,19 @@ void setup() {
 void setup360() {
   videoWidth = 640;
   videoHeight = 360;
+  surface.setSize(640, 360+40);
 }
 
 void setup480() {
   videoWidth = 853;
   videoHeight = 480;
+  surface.setSize(853, 480+40);
 }
 
 void setup720() {
   videoWidth = 1280;
   videoHeight = 720;
+  surface.setSize(1280, 720+40);
 }
 
 void draw() {
