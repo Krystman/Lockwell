@@ -21,6 +21,8 @@ boolean lastNoClick = true;
 
 PFont smallRobotoMono;
 PFont smallRoboto;
+PFont agendaRoboto;
+PFont credRoboto;
 
 ArrayList <Butt> butts;
 
@@ -35,6 +37,8 @@ void setup() {
   
   smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
   smallRoboto = createFont("Roboto-Bold.ttf", 12);
+  agendaRoboto = createFont("Roboto-Bold.ttf", 58);
+  credRoboto = createFont("Roboto-Bold.ttf", 32);
   
   trackerBarX = 0;
   trackerBarY = videoHeight;

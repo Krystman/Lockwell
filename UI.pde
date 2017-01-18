@@ -4,6 +4,11 @@ float trackerBarX = 0;
 float trackerBarY = 0;
 float trackerBarWidth = 100;
 
+Butt agendaButtL;
+Butt agendaButtR;
+Butt creditButtL;
+Butt creditButtR;
+
 // This draws the video tracker bar
 // Not sure if this this the right name
 // I mean the progress bar below the video
@@ -49,6 +54,30 @@ void drawTrackerBar() {
 void switchToEdit() {
   UIMode="EDIT";
   purgeButts();
+  
+  agendaButtL = new Butt("1",5,5,40,48);
+  agendaButtL.verb = "AGENDA";
+  agendaButtL.noun = "L";
+  agendaButtL.style = "AGENDA";
+  butts.add(agendaButtL); 
+  
+  agendaButtR = new Butt("9",videoWidth-(40+5),5,40,48);
+  agendaButtR.verb = "AGENDA";
+  agendaButtR.noun = "R";
+  agendaButtR.style = "AGENDA";
+  butts.add(agendaButtR);
+  
+  creditButtR = new Butt("55",5,10+48,40,32);
+  creditButtR.verb = "CREDIT";
+  creditButtR.noun = "L";
+  creditButtR.style = "CREDIT";
+  butts.add(creditButtR);
+
+  creditButtL = new Butt("49",videoWidth-(40+5),10+48,40,32);
+  creditButtL.verb = "CREDIT";
+  creditButtL.noun = "R";
+  creditButtL.style = "CREDIT";
+  butts.add(creditButtL);
 }
 
 void switchToLoad() {
