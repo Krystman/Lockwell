@@ -8,9 +8,11 @@
 public class CreditEvent {
   public float time;
   public int value;
+  public int side;
 }
 
 public class AgendaEvent {
   public float time;
   public int value;
+  public int side;
 }

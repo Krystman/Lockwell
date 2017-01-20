@@ -112,6 +112,29 @@ void drawButts() {
   }
 }
 
+// This updates the overlay values
+void updateValues() {
+  String _s;
+  CreditEvent _cTemp = null;
+  AgendaEvent _aTemp = null;
+  
+  _cTemp = getCredit(headPos, LEFTPLAYER);
+  _s = (_cTemp == null) ? "?" : "" + _cTemp.value;
+  creditButtL.t = _s;
+ 
+  _cTemp = getCredit(headPos, RIGHTPLAYER);
+  _s = (_cTemp == null) ? "?" : "" + _cTemp.value;
+  creditButtR.t = _s;
+  
+  _aTemp = getAgenda(headPos, LEFTPLAYER);
+  _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
+  agendaButtL.t = _s;
+ 
+  _aTemp = getAgenda(headPos, RIGHTPLAYER);
+  _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
+  agendaButtR.t = _s;
+}
+
 void updateMouseOver() {
   Butt tButt;
   for (int i = 0; i < butts.size(); i++) {

@@ -28,8 +28,11 @@ void loadMovie(String _f) {
   }
   moviePath = _f;
   myMovie = new Movie(this, _f);
-  myMovie.play();
   moviePaused = true;
+  myMovie.play();
+  myMovie.pause();
+  myMovie.read();
+  myMovie.jump(0);
   switchToEdit();
   logHistory(_f);
   
@@ -45,7 +48,6 @@ void loadMovie(String _f) {
     saveVData();
   } else {
     println("vData is there!");
-    resetVData();
     loadVData();
     saveVData();
   }
@@ -111,24 +113,24 @@ void loadVData() {
   // Get all credit events
   XML[] _credits = _creditsNode.getChildren("credit");
   
+  // Clear Array
+  creditEvents = new ArrayList<CreditEvent>();
+  
   // Recreate the Array for Credit Events
   for (int i = 0; i < _credits.length; i++) {
-    _tempCEvent = new CreditEvent();
-    _tempCEvent.time = _credits[i].getFloat("t");
-    _tempCEvent.value = _credits[i].getIntContent();
-    creditEvents.add(_tempCEvent);
+    addCreditEvent(_credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"));
   }
   
   // ------ Load Agenda Events -------
   // Get all agenda events
   XML[] _agendas = _agendasNode.getChildren("agenda");
   
+  // Clear Array
+  agendaEvents = new ArrayList<AgendaEvent>();
+  
   // Recreate the Array for Agenda Events
   for (int i = 0; i < _agendas.length; i++) {
-    _tempAEvent = new AgendaEvent();
-    _tempAEvent.time = _agendas[i].getFloat("t");
-    _tempAEvent.value = _agendas[i].getIntContent();
-    agendaEvents.add(_tempAEvent);
+    addAgendaEvent(_agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"));
   }
   
   println("Loaded " + creditEvents.size() + " Credit Events");
@@ -158,11 +160,13 @@ void saveVData() {
   
   // ------ Save Credit Events -------
   // Loop through Credit Event array
+
   for (int i = 0; i < creditEvents.size(); i++) {
     _tempCEvent = creditEvents.get(i);
     _temp = _creditsNode.addChild("credit");
     _temp.setIntContent(_tempCEvent.value);
     _temp.setFloat("t", _tempCEvent.time);
+    _temp.setInt("side", _tempCEvent.side);
   }
   
   // ------ Save Agenda Events -------
@@ -172,6 +176,8 @@ void saveVData() {
     _temp = _agendasNode.addChild("agenda");
     _temp.setIntContent(_tempAEvent.value);
     _temp.setFloat("t", _tempAEvent.time);
+    _temp.setInt("side", _tempAEvent.side);
+    
   }
   
   // Save a new XML file
@@ -179,7 +185,15 @@ void saveVData() {
 }
 
 void resetVData() {
+  //Resets the Video Data to a blank Template  
   headPos = 0f;
   agendaEvents = new ArrayList<AgendaEvent>();
   creditEvents = new ArrayList<CreditEvent>();
+  
+  // Add starting values
+  addCreditEvent(0f, 5, LEFTPLAYER);
+  addCreditEvent(0f, 5, RIGHTPLAYER);
+  
+  addAgendaEvent(0f, 0, LEFTPLAYER);
+  addAgendaEvent(0f, 0, RIGHTPLAYER);
 }

@@ -7,6 +7,10 @@ final color color3 = #1098F7; // Blue
 final color color4 = #AEC5EB; // Pale Blue
 final color color5 = #EEEBD3; // Pale Yellow
 
+//Side Definitions
+final int LEFTPLAYER = 1;
+final int RIGHTPLAYER = 2;
+
 Movie myMovie;
 final float imageratio = 1920.0/1080.0;
 final int bottomUI = 40;
@@ -88,6 +92,10 @@ void draw() {
       // Draw Video
       image(myMovie, 0, 0, videoWidth,videoHeight);
     }
+    
+    // Update Overlay Values
+    updateValues();
+    
     // Draw Tracker Bar
     drawTrackerBar();
   }
