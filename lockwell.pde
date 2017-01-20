@@ -17,7 +17,6 @@ String moviePath = "";
 String vDataPath = "";
 String UIMode = "LOAD";
 boolean moviePaused = false;
-boolean pauseOnRead = false;
 boolean lastNoClick = true;
 
 PFont smallRobotoMono;
@@ -84,10 +83,6 @@ void draw() {
     if (myMovie!=null) {
       if (myMovie.available()) {
         myMovie.read();
-        if (pauseOnRead) {
-          pauseOnRead = false;
-          myMovie.pause();
-        }
       }
       headPos = myMovie.time();
       // Draw Video
@@ -123,9 +118,13 @@ void keyPressed() {
   if (keyCode==32) {
     buttPause();
   } else if (keyCode==LEFT) {
-    moveHead(-60);
+    //This works well for frame-by-frame rewinding
+    //moveHead(-0.05f);
+    moveHead(-30f);
   } else if (keyCode==RIGHT) {
-    moveHead(60);
+    //This works well for frame-by-frame rewinding
+    //moveHead(0.05f);
+    moveHead(30f);
   }
   
 }
@@ -137,13 +136,11 @@ void buttPause() {
       myMovie.play();
       myMovie.read();
       moviePaused = false;
-      pauseOnRead = false;
     } else {
       println("Pausing...");
       myMovie.pause();
       myMovie.read();
       moviePaused = true;
-      pauseOnRead = false;
     }
   }
 }

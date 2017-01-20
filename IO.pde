@@ -29,7 +29,6 @@ void loadMovie(String _f) {
   moviePath = _f;
   myMovie = new Movie(this, _f);
   myMovie.play();
-  pauseOnRead = true;
   moviePaused = true;
   switchToEdit();
   logHistory(_f);
@@ -94,7 +93,6 @@ void loadVData() {
   println("Loading " + vDataPath);
   
   XML _xml;
-  XML _temp;
   CreditEvent _tempCEvent;
   AgendaEvent _tempAEvent;
   

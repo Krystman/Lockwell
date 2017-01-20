@@ -18,8 +18,10 @@ void setHeadPercent(float _s) {
     myMovie.jump(cur);
     headPos = cur;
     if (moviePaused) {
-      pauseOnRead = true;
       myMovie.play();
+      myMovie.pause();
+      myMovie.read();
+      myMovie.jump(cur);
     }
   } else {
     headPos = 0f;
@@ -34,8 +36,10 @@ void setHead(float _s) {
     myMovie.jump(cur);
     headPos = cur;
     if (moviePaused) {
-      pauseOnRead = true;
       myMovie.play();
+      myMovie.pause();
+      myMovie.read();
+      myMovie.jump(cur);
     }
   } else {
     headPos = 0f;
