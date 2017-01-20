@@ -28,6 +28,11 @@ PFont smallRoboto;
 PFont agendaRoboto;
 PFont credRoboto;
 
+AgendaEvent selectedAEventLeft;
+AgendaEvent selectedAEventRight;
+CreditEvent selectedCEventLeft;
+CreditEvent selectedCEventRight;
+
 ArrayList <Butt> butts;
 
 ArrayList <AgendaEvent> agendaEvents;
@@ -95,6 +100,7 @@ void draw() {
     
     // Update Overlay Values
     updateValues();
+    drawKeyframes();
     
     // Draw Tracker Bar
     drawTrackerBar();

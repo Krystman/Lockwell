@@ -1,3 +1,5 @@
+// Functions for UI rendering
+
 final float trackerLineThickness = 5;
 float trackerMousePos = -1;
 float trackerBarX = 0;
@@ -67,17 +69,17 @@ void switchToEdit() {
   agendaButtR.style = "AGENDA";
   butts.add(agendaButtR);
   
-  creditButtR = new Butt("55",5,10+48,40,32);
-  creditButtR.verb = "CREDIT";
-  creditButtR.noun = "L";
-  creditButtR.style = "CREDIT";
-  butts.add(creditButtR);
-
-  creditButtL = new Butt("49",videoWidth-(40+5),10+48,40,32);
+  creditButtL = new Butt("55",5,10+48,40,32);
   creditButtL.verb = "CREDIT";
-  creditButtL.noun = "R";
+  creditButtL.noun = "L";
   creditButtL.style = "CREDIT";
   butts.add(creditButtL);
+
+  creditButtR = new Butt("49",videoWidth-(40+5),10+48,40,32);
+  creditButtR.verb = "CREDIT";
+  creditButtR.noun = "R";
+  creditButtR.style = "CREDIT";
+  butts.add(creditButtR);
 }
 
 void switchToLoad() {
@@ -118,21 +120,58 @@ void updateValues() {
   CreditEvent _cTemp = null;
   AgendaEvent _aTemp = null;
   
+  selectedAEventLeft = null;
+  selectedAEventRight = null;
+  selectedCEventLeft = null;
+  selectedCEventRight = null;
+
   _cTemp = getCredit(headPos, LEFTPLAYER);
   _s = (_cTemp == null) ? "?" : "" + _cTemp.value;
   creditButtL.t = _s;
- 
+  if (_cTemp != null && _cTemp.time == headPos) {
+    selectedCEventLeft = _cTemp;
+  }
+  
   _cTemp = getCredit(headPos, RIGHTPLAYER);
   _s = (_cTemp == null) ? "?" : "" + _cTemp.value;
   creditButtR.t = _s;
+  if (_cTemp != null && _cTemp.time == headPos) {
+    selectedCEventRight = _cTemp;
+  }
   
   _aTemp = getAgenda(headPos, LEFTPLAYER);
   _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
   agendaButtL.t = _s;
- 
+  if (_cTemp != null && _cTemp.time == headPos) {
+    selectedAEventLeft = _aTemp;
+  }
+  
   _aTemp = getAgenda(headPos, RIGHTPLAYER);
   _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
   agendaButtR.t = _s;
+  if (_cTemp != null && _cTemp.time == headPos) {
+    selectedAEventRight = _aTemp;
+  }
+}
+
+// Draws markers next to overlay buttons to indicate
+// if you are currently on a keyframe
+void drawKeyframes() {
+  fill(color5);
+  noStroke();
+  
+  if (selectedAEventLeft != null) {
+    ellipse(agendaButtL.x + agendaButtL.w + 10, agendaButtL.y+5, 10, 10); 
+  }
+  if (selectedAEventRight != null) {
+    ellipse(agendaButtR.x - 10, agendaButtR.y+5, 10, 10); 
+  }
+  if (selectedCEventLeft != null) {
+    ellipse(creditButtL.x + creditButtL.w + 10, creditButtL.y+5, 10, 10);
+  }
+  if (selectedCEventRight != null) {
+    ellipse(creditButtR.x - 10, creditButtR.y+5, 10, 10); 
+  }
 }
 
 void updateMouseOver() {
@@ -196,7 +235,6 @@ void buttonCommand(String _verb, String _noun) {
     }
   }
 }
-// Functions for UI rendering
 
 String formatTimeCode(float _t) {
   String ret;
