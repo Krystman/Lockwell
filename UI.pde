@@ -22,14 +22,14 @@ void drawTrackerBar() {
   fill(color4);
   textFont(smallRobotoMono);
   textAlign(LEFT);
-  text(formatTimeCode(myMovie.time()), trackerBarX + 10, trackerBarY + 28);
+  text(formatTimeCode(headPos), trackerBarX + 10, trackerBarY + 28);
   textAlign(RIGHT);
-  text("-" + formatTimeCode(myMovie.duration()-myMovie.time()), trackerBarWidth-10, trackerBarY + 28);
+  text("-" + formatTimeCode(myMovie.duration()-headPos), trackerBarWidth-10, trackerBarY + 28);
   fill(color4, 72);
   rect(trackerBarX + 10, trackerBarY + 8, trackerBarWidth-20, trackerLineThickness);
   fill(color4, 255);
   if (myMovie.duration() > 0) {
-    rect(trackerBarX + 10, trackerBarY + 8, (trackerBarWidth-20) * (myMovie.time()/myMovie.duration()), trackerLineThickness);
+    rect(trackerBarX + 10, trackerBarY + 8, (trackerBarWidth-20) * (headPos/myMovie.duration()), trackerLineThickness);
   }
   
   if (trackerMousePos!=-1) {
@@ -171,5 +171,28 @@ void buttonCommand(String _verb, String _noun) {
     } else {
       loadMovie(_noun);
     }
+  }
+}
+// Functions for UI rendering
+
+String formatTimeCode(float _t) {
+  String ret;
+  int mins;
+  int secs;
+  int frames;
+  
+  mins = int(_t / 60);
+  secs = int(_t-(mins*60));
+  frames = int(30*(_t-((mins*60)+secs)));
+  
+  ret = formatDoubleDigits(mins) + ":" + formatDoubleDigits(secs) + ":" + formatDoubleDigits(frames);
+  return ret;
+}
+
+String formatDoubleDigits(int _n) {
+  if (_n < 10) {
+    return "0" + _n;
+  } else {
+    return "" + _n;
   }
 }

@@ -1,3 +1,5 @@
+// A button class for UI elements
+
 class Butt {
   public String t;
   public float x, y, w, h;

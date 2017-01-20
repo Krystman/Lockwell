@@ -14,6 +14,7 @@ final int bottomUI = 40;
 int videoHeight = 360;
 int videoWidth = 360;
 String moviePath = "";
+String vDataPath = "";
 String UIMode = "LOAD";
 boolean moviePaused = false;
 boolean pauseOnRead = false;
@@ -25,6 +26,10 @@ PFont agendaRoboto;
 PFont credRoboto;
 
 ArrayList <Butt> butts;
+
+ArrayList <AgendaEvent> agendaEvents;
+ArrayList <CreditEvent> creditEvents;
+Float headPos;
 
 String[] history;
 
@@ -82,8 +87,9 @@ void draw() {
         if (pauseOnRead) {
           pauseOnRead = false;
           myMovie.pause();
-        }      
+        }
       }
+      headPos = myMovie.time();
       // Draw Video
       image(myMovie, 0, 0, videoWidth,videoHeight);
     }
@@ -113,72 +119,13 @@ void update() {
 }
 
 void keyPressed() {
-  println("key: " + key + " keyCode: " + keyCode);  
+  //println("key: " + key + " keyCode: " + keyCode);  
   if (keyCode==32) {
     buttPause();
   } else if (keyCode==LEFT) {
     moveHead(-60);
   } else if (keyCode==RIGHT) {
     moveHead(60);
-  }
-  
-}
-
-void moveHead(float _s) {
-  float cur;
-  if (moviePath != "") {
-    cur = myMovie.time();
-    cur += _s;
-    cur = constrain(cur, 0, myMovie.duration());
-    setHead(cur);
-  }  
-}
-
-void setHeadPercent(float _s) {
-  float cur;
-  if (moviePath != "") {
-    cur = _s * myMovie.duration();
-    cur = constrain(cur, 0, myMovie.duration());
-    myMovie.jump(cur);
-    if (moviePaused) {
-      pauseOnRead = true;
-      myMovie.play();
-    }
-  }  
-}
-
-void setHead(float _s) {
-  float cur;
-  if (moviePath != "") {
-    cur = _s;
-    cur = constrain(cur, 0, myMovie.duration());
-    myMovie.jump(cur);
-    if (moviePaused) {
-      pauseOnRead = true;
-      myMovie.play();
-    }
-  }  
-}
-
-String formatTimeCode(float _t) {
-  String ret;
-  int mins;
-  int secs;
-  int frames;
-  
-  mins = int(_t / 60);
-  secs = int(_t-(mins*60));
-  frames = int(30*(_t-((mins*60)+secs)));
-  
-  ret = formatDoubleDigits(mins) + ":" + formatDoubleDigits(secs) + ":" + formatDoubleDigits(frames);
-  return ret;
-}
-
-String formatDoubleDigits(int _n) {
-  if (_n < 10) {
-    return "0" + _n;
-  } else {
-    return "" + _n;
   }
   
 }
