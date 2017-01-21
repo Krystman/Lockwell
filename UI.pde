@@ -142,14 +142,14 @@ void updateValues() {
   _aTemp = getAgenda(headPos, LEFTPLAYER);
   _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
   agendaButtL.t = _s;
-  if (_cTemp != null && _cTemp.time == headPos) {
+  if (_aTemp != null && _aTemp.time == headPos) {
     selectedAEventLeft = _aTemp;
   }
   
   _aTemp = getAgenda(headPos, RIGHTPLAYER);
   _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
   agendaButtR.t = _s;
-  if (_cTemp != null && _cTemp.time == headPos) {
+  if (_aTemp != null && _aTemp.time == headPos) {
     selectedAEventRight = _aTemp;
   }
 }
@@ -211,8 +211,14 @@ void updateMouseClick() {
         mouseX <= tButt.x+tButt.w &&
         mouseY >= tButt.y &&
         mouseY <= tButt.y+tButt.h) {
+          
+      
       tButt.state = "CLICK";
-      buttonCommand(tButt.verb, tButt.noun);
+      if (mouseButton == LEFT) { 
+        buttonCommand(tButt.verb, tButt.noun);
+      } else if (mouseButton == RIGHT) {
+        buttonCommandRight(tButt.verb, tButt.noun);
+      }
     } else {
       tButt.state = "";
     }
@@ -232,6 +238,34 @@ void buttonCommand(String _verb, String _noun) {
       selectInput("Select a video to load:", "fileSelected");
     } else {
       loadMovie(_noun);
+    }
+  } else if (_verb == "AGENDA") {
+    if (_noun == "L") {
+      agendaButt(LEFTPLAYER, 1);
+    } else {
+      agendaButt(RIGHTPLAYER, 1);
+    }
+  } else if (_verb == "CREDIT") {
+    if (_noun == "L") {
+      creditButt(LEFTPLAYER, 1);
+    } else {
+      creditButt(RIGHTPLAYER, 1);
+    }
+  }
+}
+
+void buttonCommandRight(String _verb, String _noun) {
+  if (_verb == "AGENDA") {
+    if (_noun == "L") {
+      agendaButt(LEFTPLAYER, -1);
+    } else {
+      agendaButt(RIGHTPLAYER, -1);
+    }
+  } else if (_verb == "CREDIT") {
+    if (_noun == "L") {
+      creditButt(LEFTPLAYER, -1);
+    } else {
+      creditButt(RIGHTPLAYER, -1);
     }
   }
 }

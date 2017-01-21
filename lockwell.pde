@@ -94,6 +94,7 @@ void draw() {
         myMovie.read();
       }
       headPos = myMovie.time();
+      
       // Draw Video
       image(myMovie, 0, 0, videoWidth,videoHeight);
     }
@@ -112,15 +113,13 @@ void draw() {
 
 void update() {
   // Update stuff every frame
-  if (mousePressed && (mouseButton == LEFT)) {
+  if (mousePressed) {
     // LMB
     if (lastNoClick) {
       updateMouseClick();
       lastNoClick = false;
     }
     updateMousePressed();
-  } else if (mousePressed && (mouseButton == RIGHT)) {
-    // RMB
   } else {
     updateMouseOver();
     lastNoClick = true;

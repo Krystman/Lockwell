@@ -191,9 +191,9 @@ void resetVData() {
   creditEvents = new ArrayList<CreditEvent>();
   
   // Add starting values
-  addCreditEvent(0f, 5, LEFTPLAYER);
-  addCreditEvent(0f, 5, RIGHTPLAYER);
+  addCreditEvent(0.0, 5, LEFTPLAYER);
+  addCreditEvent(0.0, 5, RIGHTPLAYER);
   
-  addAgendaEvent(0f, 0, LEFTPLAYER);
-  addAgendaEvent(0f, 0, RIGHTPLAYER);
+  addAgendaEvent(0.0, 0, LEFTPLAYER);
+  addAgendaEvent(0.0, 0, RIGHTPLAYER);
 }

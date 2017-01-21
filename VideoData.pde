@@ -1,6 +1,6 @@
 // Functions to manipulate Video Data
 
-void addCreditEvent(float _time, int _value, int _side) {
+CreditEvent addCreditEvent(float _time, int _value, int _side) {
   CreditEvent _tempCEvent;
   
   _tempCEvent = new CreditEvent();
@@ -8,9 +8,11 @@ void addCreditEvent(float _time, int _value, int _side) {
   _tempCEvent.value = _value;
   _tempCEvent.side = _side;
   creditEvents.add(_tempCEvent);
+  
+  return _tempCEvent;
 }
 
-void addAgendaEvent(float _time, int _value, int _side) {
+AgendaEvent addAgendaEvent(float _time, int _value, int _side) {
   AgendaEvent _tempAEvent;
   
   _tempAEvent = new AgendaEvent();
@@ -18,6 +20,8 @@ void addAgendaEvent(float _time, int _value, int _side) {
   _tempAEvent.value = _value;
   _tempAEvent.side = _side;
   agendaEvents.add(_tempAEvent);
+  
+  return _tempAEvent;
 }
 
 AgendaEvent getAgenda(float _time, int _side) {
@@ -52,4 +56,62 @@ CreditEvent getCredit(float _time, int _side) {
     }
   }
   return _foundCEvent;
+}
+
+void agendaButt(int _side, int _d) {
+  AgendaEvent _lastAEvent;
+  AgendaEvent _newAEvent;
+  
+  // Check if there is a keyframe at current time
+  // If no, create one
+  if ((_side == LEFTPLAYER && selectedAEventLeft == null) || (_side == RIGHTPLAYER && selectedAEventRight == null)) {
+    _lastAEvent = getAgenda(headPos, _side);
+    if (_lastAEvent == null) {
+      _newAEvent = addAgendaEvent(headPos, 0, _side);
+    } else {
+      _newAEvent = addAgendaEvent(headPos, _lastAEvent.value, _side);
+    }
+    if (_side == LEFTPLAYER) {
+      selectedAEventLeft = _newAEvent;
+    } else {
+      selectedAEventRight = _newAEvent;
+    }
+  }
+  
+  // Increase Agenda value by one
+  if (_side == LEFTPLAYER) {
+    _newAEvent = selectedAEventLeft;
+  } else {
+    _newAEvent = selectedAEventRight;
+  }
+  _newAEvent.value+=_d;
+}
+
+void creditButt(int _side, int _d) {
+  CreditEvent _lastCEvent;
+  CreditEvent _newCEvent;
+  
+  // Check if there is a keyframe at current time
+  // If no, create one
+  if ((_side == LEFTPLAYER && selectedCEventLeft == null) || (_side == RIGHTPLAYER && selectedCEventRight == null)) {
+    _lastCEvent = getCredit(headPos, _side);
+    if (_lastCEvent == null) {
+      _newCEvent = addCreditEvent(headPos, 0, _side);
+    } else {
+      _newCEvent = addCreditEvent(headPos, _lastCEvent.value, _side);
+    }
+    if (_side == LEFTPLAYER) {
+      selectedCEventLeft = _newCEvent;
+    } else {
+      selectedCEventRight = _newCEvent;
+    }
+  }
+  
+  // Increase Agenda value by one
+  if (_side == LEFTPLAYER) {
+    _newCEvent = selectedCEventLeft;
+  } else {
+    _newCEvent = selectedCEventRight;
+  }
+  _newCEvent.value+=_d;
 }
