@@ -17,6 +17,17 @@ final int bottomUI = 40;
 
 int videoHeight = 360;
 int videoWidth = 360;
+int videoY = 0;
+
+int menuY = 0;
+int menuHeight = 5 + 24 + 5;
+
+float trackerMousePos = -1;
+float trackerBarX = 0;
+float trackerBarY = 0;
+float trackerBarWidth = 0;
+float trackerBarHeight = 40;
+
 String moviePath = "";
 String vDataPath = "";
 String UIMode = "LOAD";
@@ -53,10 +64,6 @@ void setup() {
   agendaRoboto = createFont("Roboto-Bold.ttf", 58);
   credRoboto = createFont("Roboto-Bold.ttf", 32);
   
-  trackerBarX = 0;
-  trackerBarY = videoHeight;
-  trackerBarWidth = width;
-  
   loadHistory();
   switchToLoad();
 }
@@ -64,19 +71,23 @@ void setup() {
 void setup360() {
   videoWidth = 640;
   videoHeight = 360;
-  surface.setSize(640, 360+40);
+  surface.setSize(640, int(360 + 40 + trackerBarHeight + menuHeight));
 }
 
 void setup480() {
   videoWidth = 853;
   videoHeight = 480;
-  surface.setSize(853, 480+40);
+  surface.setSize(853, int(480 + trackerBarHeight + menuHeight));
 }
 
 void setup720() {
   videoWidth = 1280;
   videoHeight = 720;
-  surface.setSize(1280, 720+40);
+  surface.setSize(1280, int(720 + trackerBarHeight + menuHeight)
+  
+  
+  
+  );
 }
 
 void draw() {
@@ -96,7 +107,7 @@ void draw() {
       headPos = myMovie.time();
       
       // Draw Video
-      image(myMovie, 0, 0, videoWidth,videoHeight);
+      image(myMovie, 0, videoY, videoWidth,videoHeight);
     }
     
     // Update Overlay Values
@@ -108,8 +119,6 @@ void draw() {
   }
   drawButts();
 }
-
-
 
 void update() {
   // Update stuff every frame

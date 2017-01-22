@@ -1,15 +1,15 @@
 // Functions for UI rendering
 
 final float trackerLineThickness = 5;
-float trackerMousePos = -1;
-float trackerBarX = 0;
-float trackerBarY = 0;
-float trackerBarWidth = 100;
 
 Butt agendaButtL;
 Butt agendaButtR;
 Butt creditButtL;
 Butt creditButtR;
+
+Butt menuSave;
+Butt menuSaveClose;
+Butt menuExport;
 
 // This draws the video tracker bar
 // Not sure if this this the right name
@@ -55,31 +55,52 @@ void drawTrackerBar() {
 
 void switchToEdit() {
   UIMode="EDIT";
+  
+  videoY = menuHeight;
+  trackerBarX = 0;
+  trackerBarY = videoHeight + videoY;
+  trackerBarWidth = width;
+  
   purgeButts();
   
-  agendaButtL = new Butt("1",5,5,40,48);
+  agendaButtL = new Butt("1",5,5 + videoY,40,48);
   agendaButtL.verb = "AGENDA";
   agendaButtL.noun = "L";
   agendaButtL.style = "AGENDA";
   butts.add(agendaButtL); 
   
-  agendaButtR = new Butt("9",videoWidth-(40+5),5,40,48);
+  agendaButtR = new Butt("9",videoWidth-(40+5),5 + videoY,40,48);
   agendaButtR.verb = "AGENDA";
   agendaButtR.noun = "R";
   agendaButtR.style = "AGENDA";
   butts.add(agendaButtR);
   
-  creditButtL = new Butt("55",5,10+48,40,32);
+  creditButtL = new Butt("55",5,agendaButtL.y + agendaButtL.h + 5,40,32);
   creditButtL.verb = "CREDIT";
   creditButtL.noun = "L";
   creditButtL.style = "CREDIT";
   butts.add(creditButtL);
 
-  creditButtR = new Butt("49",videoWidth-(40+5),10+48,40,32);
+  creditButtR = new Butt("49",videoWidth-(40+5),agendaButtR.y + agendaButtR.h + 5,40,32);
   creditButtR.verb = "CREDIT";
   creditButtR.noun = "R";
   creditButtR.style = "CREDIT";
   butts.add(creditButtR);
+  
+  menuSave = new Butt("SAVE",24, menuY + 5 ,94,24);
+  menuSave.verb = "SAVE";
+  menuSave.noun = "";
+  butts.add(menuSave);
+
+  menuSaveClose = new Butt("SAVE & CLOSE", menuSave.x + menuSave.w + 5, menuSave.y,94,24);
+  menuSaveClose.verb = "SAVECLOSE";
+  menuSaveClose.noun = "";
+  butts.add(menuSaveClose);
+
+  menuExport = new Butt("EXPORT", menuSaveClose.x + menuSaveClose.w + 5, menuSave.y,94,24);
+  menuExport.verb = "EXPORT";
+  menuExport.noun = "";
+  butts.add(menuExport);
 }
 
 void switchToLoad() {
@@ -251,6 +272,11 @@ void buttonCommand(String _verb, String _noun) {
     } else {
       creditButt(RIGHTPLAYER, 1);
     }
+  } else if (_verb == "SAVE") {
+    saveVData();
+  } else if (_verb == "SAVECLOSE") {
+    saveVData();
+    switchToLoad();
   }
 }
 
