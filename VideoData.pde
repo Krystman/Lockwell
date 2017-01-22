@@ -115,3 +115,51 @@ void creditButt(int _side, int _d) {
   }
   _newCEvent.value+=_d;
 }
+
+float getLastKeyframe() {
+  AgendaEvent _tempAEvent = null;
+  CreditEvent _tempCEvent = null;
+  float ret;
+  ret = -1f;
+  for (int i = 0; i < agendaEvents.size(); i++) {
+    _tempAEvent = agendaEvents.get(i);
+    if (_tempAEvent.time > ret && _tempAEvent.time < headPos) {
+      ret = _tempAEvent.time;
+    }
+  }
+  for (int i = 0; i < creditEvents.size(); i++) {
+    _tempCEvent = creditEvents.get(i);
+    if (_tempCEvent.time > ret && _tempCEvent.time < headPos) {
+      ret = _tempCEvent.time;
+    }
+  }
+  if (ret == -1f) {
+    return headPos;
+  } else {
+    return ret;
+  }
+}
+
+float getNextKeyframe() {
+  AgendaEvent _tempAEvent = null;
+  CreditEvent _tempCEvent = null;
+  float ret;
+  ret = 999999f;
+  for (int i = 0; i < agendaEvents.size(); i++) {
+    _tempAEvent = agendaEvents.get(i);
+    if (_tempAEvent.time < ret && _tempAEvent.time > headPos) {
+      ret = _tempAEvent.time;
+    }
+  }
+  for (int i = 0; i < creditEvents.size(); i++) {
+    _tempCEvent = creditEvents.get(i);
+    if (_tempCEvent.time < ret && _tempCEvent.time > headPos) {
+      ret = _tempCEvent.time;
+    }
+  }
+  if (ret == 999999) {
+    return headPos;
+  } else {
+    return ret;
+  }  
+}

@@ -39,6 +39,11 @@ PFont smallRoboto;
 PFont agendaRoboto;
 PFont credRoboto;
 
+boolean keyShift = false;
+boolean keyAlt = false;
+boolean keyControl = false;
+
+
 AgendaEvent selectedAEventLeft;
 AgendaEvent selectedAEventRight;
 CreditEvent selectedCEventLeft;
@@ -83,16 +88,12 @@ void setup480() {
 void setup720() {
   videoWidth = 1280;
   videoHeight = 720;
-  surface.setSize(1280, int(720 + trackerBarHeight + menuHeight)
-  
-  
-  
-  );
+  surface.setSize(1280, int(720 + trackerBarHeight + menuHeight));
 }
 
 void draw() {
   update();
-  
+
   // Draw stuff
   clear();
   background(color1);
@@ -136,19 +137,49 @@ void update() {
 }
 
 void keyPressed() {
+  
   //println("key: " + key + " keyCode: " + keyCode);  
   if (keyCode==32) {
     buttPause();
   } else if (keyCode==LEFT) {
     //This works well for frame-by-frame rewinding
     //moveHead(-0.05f);
-    moveHead(-30f);
+    if (keyShift) {
+      moveHead(-1f);
+    } else if (keyControl) {
+      setHead(getLastKeyframe());
+    } else if (keyAlt) {
+      moveHead(-10f);
+    }
   } else if (keyCode==RIGHT) {
     //This works well for frame-by-frame rewinding
     //moveHead(0.05f);
-    moveHead(30f);
-  }
+    if (keyShift) {
+      moveHead(1f);
+    } else if (keyControl) {
+      setHead(getNextKeyframe());
+    } else if (keyAlt) {
+      moveHead(10f);
+    }
+  } else if (keyCode==SHIFT) {
+    keyShift = true;
+  } else if (keyCode==CONTROL) {
+    keyControl = true;
+  } else if (keyCode==ALT) {
+    keyAlt = true;
+  }  
+}
+
+void keyReleased() {
   
+  //println("key: " + key + " keyCode: " + keyCode);  
+  if (keyCode==SHIFT) {
+    keyShift = false;
+  } else if (keyCode==CONTROL) {
+    keyControl = false;
+  } else if (keyCode==ALT) {
+    keyAlt = false;
+  }  
 }
 
 void buttPause() {
@@ -161,8 +192,9 @@ void buttPause() {
     } else {
       println("Pausing...");
       myMovie.pause();
-      myMovie.read();
       moviePaused = true;
+      myMovie.read();
+      myMovie.jump(headPos);      
     }
   }
 }
