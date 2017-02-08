@@ -54,6 +54,7 @@ ArrayList <Butt> butts;
 ArrayList <AgendaEvent> agendaEvents;
 ArrayList <CreditEvent> creditEvents;
 Float headPos;
+boolean headLocked = false;
 
 String[] history;
 
@@ -105,7 +106,13 @@ void draw() {
       if (myMovie.available()) {
         myMovie.read();
       }
-      headPos = myMovie.time();
+      if (!headLocked) {
+        // This is a bit of a hack
+        // Video sometimes kept jumping a tiny bit a second after being paused
+        // Made stopping at a specific keyframe impossible
+        // So we "freeze" the head position if we jump to a specific time
+        headPos = myMovie.time();
+      }
       
       // Draw Video
       image(myMovie, 0, videoY, videoWidth,videoHeight);
@@ -138,7 +145,17 @@ void update() {
 
 void keyPressed() {
   
-  //println("key: " + key + " keyCode: " + keyCode);  
+  //println("key: " + key + " keyCode: " + keyCode); 
+  
+  if (key=='q') {
+    println("head at " + headPos);
+    if (headLocked) {
+      println("head locked");
+    } else {
+      println("head not locked");     
+    }
+  }
+  
   if (keyCode==32) {
     buttPause();
   } else if (keyCode==LEFT) {
@@ -186,11 +203,13 @@ void buttPause() {
   if (moviePath != "") {
     if (moviePaused) {
       println("Plaing...");
+      headLocked = false;
       myMovie.play();
       myMovie.read();
       moviePaused = false;
     } else {
       println("Pausing...");
+      headLocked = false;
       myMovie.pause();
       moviePaused = true;
       myMovie.read();

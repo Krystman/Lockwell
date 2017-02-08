@@ -29,6 +29,7 @@ void setHeadPercent(float _s) {
 }
 
 void setHead(float _s) {
+  println("setHead " + _s);
   float cur;
   if (moviePath != "") {
     cur = _s;
@@ -36,6 +37,7 @@ void setHead(float _s) {
     myMovie.jump(cur);
     headPos = cur;
     if (moviePaused) {
+      headLocked = true;
       myMovie.play();
       myMovie.pause();
       myMovie.read();

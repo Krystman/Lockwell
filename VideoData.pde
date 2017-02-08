@@ -1,5 +1,6 @@
 // Functions to manipulate Video Data
 
+// This creates a new Credit Event
 CreditEvent addCreditEvent(float _time, int _value, int _side) {
   CreditEvent _tempCEvent;
   
@@ -12,6 +13,7 @@ CreditEvent addCreditEvent(float _time, int _value, int _side) {
   return _tempCEvent;
 }
 
+// This creates a new Agenda Event
 AgendaEvent addAgendaEvent(float _time, int _value, int _side) {
   AgendaEvent _tempAEvent;
   
@@ -24,40 +26,47 @@ AgendaEvent addAgendaEvent(float _time, int _value, int _side) {
   return _tempAEvent;
 }
 
+// This gets the agenda point count at any given time
 AgendaEvent getAgenda(float _time, int _side) {
   AgendaEvent _foundAEvent = null;
   AgendaEvent _tempAEvent = null;
   
-  for (int i = 0; i < agendaEvents.size(); i++) {
-    _tempAEvent = agendaEvents.get(i);
-    if (_tempAEvent.side == _side && _tempAEvent.time <= _time) {
-      if (_foundAEvent == null) {
-        _foundAEvent = _tempAEvent;
-      } else if (_tempAEvent.time > _foundAEvent.time) {
-        _foundAEvent = _tempAEvent;
+  if (agendaEvents != null) {
+    for (int i = 0; i < agendaEvents.size(); i++) {
+      _tempAEvent = agendaEvents.get(i);
+      if (_tempAEvent.side == _side && _tempAEvent.time <= _time) {
+        if (_foundAEvent == null) {
+          _foundAEvent = _tempAEvent;
+        } else if (_tempAEvent.time > _foundAEvent.time) {
+          _foundAEvent = _tempAEvent;
+        }
       }
     }
   }
   return _foundAEvent;
 }
 
+// This gets the credit count at any given time
 CreditEvent getCredit(float _time, int _side) {
   CreditEvent _foundCEvent = null;
   CreditEvent _tempCEvent = null;
   
-  for (int i = 0; i < creditEvents.size(); i++) {
-    _tempCEvent = creditEvents.get(i);
-    if (_tempCEvent.side == _side && _tempCEvent.time <= _time) {
-      if (_foundCEvent == null) {
-        _foundCEvent = _tempCEvent;
-      } else if (_tempCEvent.time > _foundCEvent.time) {
-        _foundCEvent = _tempCEvent;
+  if (creditEvents != null) {
+    for (int i = 0; i < creditEvents.size(); i++) {
+      _tempCEvent = creditEvents.get(i);
+      if (_tempCEvent.side == _side && _tempCEvent.time <= _time) {
+        if (_foundCEvent == null) {
+          _foundCEvent = _tempCEvent;
+        } else if (_tempCEvent.time > _foundCEvent.time) {
+          _foundCEvent = _tempCEvent;
+        }
       }
     }
   }
   return _foundCEvent;
 }
 
+// This is what gets executed when you press a button to change the agenda points
 void agendaButt(int _side, int _d) {
   AgendaEvent _lastAEvent;
   AgendaEvent _newAEvent;
@@ -87,6 +96,7 @@ void agendaButt(int _side, int _d) {
   _newAEvent.value+=_d;
 }
 
+// This is what gets executed when you press a button to change the credit points
 void creditButt(int _side, int _d) {
   CreditEvent _lastCEvent;
   CreditEvent _newCEvent;
@@ -116,6 +126,8 @@ void creditButt(int _side, int _d) {
   _newCEvent.value+=_d;
 }
 
+// This returns a keyframe before the current head position if possible
+// Otherwise, it returns the head position
 float getLastKeyframe() {
   AgendaEvent _tempAEvent = null;
   CreditEvent _tempCEvent = null;
@@ -140,6 +152,8 @@ float getLastKeyframe() {
   }
 }
 
+// This returns a keyframe after the current head position if possible
+// Otherwise, it returns the head position
 float getNextKeyframe() {
   AgendaEvent _tempAEvent = null;
   CreditEvent _tempCEvent = null;
