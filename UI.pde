@@ -19,37 +19,61 @@ Butt menuExport;
 void drawTrackerBar() {
   float mousePos;
   
+  // this is the y position of the actual progress bar line
+  float _lineY = trackerBarY + 18;
+  
+  // Draw timecode / time remaining
   noStroke();
   textSize(11);
-  fill(color4);
+  fill(color1b);
   textFont(smallRobotoMono);
   textAlign(LEFT);
-  text(formatTimeCode(headPos), trackerBarX + 10, trackerBarY + 28);
+  text(formatTimeCode(headPos), trackerBarX + 10, _lineY + 20);
   textAlign(RIGHT);
-  text("-" + formatTimeCode(myMovie.duration()-headPos), trackerBarWidth-10, trackerBarY + 28);
-  fill(color4, 72);
-  rect(trackerBarX + 10, trackerBarY + 8, trackerBarWidth-20, trackerLineThickness);
-  fill(color4, 255);
+  text("-" + formatTimeCode(myMovie.duration()-headPos), trackerBarWidth-10, _lineY + 20);
+  
+  // Draw bar
+  fill(color1b, 72);
+  rect(trackerBarX + 10, _lineY, trackerBarWidth-20, trackerLineThickness);
+  
+  // Draw progress
+  fill(color1b, 255);
   if (myMovie.duration() > 0) {
-    rect(trackerBarX + 10, trackerBarY + 8, (trackerBarWidth-20) * (headPos/myMovie.duration()), trackerLineThickness);
+    rect(trackerBarX + 10, _lineY, (trackerBarWidth-20) * (headPos/myMovie.duration()), trackerLineThickness);
   }
   
+  // Draw keyframe ticks
+  fill(color3);
+  noStroke();
+
+  if (creditEvents != null) {
+    for (int i = 0; i < creditEvents.size(); i++) {
+      float _tickPos = creditEvents.get(i).time;
+      rect(int(trackerBarX + 10 + ((trackerBarWidth-20) * (_tickPos/myMovie.duration()))), _lineY - 10, 1, 5);
+    }
+  }
+  if (agendaEvents != null) {
+    for (int i = 0; i < agendaEvents.size(); i++) {
+      float _tickPos = agendaEvents.get(i).time;
+      rect(int(trackerBarX + 10 + ((trackerBarWidth-20) * (_tickPos/myMovie.duration()))), _lineY - 10, 1, 5);
+    }
+  }  
+  // Draw mouse over info
   if (trackerMousePos!=-1) {
     fill(color2, 255);
     mousePos = 10 + (trackerMousePos * (trackerBarWidth-20));
-    ellipse(mousePos,  trackerBarY + 8 + (trackerLineThickness/2), trackerLineThickness, trackerLineThickness);
+    ellipse(mousePos,  _lineY + (trackerLineThickness/2), trackerLineThickness, trackerLineThickness);
     
     fill(color1);
-    stroke(color4);  
+    stroke(color1b);  
     strokeWeight(1.2);
-    rect(mousePos - (64/2), trackerBarY - 18 , 64, 18, 2);
+    rect(mousePos - (64/2), trackerBarY - 8 , 64, 18, 2);
       
-    fill(color4);
+    fill(color1b);
     noStroke();
     textFont(smallRobotoMono);
     textAlign(CENTER);
-    text(formatTimeCode(trackerMousePos * myMovie.duration()),mousePos,trackerBarY-5);
-
+    text(formatTimeCode(trackerMousePos * myMovie.duration()),mousePos,trackerBarY+5);
   }
 }
 

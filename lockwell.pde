@@ -1,7 +1,9 @@
 import processing.video.*;
 
 //Define color palette
-final color color1 = #020122; // BG
+final color color1 = #121212; // BG
+final color color1b = #a0a0a0; // Neutral text
+
 final color color2 = #F7B538; // Yellow
 final color color3 = #1098F7; // Blue
 final color color4 = #AEC5EB; // Pale Blue
@@ -26,7 +28,7 @@ float trackerMousePos = -1;
 float trackerBarX = 0;
 float trackerBarY = 0;
 float trackerBarWidth = 0;
-float trackerBarHeight = 40;
+float trackerBarHeight = 50;
 
 String moviePath = "";
 String vDataPath = "";
