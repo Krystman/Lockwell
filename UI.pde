@@ -1,7 +1,5 @@
 // Functions for UI rendering
 
-final float trackerLineThickness = 5;
-
 Butt agendaButtL;
 Butt agendaButtR;
 Butt creditButtL;
@@ -22,6 +20,11 @@ void drawTrackerBar() {
   // this is the y position of the actual progress bar line
   float _lineY = trackerBarY + 18;
   
+  // draw background
+  noStroke();
+  fill(color1c);
+  rect(trackerBarX, trackerBarY, trackerBarWidth, trackerBarHeight);
+  
   // Draw timecode / time remaining
   noStroke();
   textSize(11);
@@ -33,11 +36,11 @@ void drawTrackerBar() {
   text("-" + formatTimeCode(myMovie.duration()-headPos), trackerBarWidth-10, _lineY + 20);
   
   // Draw bar
-  fill(color1b, 72);
+  fill(color1d);
   rect(trackerBarX + 10, _lineY, trackerBarWidth-20, trackerLineThickness);
   
   // Draw progress
-  fill(color1b, 255);
+  fill(color1b);
   if (myMovie.duration() > 0) {
     rect(trackerBarX + 10, _lineY, (trackerBarWidth-20) * (headPos/myMovie.duration()), trackerLineThickness);
   }
@@ -57,7 +60,10 @@ void drawTrackerBar() {
   if (trackerMousePos!=-1) {
     fill(color2, 255);
     mousePos = 10 + (trackerMousePos * (trackerBarWidth-20));
-    ellipse(mousePos,  _lineY + (trackerLineThickness/2), trackerLineThickness, trackerLineThickness);
+    
+    triangle(mousePos, _lineY+trackerLineThickness+1, mousePos-4, _lineY+trackerLineThickness+5, mousePos+4, _lineY+trackerLineThickness+5);
+    rect(mousePos, _lineY, 1, trackerLineThickness);
+    //ellipse(mousePos,  _lineY + (trackerLineThickness/2), trackerLineThickness, trackerLineThickness);
     
     fill(color1);
     stroke(color1b);  
@@ -72,12 +78,48 @@ void drawTrackerBar() {
   }
 }
 
+void drawDetailBar() {
+  int _thisx; 
+  // this is the y position of ticks of the timeline
+  float _ticksY = detailBarY + 20;
+  
+  // draw background
+  noStroke();
+  fill(color1);
+  rect(detailBarX, detailBarY, detailBarWidth, detailBarHeight);
+  
+  // draw second ticks
+  noStroke();
+  fill(color1d);
+  for (int i = int(detailBarScroll-1); i < detailBarScroll + detailBarZoom + 1; i++) {
+    if (i >= 0 && i <= myMovie.duration()) {
+      _thisx = int(((i-detailBarScroll) / detailBarZoom) * detailBarWidth);
+      rect(_thisx, _ticksY, 1, 6);
+    }
+  }
+  
+  // draw keyframes
+  
+  // draw cursor
+  noStroke();
+  fill(color2);
+  _thisx = 64;
+  
+  triangle(_thisx, _ticksY, _thisx-4, _ticksY+4, _thisx+4, _ticksY+4);
+  rect(_thisx-4, _ticksY+4, 7, 5);
+}
+
 void switchToEdit() {
   UIMode="EDIT";
   
   videoY = menuHeight;
+  
+  detailBarX = 0;
+  detailBarY = videoHeight + videoY;
+  detailBarWidth = width;
+  
   trackerBarX = 0;
-  trackerBarY = videoHeight + videoY;
+  trackerBarY = videoHeight + videoY + detailBarHeight;
   trackerBarWidth = width;
   
   purgeButts();

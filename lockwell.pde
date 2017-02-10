@@ -1,8 +1,10 @@
 import processing.video.*;
 
 //Define color palette
-final color color1 = #121212; // BG
-final color color1b = #a0a0a0; // Neutral text
+final color color1 = #121212; // Dark BG
+final color color1b = #a0a0a0; // Neutral text / foreground elements
+final color color1c = #181818; // Slightly brighter BG
+final color color1d = #3e3e3e; // Dimmed forgeground elemets
 
 final color color2 = #F7B538; // Yellow
 final color color3 = #1098F7; // Blue
@@ -24,11 +26,23 @@ int videoY = 0;
 int menuY = 0;
 int menuHeight = 5 + 24 + 5;
 
-float trackerMousePos = -1;
+// Tracker bar is a scrollbar at the bottom of the screen
+// It allows you to scroll through the video
 float trackerBarX = 0;
 float trackerBarY = 0;
 float trackerBarWidth = 0;
 float trackerBarHeight = 50;
+float trackerMousePos;
+final float trackerLineThickness = 5;
+
+// Detail bar is a zoomed-in timeline above the tracker bar 
+// It shows the keyframes nearby
+float detailBarX = 0;
+float detailBarY = 0;
+float detailBarWidth = 0;
+float detailBarHeight = 30;
+float detailBarScroll = 0; // The timecode (in seconds) of the left edge of the detail bar
+float detailBarZoom = 10; // The length of the timeline (in seconds) displayed across the detail bar
 
 String moviePath = "";
 String vDataPath = "";
@@ -79,19 +93,19 @@ void setup() {
 void setup360() {
   videoWidth = 640;
   videoHeight = 360;
-  surface.setSize(640, int(360 + 40 + trackerBarHeight + menuHeight));
+  surface.setSize(640, int(360 + 40 + trackerBarHeight + detailBarHeight + menuHeight));
 }
 
 void setup480() {
   videoWidth = 853;
   videoHeight = 480;
-  surface.setSize(853, int(480 + trackerBarHeight + menuHeight));
+  surface.setSize(853, int(480 + trackerBarHeight + detailBarHeight + menuHeight));
 }
 
 void setup720() {
   videoWidth = 1280;
   videoHeight = 720;
-  surface.setSize(1280, int(720 + trackerBarHeight + menuHeight));
+  surface.setSize(1280, int(720 + trackerBarHeight + detailBarHeight + menuHeight));
 }
 
 void draw() {
@@ -124,7 +138,8 @@ void draw() {
     updateValues();
     drawKeyframes();
     
-    // Draw Tracker Bar
+    // Draw Bars
+    drawDetailBar();
     drawTrackerBar();
   }
   drawButts();
