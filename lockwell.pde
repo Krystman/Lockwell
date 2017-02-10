@@ -42,7 +42,8 @@ float detailBarY = 0;
 float detailBarWidth = 0;
 float detailBarHeight = 30;
 float detailBarScroll = 0; // The timecode (in seconds) of the left edge of the detail bar
-float detailBarZoom = 10; // The length of the timeline (in seconds) displayed across the detail bar
+float detailBarTScroll = 0; // The scroll target to scroll to. This is for scroll animation.
+float detailBarZoom = 40; // The length of the timeline (in seconds) displayed across the detail bar
 
 String moviePath = "";
 String vDataPath = "";
@@ -132,15 +133,24 @@ void draw() {
       
       // Draw Video
       image(myMovie, 0, videoY, videoWidth,videoHeight);
+    
+      // Update the scroll of the detail bar and animate
+      detailBarTScroll = headPos - (detailBarZoom / 2);
+      detailBarTScroll = constrain(detailBarTScroll, 0, myMovie.duration()-detailBarZoom);
+      if (moviePaused) {
+        detailBarScroll += (detailBarTScroll - detailBarScroll) / 5;
+      } else {
+        detailBarScroll = detailBarTScroll;
+      }
+      
+      // Update Overlay Values
+      updateValues();
+      drawKeyframes();
+      
+      // Draw Bars
+      drawDetailBar();
+      drawTrackerBar();
     }
-    
-    // Update Overlay Values
-    updateValues();
-    drawKeyframes();
-    
-    // Draw Bars
-    drawDetailBar();
-    drawTrackerBar();
   }
   drawButts();
 }

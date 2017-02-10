@@ -48,7 +48,6 @@ void drawTrackerBar() {
   // Draw keyframe ticks
   fill(color3);
   noStroke();
-  // Todo, let's do universal events after all :(
   if (keyframes != null) {
     for (int i = 0; i < keyframes.size(); i++) {
       float _tickPos = keyframes.get(i).time;
@@ -80,8 +79,10 @@ void drawTrackerBar() {
 
 void drawDetailBar() {
   int _thisx; 
-  // this is the y position of ticks of the timeline
-  float _ticksY = detailBarY + 20;
+  
+  float _ticksY = detailBarY + 20; // this is the y position of ticks of the timeline
+  float _keysY = _ticksY - 14; // this is the y position of the top corner of the keyframe diamonds
+  float _realdWidth = detailBarWidth - 20; // adding padding to the edges;
   
   // draw background
   noStroke();
@@ -91,22 +92,46 @@ void drawDetailBar() {
   // draw second ticks
   noStroke();
   fill(color1d);
-  for (int i = int(detailBarScroll-1); i < detailBarScroll + detailBarZoom + 1; i++) {
+  for (float i = int(detailBarScroll-1); i < detailBarScroll + detailBarZoom + 1; i=i+0.5) {
     if (i >= 0 && i <= myMovie.duration()) {
-      _thisx = int(((i-detailBarScroll) / detailBarZoom) * detailBarWidth);
-      rect(_thisx, _ticksY, 1, 6);
+      int _tickH = 6;
+      if (i != int(i)) {
+        _tickH = 1;
+      }
+      _thisx = 10 + int(((i-detailBarScroll) / detailBarZoom) * _realdWidth);
+      rect(_thisx, _ticksY, 1, _tickH);
     }
   }
   
-  // draw keyframes
+  // draw keyframe diamonds
+  fill(color3);
+  noStroke();
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      float _keyPos = keyframes.get(i).time;
+      if (_keyPos == headPos) {
+        fill(color4);
+      } else {
+        fill(color3);
+      }
+      if (_keyPos > detailBarScroll-1 && _keyPos < detailBarScroll + detailBarZoom) {
+        _thisx = 10 + int(((_keyPos-detailBarScroll) / detailBarZoom) * _realdWidth);
+        quad(_thisx, _keysY, _thisx-4, _keysY+4, _thisx, _keysY+8, _thisx+4, _keysY+4);
+        
+        //rect(int(trackerBarX + 10 + ((trackerBarWidth-20) * (_tickPos/myMovie.duration()))), _lineY - 10, 1, 5);
+      }
+    }
+  }
   
   // draw cursor
   noStroke();
   fill(color2);
-  _thisx = 64;
-  
-  triangle(_thisx, _ticksY, _thisx-4, _ticksY+4, _thisx+4, _ticksY+4);
-  rect(_thisx-4, _ticksY+4, 7, 5);
+  if (headPos > detailBarScroll-1 && headPos < detailBarScroll + detailBarZoom) {
+    _thisx = 10 + int(((headPos-detailBarScroll) / detailBarZoom) * _realdWidth);
+    triangle(_thisx, _ticksY, _thisx-4, _ticksY+4, _thisx+4, _ticksY+4);
+    rect(_thisx-4, _ticksY+4, 7.8, 5);
+  }
+
 }
 
 void switchToEdit() {
