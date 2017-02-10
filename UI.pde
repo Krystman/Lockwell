@@ -45,19 +45,14 @@ void drawTrackerBar() {
   // Draw keyframe ticks
   fill(color3);
   noStroke();
-
-  if (creditEvents != null) {
-    for (int i = 0; i < creditEvents.size(); i++) {
-      float _tickPos = creditEvents.get(i).time;
+  // Todo, let's do universal events after all :(
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      float _tickPos = keyframes.get(i).time;
       rect(int(trackerBarX + 10 + ((trackerBarWidth-20) * (_tickPos/myMovie.duration()))), _lineY - 10, 1, 5);
     }
   }
-  if (agendaEvents != null) {
-    for (int i = 0; i < agendaEvents.size(); i++) {
-      float _tickPos = agendaEvents.get(i).time;
-      rect(int(trackerBarX + 10 + ((trackerBarWidth-20) * (_tickPos/myMovie.duration()))), _lineY - 10, 1, 5);
-    }
-  }  
+  
   // Draw mouse over info
   if (trackerMousePos!=-1) {
     fill(color2, 255);
@@ -162,40 +157,39 @@ void drawButts() {
 // This updates the overlay values
 void updateValues() {
   String _s;
-  CreditEvent _cTemp = null;
-  AgendaEvent _aTemp = null;
+  Keyframe tempFrame = null;
   
-  selectedAEventLeft = null;
-  selectedAEventRight = null;
-  selectedCEventLeft = null;
-  selectedCEventRight = null;
+  selFrameAgendaLeft = null;
+  selFrameAgendaRight = null;
+  selFrameCreditLeft = null;
+  selFrameCreditRight = null;
 
-  _cTemp = getCredit(headPos, LEFTPLAYER);
-  _s = (_cTemp == null) ? "?" : "" + _cTemp.value;
+  tempFrame = getKeyframe(KFCREDITS, headPos, LEFTPLAYER);
+  _s = (tempFrame == null) ? "?" : "" + tempFrame.value;
   creditButtL.t = _s;
-  if (_cTemp != null && _cTemp.time == headPos) {
-    selectedCEventLeft = _cTemp;
+  if (tempFrame != null && tempFrame.time == headPos) {
+    selFrameCreditLeft = tempFrame;
   }
   
-  _cTemp = getCredit(headPos, RIGHTPLAYER);
-  _s = (_cTemp == null) ? "?" : "" + _cTemp.value;
+  tempFrame = getKeyframe(KFCREDITS, headPos, RIGHTPLAYER);
+  _s = (tempFrame == null) ? "?" : "" + tempFrame.value;
   creditButtR.t = _s;
-  if (_cTemp != null && _cTemp.time == headPos) {
-    selectedCEventRight = _cTemp;
+  if (tempFrame != null && tempFrame.time == headPos) {
+    selFrameCreditRight = tempFrame;
   }
   
-  _aTemp = getAgenda(headPos, LEFTPLAYER);
-  _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
+  tempFrame = getKeyframe(KFAGENDAS, headPos, LEFTPLAYER);
+  _s = (tempFrame == null) ? "?" : "" + tempFrame.value;
   agendaButtL.t = _s;
-  if (_aTemp != null && _aTemp.time == headPos) {
-    selectedAEventLeft = _aTemp;
+  if (tempFrame != null && tempFrame.time == headPos) {
+    selFrameAgendaLeft = tempFrame;
   }
   
-  _aTemp = getAgenda(headPos, RIGHTPLAYER);
-  _s = (_aTemp == null) ? "?" : "" + _aTemp.value;
+  tempFrame = getKeyframe(KFAGENDAS, headPos, RIGHTPLAYER);
+  _s = (tempFrame == null) ? "?" : "" + tempFrame.value;
   agendaButtR.t = _s;
-  if (_aTemp != null && _aTemp.time == headPos) {
-    selectedAEventRight = _aTemp;
+  if (tempFrame != null && tempFrame.time == headPos) {
+    selFrameAgendaRight = tempFrame;
   }
 }
 
@@ -205,16 +199,16 @@ void drawKeyframes() {
   fill(color5);
   noStroke();
   
-  if (selectedAEventLeft != null) {
+  if (selFrameAgendaLeft != null) {
     ellipse(agendaButtL.x + agendaButtL.w + 10, agendaButtL.y+5, 10, 10); 
   }
-  if (selectedAEventRight != null) {
+  if (selFrameAgendaRight != null) {
     ellipse(agendaButtR.x - 10, agendaButtR.y+5, 10, 10); 
   }
-  if (selectedCEventLeft != null) {
+  if (selFrameCreditLeft != null) {
     ellipse(creditButtL.x + creditButtL.w + 10, creditButtL.y+5, 10, 10);
   }
-  if (selectedCEventRight != null) {
+  if (selFrameCreditRight != null) {
     ellipse(creditButtR.x - 10, creditButtR.y+5, 10, 10); 
   }
 }
@@ -239,7 +233,7 @@ void updateMouseOver() {
 
 float getTrackerMousePos() {
   float ret;
-  if (mouseY > trackerBarY && mouseY < trackerBarY + 8 + trackerLineThickness + 8) {
+  if (mouseY > trackerBarY && mouseY < trackerBarY + 18 + trackerLineThickness + 8) {
     ret = (mouseX - (trackerBarX + 10)) / (trackerBarWidth -20);
     ret = constrain(ret, 0, 1);
   } else {

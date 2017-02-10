@@ -94,12 +94,9 @@ void loadVData() {
  // Load XML file with Video Data
   println("Loading " + vDataPath);
   
-  XML _xml;
-  CreditEvent _tempCEvent;
-  AgendaEvent _tempAEvent;
-  
-  
+  XML _xml; 
   _xml = loadXML(vDataPath);
+  keyframes = new ArrayList<Keyframe>();
   
   XML _settingsNode = _xml.getChild("settings");
   XML _creditsNode = _xml.getChild("credits");
@@ -109,36 +106,25 @@ void loadVData() {
   // Set last head position
   setHead(_settingsNode.getChild("lastheadpos").getFloatContent());
 
-  // ------ Load Credit Events -------
-  // Get all credit events
+  // ------ Load Credit Keyframes -------
+  // Get all credit keyframes
   XML[] _credits = _creditsNode.getChildren("credit");
   
-  // Clear Array
-  creditEvents = new ArrayList<CreditEvent>();
-  
-  // Recreate the Array for Credit Events
+  // Fill Keyframe array with credit keyframes
   for (int i = 0; i < _credits.length; i++) {
-    addCreditEvent(_credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"));
+    addKeyframe(KFCREDITS, _credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"));
   }
   
   // ------ Load Agenda Events -------
   // Get all agenda events
   XML[] _agendas = _agendasNode.getChildren("agenda");
   
-  // Clear Array
-  agendaEvents = new ArrayList<AgendaEvent>();
-  
-  // Recreate the Array for Agenda Events
+  // Fill Keyframe array with agenda keyframes
   for (int i = 0; i < _agendas.length; i++) {
-    addAgendaEvent(_agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"));
+    addKeyframe(KFAGENDAS, _agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"));
   }
   
-  println("Loaded " + creditEvents.size() + " Credit Events");
-  println("Loaded " + agendaEvents.size() + " Agenda Events");
-
-  // Make a Bubble object out of the data read
-  // bubbles[i] = new Bubble(x, y, diameter, label);
-
+  println("Loaded " + keyframes.size() + " Keyframes");
 }
 
 void saveVData() {
@@ -147,8 +133,7 @@ void saveVData() {
   XML _temp;
   _xml = new XML("vdata");
   
-  CreditEvent _tempCEvent;
-  AgendaEvent _tempAEvent;
+  Keyframe _tempKeyframe;
 
   XML _settingsNode = _xml.addChild("settings");
   XML _creditsNode = _xml.addChild("credits");
@@ -157,27 +142,24 @@ void saveVData() {
   // ------ Save Settings -------
   // Save last head position
   _settingsNode.addChild("lastheadpos").setFloatContent(headPos);
-  
-  // ------ Save Credit Events -------
-  // Loop through Credit Event array
 
-  for (int i = 0; i < creditEvents.size(); i++) {
-    _tempCEvent = creditEvents.get(i);
-    _temp = _creditsNode.addChild("credit");
-    _temp.setIntContent(_tempCEvent.value);
-    _temp.setFloat("t", _tempCEvent.time);
-    _temp.setInt("side", _tempCEvent.side);
-  }
-  
-  // ------ Save Agenda Events -------
-  // Loop through Agenda Event array
-  for (int i = 0; i < agendaEvents.size(); i++) {
-    _tempAEvent = agendaEvents.get(i);
-    _temp = _agendasNode.addChild("agenda");
-    _temp.setIntContent(_tempAEvent.value);
-    _temp.setFloat("t", _tempAEvent.time);
-    _temp.setInt("side", _tempAEvent.side);
-    
+  // ------ Save Keyframes -------
+  // Loop through Keyframes
+  for (int i = 0; i < keyframes.size(); i++) {
+    _temp = null;
+    _tempKeyframe = keyframes.get(i);
+    if (_tempKeyframe.type == KFCREDITS) {
+      _temp = _creditsNode.addChild("credit");
+    } else if (_tempKeyframe.type == KFAGENDAS) {
+      _temp = _agendasNode.addChild("agenda");
+    } else {
+      println("Unknown keyframe type " + _tempKeyframe.type + "!!");
+    }  
+    if (_temp != null) {
+      _temp.setIntContent(_tempKeyframe.value);
+      _temp.setFloat("t", _tempKeyframe.time);
+      _temp.setInt("side", _tempKeyframe.side);
+    }
   }
   
   // Save a new XML file
@@ -187,13 +169,12 @@ void saveVData() {
 void resetVData() {
   //Resets the Video Data to a blank Template  
   headPos = 0f;
-  agendaEvents = new ArrayList<AgendaEvent>();
-  creditEvents = new ArrayList<CreditEvent>();
+  keyframes = new ArrayList<Keyframe>();
   
   // Add starting values
-  addCreditEvent(0.0, 5, LEFTPLAYER);
-  addCreditEvent(0.0, 5, RIGHTPLAYER);
+  addKeyframe(KFCREDITS, 0.0, 5, LEFTPLAYER);
+  addKeyframe(KFCREDITS, 0.0, 5, RIGHTPLAYER);
   
-  addAgendaEvent(0.0, 0, LEFTPLAYER);
-  addAgendaEvent(0.0, 0, RIGHTPLAYER);
+  addKeyframe(KFAGENDAS, 0.0, 0, LEFTPLAYER);
+  addKeyframe(KFAGENDAS, 0.0, 0, RIGHTPLAYER);
 }

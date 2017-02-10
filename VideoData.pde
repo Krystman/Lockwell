@@ -1,179 +1,144 @@
 // Functions to manipulate Video Data
 
 // This creates a new Credit Event
-CreditEvent addCreditEvent(float _time, int _value, int _side) {
-  CreditEvent _tempCEvent;
+Keyframe addKeyframe(int _type, float _time, int _value, int _side) {
+  Keyframe _tempKeyframe;
   
-  _tempCEvent = new CreditEvent();
-  _tempCEvent.time = _time;
-  _tempCEvent.value = _value;
-  _tempCEvent.side = _side;
-  creditEvents.add(_tempCEvent);
+  _tempKeyframe = new Keyframe();
+  _tempKeyframe.type = _type;
+  _tempKeyframe.time = _time;
+  _tempKeyframe.value = _value;
+  _tempKeyframe.side = _side;
+  keyframes.add(_tempKeyframe);
   
-  return _tempCEvent;
+  return _tempKeyframe;
 }
 
-// This creates a new Agenda Event
-AgendaEvent addAgendaEvent(float _time, int _value, int _side) {
-  AgendaEvent _tempAEvent;
+// This gets a value of the last keyframe of a certain stat at any given time
+// Basically it gets the credit count at any given time for example
+Keyframe getKeyframe(int _type, float _time, int _side) {
+  Keyframe _foundFrame = null;
+  Keyframe _tempFrame = null;
   
-  _tempAEvent = new AgendaEvent();
-  _tempAEvent.time = _time;
-  _tempAEvent.value = _value;
-  _tempAEvent.side = _side;
-  agendaEvents.add(_tempAEvent);
-  
-  return _tempAEvent;
-}
-
-// This gets the agenda point count at any given time
-AgendaEvent getAgenda(float _time, int _side) {
-  AgendaEvent _foundAEvent = null;
-  AgendaEvent _tempAEvent = null;
-  
-  if (agendaEvents != null) {
-    for (int i = 0; i < agendaEvents.size(); i++) {
-      _tempAEvent = agendaEvents.get(i);
-      if (_tempAEvent.side == _side && _tempAEvent.time <= _time) {
-        if (_foundAEvent == null) {
-          _foundAEvent = _tempAEvent;
-        } else if (_tempAEvent.time > _foundAEvent.time) {
-          _foundAEvent = _tempAEvent;
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      _tempFrame = keyframes.get(i);
+      if (_tempFrame.type == _type && _tempFrame.side == _side && _tempFrame.time <= _time) {
+        if (_foundFrame == null) {
+          _foundFrame = _tempFrame;
+        } else if (_tempFrame.time > _foundFrame.time) {
+          _foundFrame = _tempFrame;
         }
       }
     }
   }
-  return _foundAEvent;
-}
-
-// This gets the credit count at any given time
-CreditEvent getCredit(float _time, int _side) {
-  CreditEvent _foundCEvent = null;
-  CreditEvent _tempCEvent = null;
-  
-  if (creditEvents != null) {
-    for (int i = 0; i < creditEvents.size(); i++) {
-      _tempCEvent = creditEvents.get(i);
-      if (_tempCEvent.side == _side && _tempCEvent.time <= _time) {
-        if (_foundCEvent == null) {
-          _foundCEvent = _tempCEvent;
-        } else if (_tempCEvent.time > _foundCEvent.time) {
-          _foundCEvent = _tempCEvent;
-        }
-      }
-    }
-  }
-  return _foundCEvent;
+  return _foundFrame;
 }
 
 // This is what gets executed when you press a button to change the agenda points
 void agendaButt(int _side, int _d) {
-  AgendaEvent _lastAEvent;
-  AgendaEvent _newAEvent;
+  Keyframe _lastKeyframe = null;
+  Keyframe _newKeyframe = null;
   
   // Check if there is a keyframe at current time
   // If no, create one
-  if ((_side == LEFTPLAYER && selectedAEventLeft == null) || (_side == RIGHTPLAYER && selectedAEventRight == null)) {
-    _lastAEvent = getAgenda(headPos, _side);
-    if (_lastAEvent == null) {
-      _newAEvent = addAgendaEvent(headPos, 0, _side);
+  if ((_side == LEFTPLAYER && selFrameAgendaLeft == null) || (_side == RIGHTPLAYER && selFrameAgendaRight == null)) {
+    _lastKeyframe = getKeyframe(KFAGENDAS, headPos, _side);
+    if (_lastKeyframe == null) {
+      _newKeyframe = addKeyframe(KFAGENDAS, headPos, 0, _side);
     } else {
-      _newAEvent = addAgendaEvent(headPos, _lastAEvent.value, _side);
+      _newKeyframe = addKeyframe(KFAGENDAS, headPos, _lastKeyframe.value, _side);
     }
     if (_side == LEFTPLAYER) {
-      selectedAEventLeft = _newAEvent;
+      selFrameAgendaLeft = _newKeyframe;
     } else {
-      selectedAEventRight = _newAEvent;
+      selFrameAgendaRight = _newKeyframe;
     }
   }
   
   // Increase Agenda value by one
   if (_side == LEFTPLAYER) {
-    _newAEvent = selectedAEventLeft;
+    _newKeyframe = selFrameAgendaLeft;
   } else {
-    _newAEvent = selectedAEventRight;
+    _newKeyframe = selFrameAgendaRight;
   }
-  _newAEvent.value+=_d;
+  _newKeyframe.value+=_d;
 }
 
 // This is what gets executed when you press a button to change the credit points
 void creditButt(int _side, int _d) {
-  CreditEvent _lastCEvent;
-  CreditEvent _newCEvent;
+  Keyframe _lastKeyframe = null;
+  Keyframe _newKeyframe = null;
   
   // Check if there is a keyframe at current time
   // If no, create one
-  if ((_side == LEFTPLAYER && selectedCEventLeft == null) || (_side == RIGHTPLAYER && selectedCEventRight == null)) {
-    _lastCEvent = getCredit(headPos, _side);
-    if (_lastCEvent == null) {
-      _newCEvent = addCreditEvent(headPos, 0, _side);
+  if ((_side == LEFTPLAYER && selFrameCreditLeft == null) || (_side == RIGHTPLAYER && selFrameCreditRight == null)) {
+    _lastKeyframe = getKeyframe(KFCREDITS, headPos, _side);
+    if (_lastKeyframe == null) {
+      _newKeyframe = addKeyframe(KFCREDITS, headPos, 0, _side);
     } else {
-      _newCEvent = addCreditEvent(headPos, _lastCEvent.value, _side);
+      _newKeyframe = addKeyframe(KFCREDITS, headPos, _lastKeyframe.value, _side);
     }
     if (_side == LEFTPLAYER) {
-      selectedCEventLeft = _newCEvent;
+      selFrameCreditLeft = _newKeyframe;
     } else {
-      selectedCEventRight = _newCEvent;
+      selFrameCreditRight = _newKeyframe;
     }
   }
   
   // Increase Agenda value by one
   if (_side == LEFTPLAYER) {
-    _newCEvent = selectedCEventLeft;
+    _newKeyframe = selFrameCreditLeft;
   } else {
-    _newCEvent = selectedCEventRight;
+    _newKeyframe = selFrameCreditRight;
   }
-  _newCEvent.value+=_d;
+  _newKeyframe.value+=_d;
 }
 
-// This returns a keyframe before the current head position if possible
+// This returns ANY keyframe time before the current head position if possible
 // Otherwise, it returns the head position
 float getLastKeyframe() {
-  AgendaEvent _tempAEvent = null;
-  CreditEvent _tempCEvent = null;
-  float ret;
-  ret = -1f;
-  for (int i = 0; i < agendaEvents.size(); i++) {
-    _tempAEvent = agendaEvents.get(i);
-    if (_tempAEvent.time > ret && _tempAEvent.time < headPos) {
-      ret = _tempAEvent.time;
+  Keyframe _foundFrame = null;
+  Keyframe _tempFrame = null;
+  
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      _tempFrame = keyframes.get(i);
+      if (_tempFrame.time < headPos) {
+        if (_foundFrame == null) {
+          _foundFrame = _tempFrame;
+        } else if (_tempFrame.time > _foundFrame.time) {
+          _foundFrame = _tempFrame;
+        }
+      }
     }
   }
-  for (int i = 0; i < creditEvents.size(); i++) {
-    _tempCEvent = creditEvents.get(i);
-    if (_tempCEvent.time > ret && _tempCEvent.time < headPos) {
-      ret = _tempCEvent.time;
-    }
-  }
-  if (ret == -1f) {
+  if (_foundFrame == null) {
     return headPos;
-  } else {
-    return ret;
   }
+  return _foundFrame.time;
 }
 
-// This returns a keyframe after the current head position if possible
+// This returns ANY keyframe time before the current head position if possible
 // Otherwise, it returns the head position
 float getNextKeyframe() {
-  AgendaEvent _tempAEvent = null;
-  CreditEvent _tempCEvent = null;
-  float ret;
-  ret = 999999f;
-  for (int i = 0; i < agendaEvents.size(); i++) {
-    _tempAEvent = agendaEvents.get(i);
-    if (_tempAEvent.time < ret && _tempAEvent.time > headPos) {
-      ret = _tempAEvent.time;
+  Keyframe _foundFrame = null;
+  Keyframe _tempFrame = null;
+  
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      _tempFrame = keyframes.get(i);
+      if (_tempFrame.time > headPos) {
+        if (_foundFrame == null) {
+          _foundFrame = _tempFrame;
+        } else if (_tempFrame.time < _foundFrame.time) {
+          _foundFrame = _tempFrame;
+        }
+      }
     }
   }
-  for (int i = 0; i < creditEvents.size(); i++) {
-    _tempCEvent = creditEvents.get(i);
-    if (_tempCEvent.time < ret && _tempCEvent.time > headPos) {
-      ret = _tempCEvent.time;
-    }
-  }
-  if (ret == 999999) {
+  if (_foundFrame == null) {
     return headPos;
-  } else {
-    return ret;
-  }  
+  }
+  return _foundFrame.time; 
 }

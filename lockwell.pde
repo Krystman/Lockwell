@@ -46,15 +46,15 @@ boolean keyAlt = false;
 boolean keyControl = false;
 
 
-AgendaEvent selectedAEventLeft;
-AgendaEvent selectedAEventRight;
-CreditEvent selectedCEventLeft;
-CreditEvent selectedCEventRight;
+Keyframe selFrameAgendaLeft;
+Keyframe selFrameAgendaRight;
+Keyframe selFrameCreditLeft;
+Keyframe selFrameCreditRight;
 
 ArrayList <Butt> butts;
 
-ArrayList <AgendaEvent> agendaEvents;
-ArrayList <CreditEvent> creditEvents;
+ArrayList <Keyframe> keyframes;
+
 Float headPos;
 boolean headLocked = false;
 
