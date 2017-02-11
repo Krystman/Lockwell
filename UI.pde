@@ -77,12 +77,85 @@ void drawTrackerBar() {
   }
 }
 
+// This deals with a click on the Detail bar
+// Detail bar is a zoomed-in timeline above the tracker bar 
+void detailBarClick() {
+  int _thisx; 
+  
+  float _realdWidth = detailBarWidth - 20; // adding padding to the edges;
+  float mouseline = -20; // A mouse line is a selection line showing up one mouse over.
+  float mouseTime = -1; // The timecode underneath the mouse
+  float mouseKeyTime = -1; // The timecode of the keyframe currently being hovered on my the mouse
+  
+  mouseline = detailMousePos * detailBarWidth;
+  mouseTime = detailBarScroll + (((mouseline-10) / _realdWidth) * detailBarZoom);
+  mouseTime = constrain(mouseTime, 0, myMovie.duration());
+    
+  // Snap to keyframes
+  float bestDist = myMovie.duration()*2;
+  float bestTime = -1;
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      float dist = abs(keyframes.get(i).time - mouseTime);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestTime = keyframes.get(i).time;
+      }
+    }
+  }
+  if (bestDist < 0.25) {
+    mouseKeyTime = bestTime;
+  }
+  if (mouseKeyTime == -1) {
+    setHead(mouseTime);
+  } else {
+    setHead(mouseKeyTime);
+  }
+}
+
+// This draws the Detail bar
+// Detail bar is a zoomed-in timeline above the tracker bar 
 void drawDetailBar() {
   int _thisx; 
   
   float _ticksY = detailBarY + 20; // this is the y position of ticks of the timeline
   float _keysY = _ticksY - 14; // this is the y position of the top corner of the keyframe diamonds
   float _realdWidth = detailBarWidth - 20; // adding padding to the edges;
+  float mouseline = -20; // A mouse line is a selection line showing up one mouse over.
+  float mouseTime = -1; // The timecode underneath the mouse
+  float mouseKeyTime = -1; // The timecode of the keyframe currently being hovered on my the mouse
+  
+  // Deal with mouse selection. 
+  if (detailMousePos!=-1) {
+    mouseline = detailMousePos * detailBarWidth;
+    mouseTime = detailBarScroll + (((mouseline-10) / _realdWidth) * detailBarZoom);
+    mouseTime = constrain(mouseTime, 0, myMovie.duration());
+    
+    // Snap to keyframes
+    float bestDist = myMovie.duration()*2;
+    float bestTime = -1;
+    if (keyframes != null) {
+      for (int i = 0; i < keyframes.size(); i++) {
+        float dist = abs(keyframes.get(i).time - mouseTime);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestTime = keyframes.get(i).time;
+        }
+      }
+    }
+    if (bestDist < 0.25) {
+      mouseKeyTime = bestTime;
+    }
+    
+  } else {
+    // Show a mouse line if the mouse is over the tracker bar too!
+    if (trackerMousePos!=-1) {
+      mouseTime = trackerMousePos * myMovie.duration();
+      if (mouseTime > detailBarScroll-1 && mouseTime < detailBarScroll + detailBarZoom) {
+        mouseline = 10 + int(((mouseTime-detailBarScroll) / detailBarZoom) * _realdWidth);
+      }
+    }
+  }
   
   // draw background
   noStroke();
@@ -103,13 +176,25 @@ void drawDetailBar() {
     }
   }
   
+  // draw mouseline
+  fill(color2);
+  noStroke();  
+  if (mouseKeyTime == -1) {
+    rect(mouseline, detailBarY, 1, detailBarHeight);
+  } else {
+    _thisx = 10 + int(((mouseKeyTime-detailBarScroll) / detailBarZoom) * _realdWidth);
+    rect(_thisx, detailBarY, 1, detailBarHeight);
+  }
+  
   // draw keyframe diamonds
   fill(color3);
   noStroke();
   if (keyframes != null) {
     for (int i = 0; i < keyframes.size(); i++) {
       float _keyPos = keyframes.get(i).time;
-      if (_keyPos == headPos) {
+      if (_keyPos == mouseKeyTime) {
+        fill(color2);
+      } else if (_keyPos == headPos) {
         fill(color4);
       } else {
         fill(color3);
@@ -131,6 +216,31 @@ void drawDetailBar() {
     triangle(_thisx, _ticksY, _thisx-4, _ticksY+4, _thisx+4, _ticksY+4);
     rect(_thisx-4, _ticksY+4, 7.8, 5);
   }
+
+  // draw tooltip   
+  if (detailMousePos!=-1) {
+    float _showTime = mouseTime;
+    float _showX = mouseline; 
+    if (mouseKeyTime != -1) {
+      _showTime = mouseKeyTime;
+      _showX = 10 + int(((mouseKeyTime-detailBarScroll) / detailBarZoom) * _realdWidth);
+    } else {
+      
+    }
+    fill(color1);
+    stroke(color1b);  
+    strokeWeight(1.2);
+    rect(_showX - (64/2), detailBarY - 15 , 64, 18, 2);
+      
+    fill(color1b);
+    noStroke();
+    textFont(smallRobotoMono);
+    textAlign(CENTER);
+    text(formatTimeCode(_showTime),_showX,detailBarY-3);
+  }
+
+    
+      
 
 }
 
@@ -295,13 +405,24 @@ void updateMouseOver() {
     }
   }
   trackerMousePos = getTrackerMousePos();
-
+  detailMousePos = getDetailMousePos();
 }
 
 float getTrackerMousePos() {
   float ret;
   if (mouseY > trackerBarY && mouseY < trackerBarY + 18 + trackerLineThickness + 8) {
     ret = (mouseX - (trackerBarX + 10)) / (trackerBarWidth -20);
+    ret = constrain(ret, 0, 1);
+  } else {
+    ret = -1;
+  }
+  return ret;
+}
+
+float getDetailMousePos() {
+  float ret;
+  if (mouseY > detailBarY && mouseY < detailBarY + detailBarHeight) {
+    ret = ((mouseX - detailBarX) / detailBarWidth);
     ret = constrain(ret, 0, 1);
   } else {
     ret = -1;
@@ -328,6 +449,10 @@ void updateMouseClick() {
     } else {
       tButt.state = "";
     }
+  }
+  detailMousePos = getDetailMousePos();
+  if (detailMousePos != -1) {
+    detailBarClick();
   }
 }
 

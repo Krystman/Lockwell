@@ -44,6 +44,7 @@ float detailBarHeight = 30;
 float detailBarScroll = 0; // The timecode (in seconds) of the left edge of the detail bar
 float detailBarTScroll = 0; // The scroll target to scroll to. This is for scroll animation.
 float detailBarZoom = 40; // The length of the timeline (in seconds) displayed across the detail bar
+float detailMousePos;
 
 String moviePath = "";
 String vDataPath = "";
