@@ -10,8 +10,20 @@ Keyframe addKeyframe(int _type, float _time, int _value, int _side) {
   _tempKeyframe.value = _value;
   _tempKeyframe.side = _side;
   keyframes.add(_tempKeyframe);
+  dirty = true;
   
   return _tempKeyframe;
+}
+
+// This deletes a keyframe
+void clearKeyframe(int _type, float _time, int _side) {
+  Keyframe _tempFrame;
+  
+  _tempFrame = getKeyframeExact(_type, _time, _side);
+  if (_tempFrame != null) {
+    keyframes.remove(_tempFrame);
+    dirty = true;
+  }
 }
 
 // This gets a value of the last keyframe of a certain stat at any given time
@@ -33,6 +45,21 @@ Keyframe getKeyframe(int _type, float _time, int _side) {
     }
   }
   return _foundFrame;
+}
+
+// This gets a specific keyframe at a specific time, if it exists
+Keyframe getKeyframeExact(int _type, float _time, int _side) {
+  Keyframe _tempFrame = null;
+  
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      _tempFrame = keyframes.get(i);
+      if (_tempFrame.type == _type && _tempFrame.side == _side && _tempFrame.time == _time) {
+          return _tempFrame;
+      }
+    }
+  }
+  return null;
 }
 
 // This is what gets executed when you press a button to change the agenda points
@@ -93,6 +120,7 @@ void creditButt(int _side, int _d) {
     _newKeyframe = selFrameCreditRight;
   }
   _newKeyframe.value+=_d;
+  dirty = true;
 }
 
 // This returns ANY keyframe time before the current head position if possible

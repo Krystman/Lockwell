@@ -52,6 +52,8 @@ String UIMode = "LOAD";
 boolean moviePaused = false;
 boolean lastNoClick = true;
 
+boolean dirty; // indicates if changes have been made to video data
+
 PFont smallRobotoMono;
 PFont smallRoboto;
 PFont agendaRoboto;
@@ -60,7 +62,6 @@ PFont credRoboto;
 boolean keyShift = false;
 boolean keyAlt = false;
 boolean keyControl = false;
-
 
 Keyframe selFrameAgendaLeft;
 Keyframe selFrameAgendaRight;
@@ -182,6 +183,11 @@ void keyPressed() {
     } else {
       println("head not locked");     
     }
+    if (dirty) {
+      println("vData dirty");
+    } else {
+      println("vData clean");     
+    }
   }
   
   if (keyCode==32) {
@@ -235,6 +241,10 @@ void buttPause() {
       myMovie.play();
       myMovie.read();
       moviePaused = false;
+      if (dirty) {
+        dirty = false;
+        saveVData();
+      }
     } else {
       println("Pausing...");
       headLocked = false;

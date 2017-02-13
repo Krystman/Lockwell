@@ -5,6 +5,11 @@ Butt agendaButtR;
 Butt creditButtL;
 Butt creditButtR;
 
+Butt delAgendaButtL;
+Butt delAgendaButtR;
+Butt delCreditButtL;
+Butt delCreditButtR;
+
 Butt menuSave;
 Butt menuSaveClose;
 Butt menuExport;
@@ -79,9 +84,7 @@ void drawTrackerBar() {
 
 // This deals with a click on the Detail bar
 // Detail bar is a zoomed-in timeline above the tracker bar 
-void detailBarClick() {
-  int _thisx; 
-  
+void detailBarClick() {  
   float _realdWidth = detailBarWidth - 20; // adding padding to the edges;
   float mouseline = -20; // A mouse line is a selection line showing up one mouse over.
   float mouseTime = -1; // The timecode underneath the mouse
@@ -245,6 +248,8 @@ void drawDetailBar() {
 }
 
 void switchToEdit() {
+  Butt tempButt;
+  
   UIMode="EDIT";
   
   videoY = menuHeight;
@@ -262,26 +267,52 @@ void switchToEdit() {
   agendaButtL = new Butt("1",5,5 + videoY,40,48);
   agendaButtL.verb = "AGENDA";
   agendaButtL.noun = "L";
-  agendaButtL.style = "AGENDA";
+  agendaButtL.setStyle("AGENDA");
   butts.add(agendaButtL); 
   
   agendaButtR = new Butt("9",videoWidth-(40+5),5 + videoY,40,48);
   agendaButtR.verb = "AGENDA";
   agendaButtR.noun = "R";
-  agendaButtR.style = "AGENDA";
+  agendaButtR.setStyle("AGENDA");
   butts.add(agendaButtR);
   
   creditButtL = new Butt("55",5,agendaButtL.y + agendaButtL.h + 5,40,32);
   creditButtL.verb = "CREDIT";
   creditButtL.noun = "L";
-  creditButtL.style = "CREDIT";
+  creditButtL.setStyle("CREDIT");
   butts.add(creditButtL);
 
   creditButtR = new Butt("49",videoWidth-(40+5),agendaButtR.y + agendaButtR.h + 5,40,32);
   creditButtR.verb = "CREDIT";
   creditButtR.noun = "R";
-  creditButtR.style = "CREDIT";
+  creditButtR.setStyle("CREDIT");
   butts.add(creditButtR);
+  
+  // Buttons to delete Keyframes
+  delAgendaButtL = new Butt("",agendaButtL.x + agendaButtL.w + 3,agendaButtL.y,14,14);
+  delAgendaButtL.verb = "DELETE";
+  delAgendaButtL.noun = "LA";
+  delAgendaButtL.setStyle("KEYFRAME");
+  butts.add(delAgendaButtL);
+
+  delAgendaButtR = new Butt("",agendaButtR.x - 17,agendaButtR.y,14,14);
+  delAgendaButtR.verb = "DELETE";
+  delAgendaButtR.noun = "RA";
+  delAgendaButtR.setStyle("KEYFRAME");
+  butts.add(delAgendaButtR);
+  
+  delCreditButtL = new Butt("",creditButtL.x + creditButtL.w + 3,creditButtL.y,14,14);
+  delCreditButtL.verb = "DELETE";
+  delCreditButtL.noun = "LC";
+  delCreditButtL.setStyle("KEYFRAME");
+  butts.add(delCreditButtL);
+  
+  delCreditButtR = new Butt("",creditButtR.x - 17,creditButtR.y,14,14);
+  delCreditButtR.verb = "DELETE";
+  delCreditButtR.noun = "RC";
+  delCreditButtR.setStyle("KEYFRAME");
+  butts.add(delCreditButtR);
+  
   
   menuSave = new Butt("SAVE",24, menuY + 5 ,94,24);
   menuSave.verb = "SAVE";
@@ -313,7 +344,7 @@ void switchToLoad() {
   j = 0;
   for (int i = history.length-1; i >= 0; i--) {
     tButt = new Butt(history[i],24,64+25*j,512,24);
-    tButt.style = "LIST";
+    tButt.setStyle("LIST");
     tButt.verb = "LOAD";
     tButt.noun = history[i];
     butts.add(tButt);
@@ -327,7 +358,9 @@ void purgeButts() {
 
 void drawButts() {
   for (int i = 0; i < butts.size(); i++) {
-    butts.get(i).drawMe();
+    if (butts.get(i).visible) {
+      butts.get(i).drawMe();
+    }
   }
 }
 
@@ -370,23 +403,29 @@ void updateValues() {
   }
 }
 
-// Draws markers next to overlay buttons to indicate
+// Draws buttons next to overlay buttons to indicate
 // if you are currently on a keyframe
+// You can click the buttons to delete a keyframe
 void drawKeyframes() {
   fill(color5);
   noStroke();
   
+  delAgendaButtL.visible = false;
+  delAgendaButtR.visible = false;
+  delCreditButtL.visible = false;
+  delCreditButtR.visible = false;
+  
   if (selFrameAgendaLeft != null) {
-    ellipse(agendaButtL.x + agendaButtL.w + 10, agendaButtL.y+5, 10, 10); 
+    delAgendaButtL.visible = true; 
   }
   if (selFrameAgendaRight != null) {
-    ellipse(agendaButtR.x - 10, agendaButtR.y+5, 10, 10); 
+    delAgendaButtR.visible = true;  
   }
   if (selFrameCreditLeft != null) {
-    ellipse(creditButtL.x + creditButtL.w + 10, creditButtL.y+5, 10, 10);
+    delCreditButtL.visible = true;
   }
   if (selFrameCreditRight != null) {
-    ellipse(creditButtR.x - 10, creditButtR.y+5, 10, 10); 
+    delCreditButtR.visible = true;
   }
 }
 
@@ -394,7 +433,8 @@ void updateMouseOver() {
   Butt tButt;
   for (int i = 0; i < butts.size(); i++) {
     tButt = butts.get(i);
-    if (mouseX >= tButt.x &&
+    if (tButt.visible &&
+        mouseX >= tButt.x &&
         mouseX <= tButt.x+tButt.w &&
         mouseY >= tButt.y &&
         mouseY <= tButt.y+tButt.h) {
@@ -434,7 +474,8 @@ void updateMouseClick() {
   Butt tButt;
   for (int i = 0; i < butts.size(); i++) {
     tButt = butts.get(i);
-    if (mouseX >= tButt.x &&
+    if (tButt.visible &&
+        mouseX >= tButt.x &&
         mouseX <= tButt.x+tButt.w &&
         mouseY >= tButt.y &&
         mouseY <= tButt.y+tButt.h) {
@@ -502,6 +543,16 @@ void buttonCommandRight(String _verb, String _noun) {
       creditButt(LEFTPLAYER, -1);
     } else {
       creditButt(RIGHTPLAYER, -1);
+    }
+  } else if (_verb == "DELETE") {
+    if (_noun == "LA") {
+      clearKeyframe(KFAGENDAS, headPos, LEFTPLAYER);
+    } else if (_noun == "RA") {
+      clearKeyframe(KFAGENDAS, headPos, RIGHTPLAYER);
+    } else if (_noun == "LC") {
+      clearKeyframe(KFCREDITS, headPos, LEFTPLAYER);
+    } else if (_noun == "RC") {
+      clearKeyframe(KFCREDITS, headPos, RIGHTPLAYER);
     }
   }
 }

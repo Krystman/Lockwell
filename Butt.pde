@@ -9,12 +9,106 @@ class Butt {
   public String verb = "";
   public String noun = "";
   
+  public boolean visible = true;
+  
+  private color overFill;
+  private color overStroke;
+  private color overText;
+  
+  private color outFill;
+  private color outStroke;
+  private color outText;
+
+  private color clickFill;
+  private color clickStroke;
+  private color clickText;
+  
+  private PFont thisFont;
   Butt(String _t, float _x, float _y, float _w, float _h) {
     t = _t;
     x = _x;
     y = _y;
     w = _w;
-    h = _h;    
+    h = _h; 
+    setStyle("");
+  }
+  
+  void setStyle(String _style) {
+    if (_style == "LIST") {
+      style = "LIST";
+      thisFont = smallRoboto;
+      
+      overFill = color3;
+      overStroke = color3;
+      overText = color1;
+  
+      outFill = color1;
+      outStroke = color1;
+      outText = color4;
+
+      clickFill = color4;
+      clickStroke = color4;
+      clickText = color1;
+    } else if (_style == "AGENDA") {
+      style = "AGENDA";
+      thisFont = agendaRoboto;
+      
+      overFill = color5;
+      overStroke = -1;
+      overText = #000000;
+  
+      outFill = -1;
+      outStroke = -1;
+      outText = color5;
+
+      clickFill = color2;
+      clickStroke = -1;
+      clickText = #000000;
+    } else if (_style == "CREDIT") {
+      style = "CREDIT";
+      thisFont = credRoboto;
+      
+      overFill = color5;
+      overStroke = -1;
+      overText = #000000;
+  
+      outFill = -1;
+      outStroke = -1;
+      outText = color5;
+
+      clickFill = color2;
+      clickStroke = -1;
+      clickText = #000000;
+    } else if (_style == "KEYFRAME") {
+      style = "KEYFRAME";
+
+      overFill = color5;
+      overStroke = -1;
+      overText = #000000;
+  
+      outFill = -1;
+      outStroke = -1;
+      outText = color5;
+
+      clickFill = color2;
+      clickStroke = -1;
+      clickText = #000000;
+    } else {
+      style = "";
+      thisFont = smallRoboto;
+      
+      overFill = color2;
+      overStroke = color2;
+      overText = color1;
+  
+      outFill = color1;
+      outStroke = color2;
+      outText = color2;
+
+      clickFill = color5;
+      clickStroke = color5;
+      clickText = color1;
+    }
   }
   
   void update() {
@@ -25,71 +119,34 @@ class Butt {
     color textColor = color2;
     int yOffset = 0;
     
-    textFont(smallRoboto);
+    textFont(thisFont);
     strokeWeight(1.2);
-    
-    if (style == "LIST") {
-      if (state == "OVER") {
-        textColor = color1;
-        fill(color3);
-        stroke(color3);
-      } else if (state == "CLICK") {
-        textColor = color1;
-        fill(color4);
-        stroke(color4);
-        yOffset = 1;
-      } else {
-        textColor = color4;
-        fill(color1);
-        stroke(color1);     
+
+    if (state == "OVER") {
+      textColor = overText;
+      if (overFill == -1) { noFill(); } else {
+        fill(overFill);
       }
-    } else if (style == "AGENDA") {
-      textFont(agendaRoboto);
-      if (state == "OVER") {
-        textColor = #000000;
-        fill(color5);
-        noStroke();
-      } else if (state == "CLICK") {
-        textColor = #000000;
-        fill(color2);
-        noStroke();
-        yOffset = 1;
-      } else {
-        textColor = color5;
-        noFill();
-        noStroke();     
+      if (overStroke == -1) { noStroke(); } else {
+        stroke(overStroke);
       }
-    } else if (style == "CREDIT") {
-      textFont(credRoboto);
-      if (state == "OVER") {
-        textColor = #000000;
-        fill(color5);
-        noStroke();
-      } else if (state == "CLICK") {
-        textColor = #000000;
-        fill(color2);
-        noStroke();
-        yOffset = 1;
-      } else {
-        textColor = color5;
-        noFill();
-        noStroke();     
+    } else if (state == "CLICK") {
+      textColor = clickText;
+      if (clickFill == -1) { noFill(); } else {
+        fill(clickFill);
       }
+      if (clickStroke == -1) { noStroke(); } else {
+        stroke(clickStroke);
+      }
+      yOffset = 1;
     } else {
-      if (state == "OVER") {
-        textColor = color1;
-        fill(color2);
-        stroke(color2);
-      } else if (state == "CLICK") {
-        textColor = color1;
-        fill(color5);
-        stroke(color5);
-        yOffset = 1;
-      } else {
-        textColor = color2;
-        fill(color1);
-        stroke(color2);     
+      textColor = outText;
+      if (outFill == -1) { noFill(); } else {
+        fill(outFill);
       }
+      if (outStroke == -1) { noStroke(); } else {
+        stroke(outStroke);
+      }  
     }
     
     rect(x, y+yOffset, w, h, r);
@@ -106,6 +163,8 @@ class Butt {
     } else if (style == "CREDIT") {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+12+yOffset);
+    } else if (style == "KEYFRAME") {
+      ellipse(x+w/2, y+h/2, w-4, h-4);
     } else {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+5+yOffset);

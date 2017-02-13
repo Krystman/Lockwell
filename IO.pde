@@ -49,7 +49,6 @@ void loadMovie(String _f) {
   } else {
     println("vData is there!");
     loadVData();
-    saveVData();
   }
 }
 
@@ -164,6 +163,7 @@ void saveVData() {
   
   // Save a new XML file
   saveXML(_xml, vDataPath);
+  dirty = false;
 }
 
 void resetVData() {
