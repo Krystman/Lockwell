@@ -525,6 +525,8 @@ void buttonCommand(String _verb, String _noun) {
     }
   } else if (_verb == "SAVE") {
     saveVData();
+  } else if (_verb == "EXPORT") {
+    export();
   } else if (_verb == "SAVECLOSE") {
     saveVData();
     switchToLoad();

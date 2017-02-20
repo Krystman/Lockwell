@@ -31,3 +31,24 @@ public class Keyframe {
   public int side;
   public int type;
 }
+
+// This one is to hold library data when exporting to Final Cut XML
+public class Footage {
+  public int value;
+  public int side;
+  public String name;
+  public String path;
+  public String masterclip;
+  public String fileid;
+  
+  Footage clone() {
+    Footage tempF = new Footage();
+    tempF.value = this.value;
+    tempF.side = this.side;
+    tempF.name = this.name;
+    tempF.path = this.path;
+    tempF.masterclip = this.masterclip;
+    tempF.fileid = this.fileid;
+    return tempF;
+  }
+}

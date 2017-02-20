@@ -91,6 +91,7 @@ void setup() {
   
   loadHistory();
   switchToLoad();
+  
 }
 
 void setup360() {
