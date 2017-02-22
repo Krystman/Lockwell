@@ -2,9 +2,11 @@ ArrayList <Footage> agendaLib;
 ArrayList <Footage> creditLib;
 
 int idCounter;
+int idCounterSeq;
 
 void export() {
   idCounter = 1;
+  idCounterSeq = 1;
   
   buildAgendaLib();
   buildCreditLib();
@@ -18,8 +20,43 @@ void export() {
   _xmlChildren.addChild(exportLib(agendaLib,"Lockwell - Agendas"));
   _xmlChildren.addChild(exportLib(creditLib,"Lockwell - Credits"));
   
+  // Actually export Timeline
+  _xmlChildren.addChild(exportTimeline(keyframes, "Test Sequence"));
+  
   saveXML(_xml, "text.xml");
 }
+
+XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
+  XML _ret;
+  _ret = new XML("sequence");
+  _ret.setString("id", "sequence-" + idCounterSeq);
+  idCounterSeq++;
+  _ret.setString("MZ.WorkOutPoint", "15239249625600");
+  _ret.setString("MZ.WorkInPoint", "0");
+   
+  _ret.addChild("name").setContent(_name);
+  _ret.addChild("duration").setContent("0");
+  _ret.addChild(rateXML());
+  
+  XML _media = _ret.addChild("media");
+  XML _video = _media.addChild("video");
+  _video.addChild("format").addChild(sticsXML());
+  
+  XML _track = _video.addChild("track");
+  _track.setString("MZ.TrackName", "Test Track");
+  _track.addChild("enabled").setContent("TRUE");
+  _track.addChild("locked").setContent("FALSE");
+  
+  XML _audio = _media.addChild("audio");
+  XML _audioFormat = _audio.addChild("format");
+  XML _audioFormatChar = _audioFormat.addChild("samplecharacteristics");
+  _audioFormatChar.addChild("depth").setContent("16");
+  _audioFormatChar.addChild("samplerate").setContent("48000");
+  
+  return _ret;
+}
+
+
 
 XML exportLib(ArrayList <Footage> _lib, String _name) {
   XML _ret;
@@ -56,7 +93,11 @@ XML exportLib(ArrayList <Footage> _lib, String _name) {
     _file.addChild("name").setContent(_tempF.name);
     _file.addChild("pathurl").setContent(_tempF.path);
     _file.addChild(rateXML());
-    _file.addChild(mediaXML());
+    
+    XML _media2 = _file.addChild("media");
+    XML _video2 = _media2.addChild("video");
+    _video2.addChild("duration").setContent("18000");
+    _video2.addChild(sticsXML());
   }
   return _ret;
 }
@@ -68,19 +109,16 @@ XML rateXML() {
   return _ret;
 }
 
-XML mediaXML() {
-  XML _ret = new XML("media");
-  XML _video = _ret.addChild("video");
-  
-  _video.addChild("duration").setContent("18000");
-  XML _stics = _video.addChild("samplecharacteristics");
+XML sticsXML() {
+  XML _stics = new XML("samplecharacteristics");
   _stics.addChild(rateXML());
   _stics.addChild("width").setContent("1920");
   _stics.addChild("height").setContent("1080");
   _stics.addChild("anamorphic").setContent("FALSE");
   _stics.addChild("pixelaspectratio").setContent("square");
   _stics.addChild("fielddominance").setContent("none");
-  return _ret;
+  _stics.addChild("colordepth").setContent("24");
+  return _stics;
 }
 
 void buildAgendaLib() {
