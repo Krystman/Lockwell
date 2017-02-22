@@ -4809,6 +4809,17 @@
             <track MZ.TrackName="Test Track">
               <enabled>TRUE</enabled>
               <locked>FALSE</locked>
+              <clipitem>
+                <masterclipid>masterclip-1</masterclipid>
+                <name>left_0.png</name>
+                <enabled>TRUE</enabled>
+                <start>0</start>
+                <end>30</end>
+                <in>0</in>
+                <out>30</out>
+                <alphatype>straight</alphatype>
+                <file id="file-1"/>
+              </clipitem>
             </track>
           </video>
           <audio>

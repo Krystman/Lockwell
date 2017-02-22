@@ -4,6 +4,8 @@ ArrayList <Footage> creditLib;
 int idCounter;
 int idCounterSeq;
 
+long premiereFrame = 8475667200L; // Weird-ass Premiere unit. This is how long a single frame is when specificing Workspace In/Out. FML. 
+
 void export() {
   idCounter = 1;
   idCounterSeq = 1;
@@ -47,6 +49,17 @@ XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
   
+  XML _clipItem = _track.addChild("clipitem");
+  _clipItem.addChild("masterclipid").setContent("masterclip-1");
+  _clipItem.addChild("name").setContent("left_0.png");
+  _clipItem.addChild("enabled").setContent("TRUE");
+  _clipItem.addChild("start").setContent("0");
+  _clipItem.addChild("end").setContent("30");
+  _clipItem.addChild("in").setContent("0");
+  _clipItem.addChild("out").setContent("30");
+  _clipItem.addChild("alphatype").setContent("straight");
+  _clipItem.addChild("file").setString("id", "file-1");
+  
   XML _audio = _media.addChild("audio");
   XML _audioFormat = _audio.addChild("format");
   XML _audioFormatChar = _audioFormat.addChild("samplecharacteristics");
@@ -55,8 +68,6 @@ XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
   
   return _ret;
 }
-
-
 
 XML exportLib(ArrayList <Footage> _lib, String _name) {
   XML _ret;
