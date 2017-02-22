@@ -170,3 +170,48 @@ float getNextKeyframe() {
   }
   return _foundFrame.time; 
 }
+
+ArrayList <Keyframe> filterKeyframes(ArrayList <Keyframe> _kf, int _sideFilter, int _typeFilter) {
+  ArrayList <Keyframe> filtered = new ArrayList <Keyframe>();
+  Keyframe _tempFrame = null;
+  
+  if (_kf != null) {
+    for (int i = 0; i < _kf.size(); i++) {
+      _tempFrame = _kf.get(i);
+      if (_tempFrame.side == _sideFilter && _tempFrame.type == _typeFilter) {
+        filtered.add(_tempFrame);
+      }
+    }
+  }
+  return filtered;
+}
+
+void sortByTime(ArrayList <Keyframe> _kf) {
+  Keyframe _tempF1 = null;
+  Keyframe _tempF2 = null;
+  Boolean sorted;
+ 
+  // Lame-ass bubble sort.
+  if (_kf != null) {
+    for (int i = 0; i < _kf.size() - 1; i++) {
+      sorted = true;
+      for (int j = 1; j < _kf.size() - i; j++) {
+        _tempF1 = _kf.get(j-1);
+        _tempF2 = _kf.get(j);
+        if (_tempF1.time > _tempF2.time) {
+          sorted = false;
+          _kf.set(j-1, _tempF2);
+          _kf.set(j, _tempF1);
+        }
+      }
+      if (sorted) {
+        return;
+      }
+    }
+    
+    // Debug test. Pls ignore.
+    /*for (int i = 0; i < _kf.size(); i++) {
+      println(_kf.get(i).time); 
+    }*/
+  }
+}

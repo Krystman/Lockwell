@@ -44,21 +44,19 @@ XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
   XML _video = _media.addChild("video");
   _video.addChild("format").addChild(sticsXML());
   
-  XML _track = _video.addChild("track");
-  _track.setString("MZ.TrackName", "Test Track");
+  XML _track;
+  
+  _track = _video.addChild("track");
+  _track.setString("MZ.TrackName", "Credits L");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  
-  XML _clipItem = _track.addChild("clipitem");
-  _clipItem.addChild("masterclipid").setContent("masterclip-1");
-  _clipItem.addChild("name").setContent("left_0.png");
-  _clipItem.addChild("enabled").setContent("TRUE");
-  _clipItem.addChild("start").setContent("0");
-  _clipItem.addChild("end").setContent("30");
-  _clipItem.addChild("in").setContent("0");
-  _clipItem.addChild("out").setContent("30");
-  _clipItem.addChild("alphatype").setContent("straight");
-  _clipItem.addChild("file").setString("id", "file-1");
+  keyframesToClips(_track, _kf, LEFTPLAYER, KFCREDITS);
+
+  _track = _video.addChild("track");
+  _track.setString("MZ.TrackName", "Credits R");
+  _track.addChild("enabled").setContent("TRUE");
+  _track.addChild("locked").setContent("FALSE");
+  keyframesToClips(_track, _kf, RIGHTPLAYER, KFCREDITS);
   
   XML _audio = _media.addChild("audio");
   XML _audioFormat = _audio.addChild("format");
@@ -68,6 +66,73 @@ XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
   
   return _ret;
 }
+
+void keyframesToClips(XML _track, ArrayList <Keyframe> _kf, int _sideFilter, int _typeFilter) {
+  Keyframe _tempF1 = null;
+  Keyframe _tempF2 = null;
+  
+  int frameIn;
+  int frameOut;
+  int frameLength;
+  
+  Footage _footage;
+  
+  ArrayList <Footage> _lib;
+  
+  // Get a filtered Arraylist
+  ArrayList <Keyframe> _filtered = filterKeyframes(_kf, _sideFilter, _typeFilter);
+  println("Filtered " + _filtered.size() + " keyframes");  
+  // Sort by time
+  sortByTime(_filtered);
+  
+  if (_typeFilter == KFAGENDAS) {
+    _lib = agendaLib;
+  } else if (_typeFilter == KFCREDITS) {
+    _lib = creditLib;
+  } else {
+    println("Can't keyframesToClips. Unknown type Filter " + _typeFilter);
+    return;
+  }
+  
+  // TODO: Deal with the last frame somehow. :(
+  
+  if (_filtered != null) {
+    for (int i = 0; i < _filtered.size()-1; i++) {
+      _tempF1 = _filtered.get(i);
+      _tempF2 = _filtered.get(i+1);
+      frameIn = int(_tempF1.time * 29.97);
+      frameOut = int(_tempF2.time * 29.97);
+      if (frameIn != frameOut) {
+        frameLength = frameOut - frameIn;
+        _footage = null;
+        for (int j = 0; j < _lib.size() && _footage == null; j++) {
+          _footage = _lib.get(j);
+          if (_footage.value != _tempF1.value || _footage.side != _tempF1.side) {
+            _footage = null;
+          }
+        }
+        if (_footage == null) {
+          println("Problems in keyframesToClips. Can't find value " + _tempF1.value + " for type " + _typeFilter + " for side " + _tempF1.side);
+        } else {
+          XML _clipItem = _track.addChild("clipitem");
+          _clipItem.addChild("masterclipid").setContent(_footage.masterclipid);
+          _clipItem.addChild("name").setContent(_footage.name);
+          _clipItem.addChild("enabled").setContent("TRUE");
+          _clipItem.addChild("start").setContent("" + frameIn);
+          _clipItem.addChild("end").setContent("" + frameOut);
+          _clipItem.addChild("in").setContent("0");
+          _clipItem.addChild("out").setContent("" + frameLength);
+          _clipItem.addChild("alphatype").setContent("straight");
+          _clipItem.addChild("file").setString("id", _footage.fileid);          
+        }
+      }
+    }
+  }
+  // Iterate thoigh filtered Arraylist
+     // Plop in Clipitems
+     
+}
+
 
 XML exportLib(ArrayList <Footage> _lib, String _name) {
   XML _ret;
@@ -207,7 +272,7 @@ void buildCreditLib() {
     creditLib.add(tempFR);
   }
   
-  println("Generated " + agendaLib.size() + " CreditLib entries.");
+  println("Generated " + creditLib.size() + " CreditLib entries.");
 }
 
 String fillInNumbers(String _s, int _n) {

@@ -4806,19 +4806,155 @@
                 <colordepth>24</colordepth>
               </samplecharacteristics>
             </format>
-            <track MZ.TrackName="Test Track">
+            <track MZ.TrackName="Credits L">
               <enabled>TRUE</enabled>
               <locked>FALSE</locked>
               <clipitem>
-                <masterclipid>masterclip-1</masterclipid>
-                <name>left_0.png</name>
+                <masterclipid>masterclip-31</masterclipid>
+                <name>credL_05.png</name>
                 <enabled>TRUE</enabled>
                 <start>0</start>
-                <end>30</end>
+                <end>5544</end>
                 <in>0</in>
-                <out>30</out>
+                <out>5544</out>
                 <alphatype>straight</alphatype>
-                <file id="file-1"/>
+                <file id="file-31"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-29</masterclipid>
+                <name>credL_04.png</name>
+                <enabled>TRUE</enabled>
+                <start>5544</start>
+                <end>5581</end>
+                <in>0</in>
+                <out>37</out>
+                <alphatype>straight</alphatype>
+                <file id="file-29"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-31</masterclipid>
+                <name>credL_05.png</name>
+                <enabled>TRUE</enabled>
+                <start>5581</start>
+                <end>8759</end>
+                <in>0</in>
+                <out>3178</out>
+                <alphatype>straight</alphatype>
+                <file id="file-31"/>
+              </clipitem>
+            </track>
+            <track MZ.TrackName="Credits R">
+              <enabled>TRUE</enabled>
+              <locked>FALSE</locked>
+              <clipitem>
+                <masterclipid>masterclip-32</masterclipid>
+                <name>credR_05.png</name>
+                <enabled>TRUE</enabled>
+                <start>0</start>
+                <end>3598</end>
+                <in>0</in>
+                <out>3598</out>
+                <alphatype>straight</alphatype>
+                <file id="file-32"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-24</masterclipid>
+                <name>credR_01.png</name>
+                <enabled>TRUE</enabled>
+                <start>3598</start>
+                <end>4042</end>
+                <in>0</in>
+                <out>444</out>
+                <alphatype>straight</alphatype>
+                <file id="file-24"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-32</masterclipid>
+                <name>credR_05.png</name>
+                <enabled>TRUE</enabled>
+                <start>4042</start>
+                <end>4450</end>
+                <in>0</in>
+                <out>408</out>
+                <alphatype>straight</alphatype>
+                <file id="file-32"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-40</masterclipid>
+                <name>credR_09.png</name>
+                <enabled>TRUE</enabled>
+                <start>4450</start>
+                <end>4553</end>
+                <in>0</in>
+                <out>103</out>
+                <alphatype>straight</alphatype>
+                <file id="file-40"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-34</masterclipid>
+                <name>credR_06.png</name>
+                <enabled>TRUE</enabled>
+                <start>4553</start>
+                <end>5698</end>
+                <in>0</in>
+                <out>1145</out>
+                <alphatype>straight</alphatype>
+                <file id="file-34"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-38</masterclipid>
+                <name>credR_08.png</name>
+                <enabled>TRUE</enabled>
+                <start>5698</start>
+                <end>6017</end>
+                <in>0</in>
+                <out>319</out>
+                <alphatype>straight</alphatype>
+                <file id="file-38"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-46</masterclipid>
+                <name>credR_12.png</name>
+                <enabled>TRUE</enabled>
+                <start>6017</start>
+                <end>7739</end>
+                <in>0</in>
+                <out>1722</out>
+                <alphatype>straight</alphatype>
+                <file id="file-46"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-42</masterclipid>
+                <name>credR_10.png</name>
+                <enabled>TRUE</enabled>
+                <start>7739</start>
+                <end>7817</end>
+                <in>0</in>
+                <out>78</out>
+                <alphatype>straight</alphatype>
+                <file id="file-42"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-36</masterclipid>
+                <name>credR_07.png</name>
+                <enabled>TRUE</enabled>
+                <start>7817</start>
+                <end>9112</end>
+                <in>0</in>
+                <out>1295</out>
+                <alphatype>straight</alphatype>
+                <file id="file-36"/>
+              </clipitem>
+              <clipitem>
+                <masterclipid>masterclip-40</masterclipid>
+                <name>credR_09.png</name>
+                <enabled>TRUE</enabled>
+                <start>9112</start>
+                <end>9203</end>
+                <in>0</in>
+                <out>91</out>
+                <alphatype>straight</alphatype>
+                <file id="file-40"/>
               </clipitem>
             </track>
           </video>
