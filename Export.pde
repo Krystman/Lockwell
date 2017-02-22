@@ -7,6 +7,7 @@ void export() {
   idCounter = 1;
   
   buildAgendaLib();
+  buildCreditLib();
   
   XML _xml;
   _xml = new XML("xmeml");
@@ -14,7 +15,8 @@ void export() {
   XML _xmlProject = _xml.addChild("project");
   _xmlProject.addChild("name").setContent("Test Export");
   XML _xmlChildren = _xmlProject.addChild("children");
-  _xmlChildren.addChild(exportLib(agendaLib,"Lockwell_Agendas"));
+  _xmlChildren.addChild(exportLib(agendaLib,"Lockwell - Agendas"));
+  _xmlChildren.addChild(exportLib(creditLib,"Lockwell - Credits"));
   
   saveXML(_xml, "text.xml");
 }
@@ -115,10 +117,48 @@ void buildAgendaLib() {
     
     agendaLib.add(tempFL);
     agendaLib.add(tempFR);
-    println(fleL);
   }
   
-  println("Generated " + agendaLib.size() + " AgendaLib entries.");
+  //println("Generated " + agendaLib.size() + " AgendaLib entries.");
+}
+
+void buildCreditLib() {
+  String creditPath = "file://localhost/C%3a/netrunner/important%20stuff/credits/creditoverlays/";
+  String fileTemplateL = "credL_##.png";
+  String fileTemplateR = "credR_##.png";
+  int min = 0;
+  int max = 42;
+  
+  creditLib = new ArrayList<Footage>();
+  
+  for (int i=min; i <= max; i++) {
+    String fleL = fillInNumbers(fileTemplateL, i);
+    String fleR = fillInNumbers(fileTemplateR, i);
+    
+    Footage tempFL = new Footage();
+    tempFL.path = creditPath + fleL;
+    tempFL.name = fleL;
+    tempFL.value = i;
+    tempFL.side = LEFTPLAYER;
+    tempFL.clipitemid = "clipitem-" + idCounter;
+    tempFL.fileid = "file-" + idCounter;
+    tempFL.masterclipid = "masterclip-" + idCounter;
+    idCounter++;
+    
+    Footage tempFR = tempFL.clone();
+    tempFR.path = creditPath + fleR;
+    tempFR.name = fleR;
+    tempFR.side = RIGHTPLAYER;
+    tempFR.clipitemid = "clipitem-" + idCounter;
+    tempFR.fileid = "file-" + idCounter;
+    tempFR.masterclipid = "masterclip-" + idCounter;
+    idCounter++;
+    
+    creditLib.add(tempFL);
+    creditLib.add(tempFR);
+  }
+  
+  println("Generated " + agendaLib.size() + " CreditLib entries.");
 }
 
 String fillInNumbers(String _s, int _n) {
