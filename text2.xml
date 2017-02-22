@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xmeml>
+<xmeml version="4">
+	<project>
+		<name>minim_fcpxml</name>
+		<children>
+			<bin>
+				<name>graphics_agendas</name>
+				<children>
+					<clip id="masterclip-1" frameBlend="FALSE">
+						<masterclipid>masterclip-1</masterclipid>
+						<ismasterclip>TRUE</ismasterclip>
+						<duration>150</duration>
+						<rate>
+							<timebase>30</timebase>
+							<ntsc>TRUE</ntsc>
+						</rate>
+						<name>left_0.png</name>
+						<media>
+							<video>
+								<track>
+									<clipitem id="clipitem-1" frameBlend="FALSE">
+					<masterclipid>masterclip-1</masterclipid>
+                    <name>left_0.png</name>
+                    <file id="file-1">
+                      <name>left_0.png</name>
+                      <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_0.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+						<media>
+							<video>
+								<duration>18000</duration>
+								<samplecharacteristics>
+									<rate>
+										<timebase>30</timebase>
+										<ntsc>TRUE</ntsc>
+									</rate>
+									<width>1920</width>
+									<height>1080</height>
+									<anamorphic>FALSE</anamorphic>
+									<pixelaspectratio>square</pixelaspectratio>
+									<fielddominance>none</fielddominance>
+								</samplecharacteristics>
+							</video>
+						</media>				  			  
+                    </file>
+                  </clipitem>
+                </track>
+              </video>
+            </media>
+          </clip>
+        </children>
+      </bin>
+    </children>
+  </project>
+</xmeml>

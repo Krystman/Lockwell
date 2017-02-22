@@ -38,8 +38,9 @@ public class Footage {
   public int side;
   public String name;
   public String path;
-  public String masterclip;
+  public String masterclipid;
   public String fileid;
+  public String clipitemid;
   
   Footage clone() {
     Footage tempF = new Footage();
@@ -47,8 +48,9 @@ public class Footage {
     tempF.side = this.side;
     tempF.name = this.name;
     tempF.path = this.path;
-    tempF.masterclip = this.masterclip;
+    tempF.masterclipid = this.masterclipid;
     tempF.fileid = this.fileid;
+    tempF.clipitemid = this.clipitemid;
     return tempF;
   }
 }

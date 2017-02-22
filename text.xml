@@ -6,380 +6,880 @@
       <bin>
         <name>Lockwell_Agendas</name>
         <children>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-1">
+            <masterclipid>masterclip-1</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_0.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-1">
+                    <masterclipid>masterclip-1</masterclipid>
                     <name>left_0.png</name>
-                    <file>
+                    <file id="file-1">
                       <name>left_0.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_0.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-2">
+            <masterclipid>masterclip-2</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_0.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-2">
+                    <masterclipid>masterclip-2</masterclipid>
                     <name>right_0.png</name>
-                    <file>
+                    <file id="file-2">
                       <name>right_0.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_0.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-3">
+            <masterclipid>masterclip-3</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_1.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-3">
+                    <masterclipid>masterclip-3</masterclipid>
                     <name>left_1.png</name>
-                    <file>
+                    <file id="file-3">
                       <name>left_1.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_1.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-4">
+            <masterclipid>masterclip-4</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_1.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-4">
+                    <masterclipid>masterclip-4</masterclipid>
                     <name>right_1.png</name>
-                    <file>
+                    <file id="file-4">
                       <name>right_1.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_1.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-5">
+            <masterclipid>masterclip-5</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_2.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-5">
+                    <masterclipid>masterclip-5</masterclipid>
                     <name>left_2.png</name>
-                    <file>
+                    <file id="file-5">
                       <name>left_2.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_2.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-6">
+            <masterclipid>masterclip-6</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_2.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-6">
+                    <masterclipid>masterclip-6</masterclipid>
                     <name>right_2.png</name>
-                    <file>
+                    <file id="file-6">
                       <name>right_2.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_2.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-7">
+            <masterclipid>masterclip-7</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_3.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-7">
+                    <masterclipid>masterclip-7</masterclipid>
                     <name>left_3.png</name>
-                    <file>
+                    <file id="file-7">
                       <name>left_3.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_3.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-8">
+            <masterclipid>masterclip-8</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_3.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-8">
+                    <masterclipid>masterclip-8</masterclipid>
                     <name>right_3.png</name>
-                    <file>
+                    <file id="file-8">
                       <name>right_3.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_3.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-9">
+            <masterclipid>masterclip-9</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_4.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-9">
+                    <masterclipid>masterclip-9</masterclipid>
                     <name>left_4.png</name>
-                    <file>
+                    <file id="file-9">
                       <name>left_4.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_4.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-10">
+            <masterclipid>masterclip-10</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_4.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-10">
+                    <masterclipid>masterclip-10</masterclipid>
                     <name>right_4.png</name>
-                    <file>
+                    <file id="file-10">
                       <name>right_4.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_4.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-11">
+            <masterclipid>masterclip-11</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_5.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-11">
+                    <masterclipid>masterclip-11</masterclipid>
                     <name>left_5.png</name>
-                    <file>
+                    <file id="file-11">
                       <name>left_5.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_5.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-12">
+            <masterclipid>masterclip-12</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_5.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-12">
+                    <masterclipid>masterclip-12</masterclipid>
                     <name>right_5.png</name>
-                    <file>
+                    <file id="file-12">
                       <name>right_5.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_5.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-13">
+            <masterclipid>masterclip-13</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_6.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-13">
+                    <masterclipid>masterclip-13</masterclipid>
                     <name>left_6.png</name>
-                    <file>
+                    <file id="file-13">
                       <name>left_6.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_6.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-14">
+            <masterclipid>masterclip-14</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_6.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-14">
+                    <masterclipid>masterclip-14</masterclipid>
                     <name>right_6.png</name>
-                    <file>
+                    <file id="file-14">
                       <name>right_6.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_6.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-15">
+            <masterclipid>masterclip-15</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_7.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-15">
+                    <masterclipid>masterclip-15</masterclipid>
                     <name>left_7.png</name>
-                    <file>
+                    <file id="file-15">
                       <name>left_7.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_7.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-16">
+            <masterclipid>masterclip-16</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_7.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-16">
+                    <masterclipid>masterclip-16</masterclipid>
                     <name>right_7.png</name>
-                    <file>
+                    <file id="file-16">
                       <name>right_7.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_7.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-17">
+            <masterclipid>masterclip-17</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_8.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-17">
+                    <masterclipid>masterclip-17</masterclipid>
                     <name>left_8.png</name>
-                    <file>
+                    <file id="file-17">
                       <name>left_8.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_8.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-18">
+            <masterclipid>masterclip-18</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_8.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-18">
+                    <masterclipid>masterclip-18</masterclipid>
                     <name>right_8.png</name>
-                    <file>
+                    <file id="file-18">
                       <name>right_8.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_8.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-19">
+            <masterclipid>masterclip-19</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>left_9.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-19">
+                    <masterclipid>masterclip-19</masterclipid>
                     <name>left_9.png</name>
-                    <file>
+                    <file id="file-19">
                       <name>left_9.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/left_9.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>
               </video>
             </media>
           </clip>
-          <clip>
-            <masterclipid/>
+          <clip frameBlend="FALSE" id="masterclip-20">
+            <masterclipid>masterclip-20</masterclipid>
             <ismasterclip>TRUE</ismasterclip>
-            <duration>144</duration>
+            <duration>150</duration>
+            <rate>
+              <timebase>30</timebase>
+              <ntsc>TRUE</ntsc>
+            </rate>
             <name>right_9.png</name>
             <media>
               <video>
                 <track>
-                  <clipitem>
+                  <clipitem frameBlend="FALSE" id="clipitem-20">
+                    <masterclipid>masterclip-20</masterclipid>
                     <name>right_9.png</name>
-                    <file>
+                    <file id="file-20">
                       <name>right_9.png</name>
                       <pathurl>file://localhost/C%3a/netrunner/important%20stuff/overlays2/right_9.png</pathurl>
+                      <rate>
+                        <timebase>30</timebase>
+                        <ntsc>TRUE</ntsc>
+                      </rate>
+                      <media>
+                        <video>
+                          <duration>18000</duration>
+                          <samplecharacteristics>
+                            <rate>
+                              <timebase>30</timebase>
+                              <ntsc>TRUE</ntsc>
+                            </rate>
+                            <width>1920</width>
+                            <height>1080</height>
+                            <anamorphic>FALSE</anamorphic>
+                            <pixelaspectratio>square</pixelaspectratio>
+                            <fielddominance>none</fielddominance>
+                          </samplecharacteristics>
+                        </video>
+                      </media>
                     </file>
                   </clipitem>
                 </track>

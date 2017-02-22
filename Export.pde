@@ -1,6 +1,11 @@
 ArrayList <Footage> agendaLib;
 ArrayList <Footage> creditLib;
+
+int idCounter;
+
 void export() {
+  idCounter = 1;
+  
   buildAgendaLib();
   
   XML _xml;
@@ -26,29 +31,53 @@ XML exportLib(ArrayList <Footage> _lib, String _name) {
     // clip ID
     // frameblend
     // uuid
-    _tempX.addChild("masterclipid").setContent(_tempF.masterclip);
+    _tempX.setString("id", _tempF.masterclipid);
+    _tempX.setString("frameBlend", "FALSE");
+    _tempX.addChild("masterclipid").setContent(_tempF.masterclipid);
     _tempX.addChild("ismasterclip").setContent("TRUE");
-    _tempX.addChild("duration").setContent("144");
+    _tempX.addChild("duration").setContent("150");
+    _tempX.addChild(rateXML());
     _tempX.addChild("name").setContent(_tempF.name);
-    _tempX.addChild(footageToMediaXML(_tempF));
     
+    XML _tempM = _tempX.addChild("media");
+    XML _video = _tempM.addChild("video");
+    XML _track = _video.addChild("track");
+    
+    XML _clip = _track.addChild("clipitem");
+    _clip.setString("id", _tempF.clipitemid);
+    _clip.setString("frameBlend", "FALSE");
+    _clip.addChild("masterclipid").setContent(_tempF.masterclipid);
+    _clip.addChild("name").setContent(_tempF.name);
+    
+    XML _file = _clip.addChild("file"); 
+    _file.setString("id", _tempF.fileid);
+    _file.addChild("name").setContent(_tempF.name);
+    _file.addChild("pathurl").setContent(_tempF.path);
+    _file.addChild(rateXML());
+    _file.addChild(mediaXML());
   }
   return _ret;
 }
 
-XML footageToMediaXML(Footage _f) {
+XML rateXML() {
+  XML _ret = new XML("rate");
+  _ret.addChild("timebase").setContent("30");
+  _ret.addChild("ntsc").setContent("TRUE"); 
+  return _ret;
+}
+
+XML mediaXML() {
   XML _ret = new XML("media");
   XML _video = _ret.addChild("video");
-  XML _track = _video.addChild("track");
-  XML _clip = _track.addChild("clipitem");
   
-  _clip.addChild("name").setContent(_f.name);
-  
-  XML _file = _clip.addChild("file");
-  
-  _file.addChild("name").setContent(_f.name);
-  _file.addChild("pathurl").setContent(_f.path);
-  
+  _video.addChild("duration").setContent("18000");
+  XML _stics = _video.addChild("samplecharacteristics");
+  _stics.addChild(rateXML());
+  _stics.addChild("width").setContent("1920");
+  _stics.addChild("height").setContent("1080");
+  _stics.addChild("anamorphic").setContent("FALSE");
+  _stics.addChild("pixelaspectratio").setContent("square");
+  _stics.addChild("fielddominance").setContent("none");
   return _ret;
 }
 
@@ -70,11 +99,19 @@ void buildAgendaLib() {
     tempFL.name = fleL;
     tempFL.value = i;
     tempFL.side = LEFTPLAYER;
+    tempFL.clipitemid = "clipitem-" + idCounter;
+    tempFL.fileid = "file-" + idCounter;
+    tempFL.masterclipid = "masterclip-" + idCounter;
+    idCounter++;
     
     Footage tempFR = tempFL.clone();
     tempFR.path = agendaPath + fleR;
     tempFR.name = fleR;
     tempFR.side = RIGHTPLAYER;
+    tempFR.clipitemid = "clipitem-" + idCounter;
+    tempFR.fileid = "file-" + idCounter;
+    tempFR.masterclipid = "masterclip-" + idCounter;
+    idCounter++;
     
     agendaLib.add(tempFL);
     agendaLib.add(tempFR);
