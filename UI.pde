@@ -509,7 +509,8 @@ void buttonCommand(String _verb, String _noun) {
     if (_noun == "") {
       selectInput("Select a video to load:", "fileSelected");
     } else {
-      loadMovie(_noun);
+      videoCon = new VideoContainer();
+      loadMovie(_noun, videoCon);
     }
   } else if (_verb == "AGENDA") {
     if (_noun == "L") {

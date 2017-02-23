@@ -18,14 +18,30 @@ boolean fileExists(String path) {
   return file.exists();
 }
 
-void loadMovie(String _f) {
+void loadMovie(String _f, VideoContainer _vCon) {
   // Load a Movie
+
+  File _thisFile = new File(_f);
+  
   
   println("Loading movie " + _f);
-  if (!fileExists(_f)) {
+  /*if (!fileExists(_f)) {
     println("File Not Found");
     return;
+  }*/
+  if (!_thisFile.exists()) {
+    println(_f + " file not found");
+    return;
   }
+  if (!_thisFile.canRead()) {
+    println("Cannot read " +_f);
+    return;
+  }
+  if (!_thisFile.isFile()) {
+    println(_f + " is not a file");
+    return;
+  }
+   
   moviePath = _f;
   myMovie = new Movie(this, _f);
   moviePaused = true;
@@ -35,7 +51,12 @@ void loadMovie(String _f) {
   myMovie.jump(0);
   switchToEdit();
   logHistory(_f);
-  
+
+  _vCon.keyframes = null;
+  _vCon.duration = myMovie.duration();
+  _vCon.file = _thisFile.getName();
+  _vCon.path = pathComponent(_thisFile.getAbsolutePath()) + File.separator;
+
   // Load XML of Video Data
   
   // Derive Video Data filename from Movie Path
@@ -50,6 +71,7 @@ void loadMovie(String _f) {
     println("vData is there!");
     loadVData();
   }
+  _vCon.keyframes = keyframes;
 }
 
 void logHistory(String _f) {
@@ -85,7 +107,8 @@ void fileSelected(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
   } else {
-    loadMovie(selection.getAbsolutePath());
+    videoCon = new VideoContainer();
+    loadMovie(selection.getAbsolutePath(), videoCon);
   }
 }
 
@@ -140,10 +163,19 @@ void saveVData() {
   
   // ------ Save Settings -------
   // Save last head position
+  if (videoCon != null) {
+    _settingsNode.addChild("duration").setFloatContent(videoCon.duration);
+    _settingsNode.addChild("file").setContent(videoCon.file);
+    _settingsNode.addChild("path").setContent(videoCon.path);
+  } else if (myMovie != null) {
+    _settingsNode.addChild("duration").setFloatContent(myMovie.duration());
+  }
   _settingsNode.addChild("lastheadpos").setFloatContent(headPos);
-
+  _settingsNode.addChild("lastheadpos").setFloatContent(headPos);
+  
   // ------ Save Keyframes -------
   // Loop through Keyframes
+  
   for (int i = 0; i < keyframes.size(); i++) {
     _temp = null;
     _tempKeyframe = keyframes.get(i);
@@ -177,4 +209,9 @@ void resetVData() {
   
   addKeyframe(KFAGENDAS, 0.0, 0, LEFTPLAYER);
   addKeyframe(KFAGENDAS, 0.0, 0, RIGHTPLAYER);
+}
+
+public String pathComponent(String filename) {
+  int i = filename.lastIndexOf(File.separator);
+  return (i > -1) ? filename.substring(0, i) : filename;
 }

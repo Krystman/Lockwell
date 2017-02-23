@@ -1,6 +1,6 @@
 import processing.video.*;
 
-//Define color palette
+// Define color palette
 final color color1 = #121212; // Dark BG
 final color color1b = #a0a0a0; // Neutral text / foreground elements
 final color color1c = #181818; // Slightly brighter BG
@@ -11,9 +11,14 @@ final color color3 = #1098F7; // Blue
 final color color4 = #AEC5EB; // Pale Blue
 final color color5 = #EEEBD3; // Pale Yellow
 
-//Side Definitions
+// Side definitions
 final int LEFTPLAYER = 1;
 final int RIGHTPLAYER = 2;
+
+// Keyframe type definitions
+final int KFAGENDAS = 1;
+final int KFCREDITS = 2;
+final int KFNOTE = 3;
 
 Movie myMovie;
 final float imageratio = 1920.0/1080.0;
@@ -71,6 +76,7 @@ Keyframe selFrameCreditRight;
 ArrayList <Butt> butts;
 
 ArrayList <Keyframe> keyframes;
+VideoContainer videoCon;
 
 Float headPos;
 boolean headLocked = false;

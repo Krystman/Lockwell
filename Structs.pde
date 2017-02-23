@@ -22,17 +22,25 @@ public class AgendaEvent {
 // To store information about the change of various
 // stats (credits, agendas, etc...)
 
-final int KFAGENDAS = 1;
-final int KFCREDITS = 2;
-
 public class Keyframe {
   public float time;
   public int value;
+  public String stingValue;
   public int side;
   public int type;
 }
 
+// This is to old video information so that multiple videos can be loaded
+// The implementation of this is WIP at this point
+public class VideoContainer {
+  public String file;
+  public String path;
+  public float duration;
+  public ArrayList <Keyframe> keyframes;
+}
+
 // This one is to hold library data when exporting to Final Cut XML
+
 public class Footage {
   public int value;
   public int side;

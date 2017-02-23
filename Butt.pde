@@ -102,8 +102,8 @@ class Butt {
       overText = color1;
   
       outFill = color1;
-      outStroke = color2;
-      outText = color2;
+      outStroke = color1b;
+      outText = color1b;
 
       clickFill = color5;
       clickStroke = color5;

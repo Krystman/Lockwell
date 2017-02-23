@@ -23,12 +23,16 @@ void export() {
   _xmlChildren.addChild(exportLib(creditLib,"Lockwell - Credits"));
   
   // Actually export Timeline
-  _xmlChildren.addChild(exportTimeline(keyframes, "Test Sequence"));
+  if (videoCon == null) {
+    println("No videoCon!");
+  } else {
+    _xmlChildren.addChild(exportTimeline(videoCon, "Test Sequence"));
+  }
   
   saveXML(_xml, "text.xml");
 }
 
-XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
+XML exportTimeline(VideoContainer _vCon, String _name) {
   XML _ret;
   _ret = new XML("sequence");
   _ret.setString("id", "sequence-" + idCounterSeq);
@@ -45,18 +49,35 @@ XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
   _video.addChild("format").addChild(sticsXML());
   
   XML _track;
-  
+
   _track = _video.addChild("track");
-  _track.setString("MZ.TrackName", "Credits L");
+  _track.setString("MZ.TrackName", "Video");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _kf, LEFTPLAYER, KFCREDITS);
 
   _track = _video.addChild("track");
   _track.setString("MZ.TrackName", "Credits R");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _kf, RIGHTPLAYER, KFCREDITS);
+  keyframesToClips(_track, _vCon, RIGHTPLAYER, KFCREDITS);
+  
+  _track = _video.addChild("track");
+  _track.setString("MZ.TrackName", "Credits L");
+  _track.addChild("enabled").setContent("TRUE");
+  _track.addChild("locked").setContent("FALSE");
+  keyframesToClips(_track, _vCon, LEFTPLAYER, KFCREDITS);
+  
+  _track = _video.addChild("track");
+  _track.setString("MZ.TrackName", "Agendas R");
+  _track.addChild("enabled").setContent("TRUE");
+  _track.addChild("locked").setContent("FALSE");
+  keyframesToClips(_track, _vCon, RIGHTPLAYER, KFAGENDAS);
+  
+  _track = _video.addChild("track");
+  _track.setString("MZ.TrackName", "Agendas L");
+  _track.addChild("enabled").setContent("TRUE");
+  _track.addChild("locked").setContent("FALSE");
+  keyframesToClips(_track, _vCon, LEFTPLAYER, KFAGENDAS);
   
   XML _audio = _media.addChild("audio");
   XML _audioFormat = _audio.addChild("format");
@@ -67,7 +88,7 @@ XML exportTimeline(ArrayList <Keyframe> _kf, String _name) {
   return _ret;
 }
 
-void keyframesToClips(XML _track, ArrayList <Keyframe> _kf, int _sideFilter, int _typeFilter) {
+void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _typeFilter) {
   Keyframe _tempF1 = null;
   Keyframe _tempF2 = null;
   
@@ -77,6 +98,7 @@ void keyframesToClips(XML _track, ArrayList <Keyframe> _kf, int _sideFilter, int
   
   Footage _footage;
   
+  ArrayList <Keyframe> _kf = _vCon.keyframes;
   ArrayList <Footage> _lib;
   
   // Get a filtered Arraylist
@@ -94,9 +116,16 @@ void keyframesToClips(XML _track, ArrayList <Keyframe> _kf, int _sideFilter, int
     return;
   }
   
-  // TODO: Deal with the last frame somehow. :(
-  
   if (_filtered != null) {
+    
+    // Add an empty terminator keyframe to calulate length of the last segment
+    Keyframe _tkf = new Keyframe();
+    _tkf.time = _vCon.duration;
+    _tkf.type = _typeFilter;
+    _tkf.side = _sideFilter;
+    _tkf.value = 0;
+    _filtered.add(_tkf);
+    
     for (int i = 0; i < _filtered.size()-1; i++) {
       _tempF1 = _filtered.get(i);
       _tempF2 = _filtered.get(i+1);
@@ -127,10 +156,7 @@ void keyframesToClips(XML _track, ArrayList <Keyframe> _kf, int _sideFilter, int
         }
       }
     }
-  }
-  // Iterate thoigh filtered Arraylist
-     // Plop in Clipitems
-     
+  }     
 }
 
 
