@@ -491,23 +491,30 @@ void updateMouseClick() {
       tButt.state = "";
     }
   }
-  detailMousePos = getDetailMousePos();
-  if (detailMousePos != -1) {
-    detailBarClick();
+  
+  if (UIMode=="EDIT") {
+    detailMousePos = getDetailMousePos();
+    if (detailMousePos != -1) {
+      detailBarClick();
+    }
   }
 }
 
 void updateMousePressed() {
-  trackerMousePos = getTrackerMousePos();
-  if (trackerMousePos != -1) {
-    setHeadPercent(trackerMousePos);
+  if (UIMode=="EDIT") {
+    trackerMousePos = getTrackerMousePos();
+    if (trackerMousePos != -1) {
+      setHeadPercent(trackerMousePos);
+    }
   }
 }
 
 void buttonCommand(String _verb, String _noun) {
   if (_verb == "LOAD") {
     if (_noun == "") {
+      dialogMouseLockout = true;
       selectInput("Select a video to load:", "fileSelected");
+      lastNoClick = true;
     } else {
       videoCon = new VideoContainer();
       loadMovie(_noun, videoCon);
@@ -527,7 +534,9 @@ void buttonCommand(String _verb, String _noun) {
   } else if (_verb == "SAVE") {
     saveVData();
   } else if (_verb == "EXPORT") {
-    export();
+    dialogMouseLockout = true;
+    selectOutput("Export as Final Cut XML:", "fileSelectedExport");
+    lastNoClick = true;
   } else if (_verb == "SAVECLOSE") {
     saveVData();
     switchToLoad();

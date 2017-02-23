@@ -60,7 +60,7 @@ void loadMovie(String _f, VideoContainer _vCon) {
   // Load XML of Video Data
   
   // Derive Video Data filename from Movie Path
-  vDataPath = moviePath.substring(0, moviePath.lastIndexOf('.')) + ".xml";
+  vDataPath = moviePath.substring(0, moviePath.lastIndexOf('.')) + ".lockwell";
 
   // Check if XML for Video Data already exists
   if (!fileExists(vDataPath)) {
@@ -110,6 +110,9 @@ void fileSelected(File selection) {
     videoCon = new VideoContainer();
     loadMovie(selection.getAbsolutePath(), videoCon);
   }
+  frame.requestFocus();
+  lastNoClick = true;
+  mousePressed = false;
 }
 
 void loadVData() { 
@@ -170,7 +173,6 @@ void saveVData() {
   } else if (myMovie != null) {
     _settingsNode.addChild("duration").setFloatContent(myMovie.duration());
   }
-  _settingsNode.addChild("lastheadpos").setFloatContent(headPos);
   _settingsNode.addChild("lastheadpos").setFloatContent(headPos);
   
   // ------ Save Keyframes -------

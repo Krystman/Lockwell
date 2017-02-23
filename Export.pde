@@ -6,7 +6,9 @@ int idCounterSeq;
 
 long premiereFrame = 8475667200L; // Weird-ass Premiere unit. This is how long a single frame is when specificing Workspace In/Out. FML. 
 
-void export() {
+void export(String _path) {
+  println("Exporting to " + _path);
+  
   idCounter = 1;
   idCounterSeq = 1;
   
@@ -29,7 +31,7 @@ void export() {
     _xmlChildren.addChild(exportTimeline(videoCon, "Test Sequence"));
   }
   
-  saveXML(_xml, "text.xml");
+  saveXML(_xml, _path);
 }
 
 XML exportTimeline(VideoContainer _vCon, String _name) {
@@ -310,4 +312,13 @@ String fillInNumbers(String _s, int _n) {
   ret = ret.replaceAll("#", snlN);
   
   return ret;
+}
+
+void fileSelectedExport(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    export(selection.getAbsolutePath());
+  }
+  frame.requestFocus();
 }

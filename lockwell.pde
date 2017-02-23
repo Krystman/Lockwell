@@ -56,6 +56,7 @@ String vDataPath = "";
 String UIMode = "LOAD";
 boolean moviePaused = false;
 boolean lastNoClick = true;
+boolean dialogMouseLockout = false; // Little hack because mouse kept registering as clicked after selectInput
 
 boolean dirty; // indicates if changes have been made to video data
 
@@ -166,7 +167,11 @@ void draw() {
 
 void update() {
   // Update stuff every frame
-  if (mousePressed) {
+  if (mousePressed == false) {
+    dialogMouseLockout = false;
+  }
+  
+  if (mousePressed && !dialogMouseLockout) {
     // LMB
     if (lastNoClick) {
       updateMouseClick();
@@ -177,6 +182,7 @@ void update() {
     updateMouseOver();
     lastNoClick = true;
   }
+
 }
 
 void keyPressed() {
