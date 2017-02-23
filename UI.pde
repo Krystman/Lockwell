@@ -5,10 +5,13 @@ Butt agendaButtR;
 Butt creditButtL;
 Butt creditButtR;
 
+Butt commentButt;
+
 Butt delAgendaButtL;
 Butt delAgendaButtR;
 Butt delCreditButtL;
 Butt delCreditButtR;
+Butt delCommentButt;
 
 Butt menuSave;
 Butt menuSaveClose;
@@ -248,8 +251,7 @@ void drawDetailBar() {
 }
 
 void switchToEdit() {
-  Butt tempButt;
-  
+
   UIMode="EDIT";
   
   videoY = menuHeight;
@@ -288,6 +290,13 @@ void switchToEdit() {
   creditButtR.setStyle("CREDIT");
   butts.add(creditButtR);
   
+  commentButt = new Butt("(note)",(videoWidth / 2) - 300, videoY + videoHeight - 37,600,32);
+  commentButt.verb = "COMMENT";
+  commentButt.setStyle("COMMENT");
+  commentButt.w = int(stringButtSize(commentButt.t)+20);
+  commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
+  butts.add(commentButt);
+  
   // Buttons to delete Keyframes
   delAgendaButtL = new Butt("",agendaButtL.x + agendaButtL.w + 3,agendaButtL.y,14,14);
   delAgendaButtL.verb = "DELETE";
@@ -312,7 +321,12 @@ void switchToEdit() {
   delCreditButtR.noun = "RC";
   delCreditButtR.setStyle("KEYFRAME");
   butts.add(delCreditButtR);
-  
+
+  delCommentButt = new Butt("",commentButt.x - 17,commentButt.y,14,14);
+  delCommentButt.verb = "DELETE";
+  delCommentButt.noun = "COMMENT";
+  delCommentButt.setStyle("KEYFRAME");
+  butts.add(delCommentButt);
   
   menuSave = new Butt("SAVE",24, menuY + 5 ,94,24);
   menuSave.verb = "SAVE";
@@ -400,6 +414,35 @@ void updateValues() {
   agendaButtR.t = _s;
   if (tempFrame != null && tempFrame.time == headPos) {
     selFrameAgendaRight = tempFrame;
+  }
+  
+  tempFrame = getKeyframe(KFCOMMENTS, headPos, LEFTPLAYER);
+  if (tempFrame != null && tempFrame.time < (headPos - 1.0f)) {
+    tempFrame = null;
+  }
+  if (selFrameComment != tempFrame) {
+    if (tempFrame == null) {
+      commentButt.t = "(note)";
+      commentButt.w = int(stringButtSize(commentButt.t)+20);
+      commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
+      delCommentButt.x = commentButt.x - 17;
+    } else {
+      commentButt.t = trimStringToSize(tempFrame.stingValue, 600);
+      commentButt.w = int(stringButtSize(commentButt.t)+20);
+      commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
+      delCommentButt.x = commentButt.x - 17;
+    }
+    selFrameComment = tempFrame;
+  }
+  if (!moviePaused && selFrameComment == null) {
+    commentButt.visible = false;
+  } else {
+    commentButt.visible = true;
+  }
+  if (selFrameComment == null) {
+    delCommentButt.visible = false;
+  } else {
+    delCommentButt.visible = true;
   }
 }
 
@@ -589,4 +632,23 @@ String formatDoubleDigits(int _n) {
   } else {
     return "" + _n;
   }
+}
+
+float stringButtSize(String _s) {
+  textFont(commentRoboto);
+  return textWidth(_s);
+}
+
+String trimStringToSize(String _s, int _maxw) {
+  String _ret = _s;
+  textFont(commentRoboto);
+  if (textWidth(_ret) > _maxw) {
+    for (int i=1; i < _s.length(); i++) {
+      _ret = _s.substring(0, _s.length()-i) + "...";
+      if (textWidth(_ret) <= _maxw) {
+        return _ret;
+      }
+    }
+  }
+  return _ret;
 }

@@ -126,27 +126,43 @@ void loadVData() {
   XML _settingsNode = _xml.getChild("settings");
   XML _creditsNode = _xml.getChild("credits");
   XML _agendasNode = _xml.getChild("agendas");
-
+  XML _commentsNode = _xml.getChild("comments");
+  
   // ------ Load Settings -------
   // Set last head position
   setHead(_settingsNode.getChild("lastheadpos").getFloatContent());
 
   // ------ Load Credit Keyframes -------
   // Get all credit keyframes
-  XML[] _credits = _creditsNode.getChildren("credit");
-  
-  // Fill Keyframe array with credit keyframes
-  for (int i = 0; i < _credits.length; i++) {
-    addKeyframe(KFCREDITS, _credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"));
+  if (_creditsNode != null) {
+    XML[] _credits = _creditsNode.getChildren("credit");
+    
+    // Fill Keyframe array with credit keyframes
+    for (int i = 0; i < _credits.length; i++) {
+      addKeyframe(KFCREDITS, _credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"), "");
+    }
   }
   
   // ------ Load Agenda Events -------
   // Get all agenda events
-  XML[] _agendas = _agendasNode.getChildren("agenda");
+  if (_agendasNode != null) {
+    XML[] _agendas = _agendasNode.getChildren("agenda");
+    
+    // Fill Keyframe array with agenda keyframes
+    for (int i = 0; i < _agendas.length; i++) {
+      addKeyframe(KFAGENDAS, _agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"), "");
+    }
+  }
   
-  // Fill Keyframe array with agenda keyframes
-  for (int i = 0; i < _agendas.length; i++) {
-    addKeyframe(KFAGENDAS, _agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"));
+  // ------ Load Comment Events -------
+  // Get all agenda events
+  if (_commentsNode != null) {
+    XML[] _comments = _commentsNode.getChildren("comment");
+    
+    // Fill Keyframe array with comment keyframes
+    for (int i = 0; i < _comments.length; i++) {
+      addKeyframe(KFCOMMENTS, _comments[i].getFloat("t"), 0, LEFTPLAYER, _comments[i].getContent());
+    }
   }
   
   println("Loaded " + keyframes.size() + " Keyframes");
@@ -163,6 +179,7 @@ void saveVData() {
   XML _settingsNode = _xml.addChild("settings");
   XML _creditsNode = _xml.addChild("credits");
   XML _agendasNode = _xml.addChild("agendas");
+  XML _commentsNode = _xml.addChild("comments");
   
   // ------ Save Settings -------
   // Save last head position
@@ -185,13 +202,19 @@ void saveVData() {
       _temp = _creditsNode.addChild("credit");
     } else if (_tempKeyframe.type == KFAGENDAS) {
       _temp = _agendasNode.addChild("agenda");
+    } else if (_tempKeyframe.type == KFCOMMENTS) {
+      _temp = _commentsNode.addChild("comment");
     } else {
       println("Unknown keyframe type " + _tempKeyframe.type + "!!");
     }  
     if (_temp != null) {
-      _temp.setIntContent(_tempKeyframe.value);
       _temp.setFloat("t", _tempKeyframe.time);
-      _temp.setInt("side", _tempKeyframe.side);
+      if (_tempKeyframe.type == KFCOMMENTS) {
+        _temp.setContent(_tempKeyframe.stingValue);
+      } else {
+        _temp.setIntContent(_tempKeyframe.value);
+        _temp.setInt("side", _tempKeyframe.side);
+      }
     }
   }
   
@@ -206,11 +229,11 @@ void resetVData() {
   keyframes = new ArrayList<Keyframe>();
   
   // Add starting values
-  addKeyframe(KFCREDITS, 0.0, 5, LEFTPLAYER);
-  addKeyframe(KFCREDITS, 0.0, 5, RIGHTPLAYER);
+  addKeyframe(KFCREDITS, 0.0, 5, LEFTPLAYER, "");
+  addKeyframe(KFCREDITS, 0.0, 5, RIGHTPLAYER, "");
   
-  addKeyframe(KFAGENDAS, 0.0, 0, LEFTPLAYER);
-  addKeyframe(KFAGENDAS, 0.0, 0, RIGHTPLAYER);
+  addKeyframe(KFAGENDAS, 0.0, 0, LEFTPLAYER, "");
+  addKeyframe(KFAGENDAS, 0.0, 0, RIGHTPLAYER, "");
 }
 
 public String pathComponent(String filename) {

@@ -18,7 +18,7 @@ final int RIGHTPLAYER = 2;
 // Keyframe type definitions
 final int KFAGENDAS = 1;
 final int KFCREDITS = 2;
-final int KFNOTE = 3;
+final int KFCOMMENTS = 3;
 
 Movie myMovie;
 final float imageratio = 1920.0/1080.0;
@@ -64,6 +64,7 @@ PFont smallRobotoMono;
 PFont smallRoboto;
 PFont agendaRoboto;
 PFont credRoboto;
+PFont commentRoboto;
 
 boolean keyShift = false;
 boolean keyAlt = false;
@@ -73,6 +74,7 @@ Keyframe selFrameAgendaLeft;
 Keyframe selFrameAgendaRight;
 Keyframe selFrameCreditLeft;
 Keyframe selFrameCreditRight;
+Keyframe selFrameComment;
 
 ArrayList <Butt> butts;
 
@@ -95,6 +97,7 @@ void setup() {
   smallRoboto = createFont("Roboto-Bold.ttf", 12);
   agendaRoboto = createFont("Roboto-Bold.ttf", 58);
   credRoboto = createFont("Roboto-Bold.ttf", 32);
+  commentRoboto = createFont("Roboto-Bold.ttf", 22);
   
   loadHistory();
   switchToLoad();

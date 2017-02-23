@@ -79,6 +79,21 @@ class Butt {
       clickFill = color2;
       clickStroke = -1;
       clickText = #000000;
+    } else if (_style == "COMMENT") {
+      style = "COMMENT";
+      thisFont = commentRoboto;
+      
+      overFill = color5;
+      overStroke = -1;
+      overText = #000000;
+  
+      outFill = color(0,0,0,128);
+      outStroke = -1;
+      outText = color5;
+
+      clickFill = color2;
+      clickStroke = -1;
+      clickText = #000000;
     } else if (_style == "KEYFRAME") {
       style = "KEYFRAME";
 
@@ -165,6 +180,16 @@ class Butt {
       text(t,x+w/2,y+h/2+12+yOffset);
     } else if (style == "KEYFRAME") {
       ellipse(x+w/2, y+h/2, w-4, h-4);
+    } else if (style == "COMMENT") {
+      textAlign(CENTER);
+      /*if (state != "OVER" && state != "CLICK") {
+        fill(0);
+        for(float i=-1; i<=3;i+=0.5) {
+          text(t,x+i,y+2+i, w,h);
+        }
+        fill(textColor);
+      }*/
+      text(t,x,y+2, w,h);
     } else {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+5+yOffset);
