@@ -23,7 +23,7 @@ void beginCommentInput() {
   if (selFrameComment == null) {
     inputText = "";
   } else {
-    inputText = selFrameComment.stingValue;
+    inputText = selFrameComment.stringValue;
   }
   inputTarget = "COMMENT";
   commentButt.state = "CLICK";
@@ -478,7 +478,7 @@ void updateValues() {
       commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
       delCommentButt.x = commentButt.x - 17;
     } else {
-      commentButt.t = trimStringToSize(tempFrame.stingValue, 600);
+      commentButt.t = trimStringToSize(tempFrame.stringValue, 600);
       commentButt.w = int(stringButtSize(commentButt.t)+20);
       commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
       delCommentButt.x = commentButt.x - 17;

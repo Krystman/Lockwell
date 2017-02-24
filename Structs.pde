@@ -25,7 +25,7 @@ public class AgendaEvent {
 public class Keyframe {
   public float time;
   public int value;
-  public String stingValue;
+  public String stringValue;
   public int side;
   public int type;
 }

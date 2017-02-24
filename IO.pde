@@ -210,7 +210,7 @@ void saveVData() {
     if (_temp != null) {
       _temp.setFloat("t", _tempKeyframe.time);
       if (_tempKeyframe.type == KFCOMMENTS) {
-        _temp.setContent(_tempKeyframe.stingValue);
+        _temp.setContent(_tempKeyframe.stringValue);
       } else {
         _temp.setIntContent(_tempKeyframe.value);
         _temp.setInt("side", _tempKeyframe.side);

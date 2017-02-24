@@ -9,7 +9,7 @@ Keyframe addKeyframe(int _type, float _time, int _value, int _side, String _stin
   _tempKeyframe.time = _time;
   _tempKeyframe.value = _value;
   _tempKeyframe.side = _side;
-  _tempKeyframe.stingValue = _stingVal;
+  _tempKeyframe.stringValue = _stingVal;
   keyframes.add(_tempKeyframe);
   dirty = true;
   
@@ -141,7 +141,7 @@ void commentConfirm(String _str) {
     if (selFrameComment == null) {
       selFrameComment = addKeyframe(KFCOMMENTS, headPos, 0, LEFTPLAYER, _str);
     } else {
-      selFrameComment.stingValue = _str;
+      selFrameComment.stringValue = _str;
     }
   }
   dirty = true;  

@@ -335,3 +335,11 @@ void play() {
     }
   }
 }
+
+void stop() {
+  if (myMovie!=null) {
+    myMovie.stop();
+    myMovie.dispose();
+    myMovie = null;
+  }
+}
