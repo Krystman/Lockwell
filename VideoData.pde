@@ -124,6 +124,29 @@ void creditButt(int _side, int _d) {
   dirty = true;
 }
 
+// This is what gets executed after you typed in a comment
+void commentConfirm(String _str) { 
+  // Check if there is a keyframe at current time
+  // If no, create one
+ 
+  _str = trim(_str);
+  if (_str.length() == 0) {
+    println("Is nothing");
+    if (selFrameComment != null) {
+      println("Removing");
+      keyframes.remove(selFrameComment);
+      selFrameComment = null;
+    }
+  } else {
+    if (selFrameComment == null) {
+      selFrameComment = addKeyframe(KFCOMMENTS, headPos, 0, LEFTPLAYER, _str);
+    } else {
+      selFrameComment.stingValue = _str;
+    }
+  }
+  dirty = true;  
+}
+
 // This returns ANY keyframe time before the current head position if possible
 // Otherwise, it returns the head position
 float getLastKeyframe() {

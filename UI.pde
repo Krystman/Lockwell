@@ -17,6 +17,59 @@ Butt menuSave;
 Butt menuSaveClose;
 Butt menuExport;
 
+
+void beginCommentInput() {
+  inputMode = "TEXT";
+  if (selFrameComment == null) {
+    inputText = "";
+  } else {
+    inputText = selFrameComment.stingValue;
+  }
+  inputTarget = "COMMENT";
+  commentButt.state = "CLICK";
+  commentButt.visible = false;
+}
+
+void inputConfirm() {
+  inputMode = "";
+  if (inputTarget == "COMMENT") {
+    commentConfirm(inputText);
+    commentButt.dirty = true;
+    commentButt.caret = false;
+  }
+  inputText = "";
+  inputTarget = "";
+}
+
+void inputCancel() {
+  inputMode = "";
+  if (inputTarget == "COMMENT") {
+    commentButt.dirty = true;
+    commentButt.caret = false;
+  }
+}
+
+void drawInput() {
+  fill(0,0,0,128);
+  rect(0,0,width,height);
+  if (inputTarget == "COMMENT") {
+    commentButt.visible = true;
+    commentButt.t = inputText;
+    commentButt.caret = blink;
+    commentButt.w = int(stringButtSize(commentButt.t)+20);
+    if (commentButt.w < 100) {
+      commentButt.w = 100;
+    }
+    
+    commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
+    delCommentButt.x = commentButt.x - 17;
+    commentButt.drawMe();
+    commentButt.visible = false;
+  }
+
+}
+
+
 // This draws the video tracker bar
 // Not sure if this this the right name
 // I mean the progress bar below the video
@@ -202,6 +255,8 @@ void drawDetailBar() {
         fill(color2);
       } else if (_keyPos == headPos) {
         fill(color4);
+      } else if (selFrameComment != null && selFrameComment == keyframes.get(i)) {
+        fill(color4);
       } else {
         fill(color3);
       }
@@ -244,10 +299,6 @@ void drawDetailBar() {
     textAlign(CENTER);
     text(formatTimeCode(_showTime),_showX,detailBarY-3);
   }
-
-    
-      
-
 }
 
 void switchToEdit() {
@@ -420,7 +471,7 @@ void updateValues() {
   if (tempFrame != null && tempFrame.time < (headPos - 1.0f)) {
     tempFrame = null;
   }
-  if (selFrameComment != tempFrame) {
+  if (selFrameComment != tempFrame || commentButt.dirty) {
     if (tempFrame == null) {
       commentButt.t = "(note)";
       commentButt.w = int(stringButtSize(commentButt.t)+20);
@@ -433,6 +484,7 @@ void updateValues() {
       delCommentButt.x = commentButt.x - 17;
     }
     selFrameComment = tempFrame;
+    commentButt.dirty = false;
   }
   if (!moviePaused && selFrameComment == null) {
     commentButt.visible = false;
@@ -574,6 +626,8 @@ void buttonCommand(String _verb, String _noun) {
     } else {
       creditButt(RIGHTPLAYER, 1);
     }
+  } else if (_verb == "COMMENT") {
+    beginCommentInput();
   } else if (_verb == "SAVE") {
     saveVData();
   } else if (_verb == "EXPORT") {
@@ -608,6 +662,9 @@ void buttonCommandRight(String _verb, String _noun) {
       clearKeyframe(KFCREDITS, headPos, LEFTPLAYER);
     } else if (_noun == "RC") {
       clearKeyframe(KFCREDITS, headPos, RIGHTPLAYER);
+    } else if (_noun == "COMMENT") {
+      commentConfirm("");
+      commentButt.dirty = true;
     }
   }
 }

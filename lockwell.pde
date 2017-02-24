@@ -1,3 +1,4 @@
+import controlP5.*;
 import processing.video.*;
 
 // Define color palette
@@ -54,6 +55,12 @@ float detailMousePos;
 String moviePath = "";
 String vDataPath = "";
 String UIMode = "LOAD";
+String inputMode = "";
+String inputText = "";
+String inputTarget = "";
+boolean blink; // This is to make some UI stuff blink
+int blinker;
+
 boolean moviePaused = false;
 boolean lastNoClick = true;
 boolean dialogMouseLockout = false; // Little hack because mouse kept registering as clicked after selectInput
@@ -130,7 +137,7 @@ void draw() {
   background(color1);
   
   if (UIMode=="LOAD") {
-    
+    drawButts();
   } else if (UIMode=="EDIT") {
     if (myMovie!=null) {
       if (myMovie.available()) {
@@ -160,96 +167,160 @@ void draw() {
       updateValues();
       drawKeyframes();
       
+      // Draw all buttons
+      drawButts();
+      
       // Draw Bars
       drawDetailBar();
       drawTrackerBar();
+      
+      if (inputMode == "TEXT") {
+        drawInput();
+      }
     }
   }
-  drawButts();
+  
 }
 
 void update() {
-  // Update stuff every frame
-  if (mousePressed == false) {
-    dialogMouseLockout = false;
+  blinker++;
+  if (blinker < 20) {
+    blink = true;
+  } else if (blinker < 40) {
+    blink = false;
+  } else {
+    blinker = 0;
   }
   
-  if (mousePressed && !dialogMouseLockout) {
-    // LMB
-    if (lastNoClick) {
-      updateMouseClick();
-      lastNoClick = false;
+  if (inputMode == "") {
+    // Update stuff every frame
+    if (mousePressed == false) {
+      dialogMouseLockout = false;
     }
-    updateMousePressed();
-  } else {
-    updateMouseOver();
-    lastNoClick = true;
+    
+    if (mousePressed && !dialogMouseLockout) {
+      // LMB
+      if (lastNoClick) {
+        updateMouseClick();
+        lastNoClick = false;
+      }
+      updateMousePressed();
+    } else {
+      updateMouseOver();
+      lastNoClick = true;
+    }
+  } else if (inputMode == "TEXT") {
   }
 
 }
 
 void keyPressed() {
-  
-  //println("key: " + key + " keyCode: " + keyCode); 
-  
-  if (key=='q') {
-    println("head at " + headPos);
-    if (headLocked) {
-      println("head locked");
-    } else {
-      println("head not locked");     
+  if (inputMode == "") {
+    //println("key: " + key + " keyCode: " + keyCode); 
+    
+    if (key=='q') {
+      println("head at " + headPos);
+      if (headLocked) {
+        println("head locked");
+      } else {
+        println("head not locked");     
+      }
+      if (dirty) {
+        println("vData dirty");
+      } else {
+        println("vData clean");     
+      }
     }
-    if (dirty) {
-      println("vData dirty");
-    } else {
-      println("vData clean");     
+    
+    if (keyCode==32) {
+      flipPause();
+    } else if (keyCode==LEFT) {
+      //This works well for frame-by-frame rewinding
+      //moveHead(-0.05f);
+      if (keyShift) {
+        moveHead(-1f);
+      } else if (keyControl) {
+        setHead(getLastKeyframe());
+      } else if (keyAlt) {
+        moveHead(-10f);
+      }
+    } else if (keyCode==RIGHT) {
+      //This works well for frame-by-frame rewinding
+      //moveHead(0.05f);
+      if (keyShift) {
+        moveHead(1f);
+      } else if (keyControl) {
+        setHead(getNextKeyframe());
+      } else if (keyAlt) {
+        moveHead(10f);
+      }
+    } else if (keyCode==SHIFT) {
+      keyShift = true;
+    } else if (keyCode==CONTROL) {
+      keyControl = true;
+    } else if (keyCode==ALT) {
+      keyAlt = true;
+    } else if (keyCode == ESC) {
+      key = 0;
+    } else if (key == 'n') {
+      pause();
+      beginCommentInput();
     }
+  } else if (inputMode == "TEXT") {
+    if (keyCode == BACKSPACE) {
+      if (inputText.length() > 0) {
+        inputText = inputText.substring(0, inputText.length()-1);
+      }
+    } else if (keyCode == ENTER || keyCode == RETURN) {
+      inputConfirm();
+    } else if (keyCode == ESC) {
+      key = 0;
+      inputCancel();
+    } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT && keyCode!=LEFT && keyCode!=RIGHT && keyCode!=UP && keyCode!=DOWN) {
+      inputText = inputText + key;
+    }    
   }
-  
-  if (keyCode==32) {
-    buttPause();
-  } else if (keyCode==LEFT) {
-    //This works well for frame-by-frame rewinding
-    //moveHead(-0.05f);
-    if (keyShift) {
-      moveHead(-1f);
-    } else if (keyControl) {
-      setHead(getLastKeyframe());
-    } else if (keyAlt) {
-      moveHead(-10f);
-    }
-  } else if (keyCode==RIGHT) {
-    //This works well for frame-by-frame rewinding
-    //moveHead(0.05f);
-    if (keyShift) {
-      moveHead(1f);
-    } else if (keyControl) {
-      setHead(getNextKeyframe());
-    } else if (keyAlt) {
-      moveHead(10f);
-    }
-  } else if (keyCode==SHIFT) {
-    keyShift = true;
-  } else if (keyCode==CONTROL) {
-    keyControl = true;
-  } else if (keyCode==ALT) {
-    keyAlt = true;
-  }  
 }
 
 void keyReleased() {
-  
-  //println("key: " + key + " keyCode: " + keyCode);  
-  if (keyCode==SHIFT) {
-    keyShift = false;
-  } else if (keyCode==CONTROL) {
-    keyControl = false;
-  } else if (keyCode==ALT) {
-    keyAlt = false;
-  }  
+  if (inputMode == "") {
+    //println("key: " + key + " keyCode: " + keyCode);  
+    if (keyCode==SHIFT) {
+      keyShift = false;
+    } else if (keyCode==CONTROL) {
+      keyControl = false;
+    } else if (keyCode==ALT) {
+      keyAlt = false;
+    }
+  } else if (inputMode == "TEXT") {
+    
+  }
 }
 
-void buttPause() {
+void flipPause() {
+  if (moviePath != "") {
+    if (moviePaused) {
+      play();
+    } else {
+      pause();  
+    }
+  }
+}
+
+void pause() {
+  if (moviePath != "") {
+    if (!moviePaused) {
+      println("Pausing...");
+      headLocked = false;
+      myMovie.pause();
+      moviePaused = true;
+      myMovie.read();
+      myMovie.jump(headPos);      
+    }
+  }
+}
+
+void play() {
   if (moviePath != "") {
     if (moviePaused) {
       println("Plaing...");
@@ -260,14 +331,7 @@ void buttPause() {
       if (dirty) {
         dirty = false;
         saveVData();
-      }
-    } else {
-      println("Pausing...");
-      headLocked = false;
-      myMovie.pause();
-      moviePaused = true;
-      myMovie.read();
-      myMovie.jump(headPos);      
+      }     
     }
   }
 }

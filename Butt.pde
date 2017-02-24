@@ -10,6 +10,8 @@ class Butt {
   public String noun = "";
   
   public boolean visible = true;
+  public boolean caret = false;
+  public boolean dirty = false;
   
   private color overFill;
   private color overStroke;
@@ -24,6 +26,7 @@ class Butt {
   private color clickText;
   
   private PFont thisFont;
+  
   Butt(String _t, float _x, float _y, float _w, float _h) {
     t = _t;
     x = _x;
@@ -190,6 +193,9 @@ class Butt {
         fill(textColor);
       }*/
       text(t,x,y+2, w,h);
+      if (caret) {
+        rect(x + (w/2) + (textWidth(t)/2)+3,y+4,2,h-8);
+      }
     } else {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+5+yOffset);
