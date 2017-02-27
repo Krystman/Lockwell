@@ -9,6 +9,44 @@ void loadHistory() {
   }
 }
 
+void loadConfig() {
+  println("Loading config");
+  if (!fileExists(dataPath("config.xml"))) {
+    println("Config not found. :( Will use Krystian's default values but export is likely to be all wrong.");
+    
+    expCreditsPath = "file://localhost/C%3a/netrunner/important%20stuff/credits/creditoverlays/";
+    expCreditsLeft = "credL_##.png";
+    expCreditsRight = "credR_##.png";
+    expCreditsMax = 0;
+    expCreditsMin = 42;
+    
+    expAgendasPath = "file://localhost/C%3a/netrunner/important%20stuff/overlays2/";
+    expAgendasLeft = "left_#.png";
+    expAgendasRight = "right_#.png";
+    expAgendasMax = 0;
+    expAgendasMin = 9;
+    
+  } else {   
+    XML _xml; 
+    _xml = loadXML(dataPath("config.xml"));
+    
+    XML _creditsNode = _xml.getChild("credits");
+    XML _agendasNode = _xml.getChild("agendas");
+  
+    expCreditsPath = _creditsNode.getChild("path").getContent();
+    expCreditsLeft = _creditsNode.getChild("left").getContent();
+    expCreditsRight = _creditsNode.getChild("right").getContent();
+    expCreditsMax = _creditsNode.getChild("max").getIntContent();
+    expCreditsMin = _creditsNode.getChild("min").getIntContent();
+    
+    expAgendasPath = _agendasNode.getChild("path").getContent();
+    expAgendasLeft = _agendasNode.getChild("left").getContent();
+    expAgendasRight = _agendasNode.getChild("right").getContent();
+    expAgendasMax = _agendasNode.getChild("max").getIntContent();
+    expAgendasMin = _agendasNode.getChild("min").getIntContent();
+  }
+}
+
 void saveHistory() {
   saveStrings(dataPath("history.txt"), history);
 }

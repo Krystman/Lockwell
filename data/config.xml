@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file configure paths for the Final Cut pro XML export -->
+
+<config>
+	<credits>
+		<path>file://localhost/C%3a/netrunner/important%20stuff/credits/creditoverlays/</path>
+		<left>credL_##.png</left>
+		<right>credR_##.png</right>
+		<max>42</max>
+		<min>0</min>
+	</credits>
+	<agendas>
+		<path>file://localhost/C%3a/netrunner/important%20stuff/overlays2/</path>
+		<left>left_#.png</left>
+		<right>right_#.png</right>
+		<max>9</max>
+		<min>0</min>
+	</agendas>
+</config>

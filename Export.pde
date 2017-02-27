@@ -6,9 +6,24 @@ Footage blankFootage;
 int idCounter;
 int idCounterSeq;
 
+// Variables for export settings
+String expCreditsPath;
+String expCreditsLeft;
+String expCreditsRight;
+int expCreditsMax;
+int expCreditsMin;
+  
+String expAgendasPath;
+String expAgendasLeft;
+String expAgendasRight;
+int expAgendasMax;
+int expAgendasMin;
+
 long premiereFrame = 8475667200L; // Weird-ass Premiere unit. This is how long a single frame is when specificing Workspace In/Out. FML. 
 
 void export(String _path) {
+  loadConfig();
+    
   println("Exporting to " + _path);
 
   idCounter = 1;
@@ -269,11 +284,11 @@ XML sticsXML() {
 }
 
 void buildAgendaLib() {
-  String agendaPath = "file://localhost/C%3a/netrunner/important%20stuff/overlays2/";
-  String fileTemplateL = "left_#.png";
-  String fileTemplateR = "right_#.png";
-  int min = 0;
-  int max = 9;
+  String agendaPath = expAgendasPath;
+  String fileTemplateL = expAgendasLeft;
+  String fileTemplateR = expAgendasRight;
+  int min = expAgendasMin;
+  int max = expAgendasMax;
 
   agendaLib = new ArrayList<Footage>();
 
@@ -308,12 +323,12 @@ void buildAgendaLib() {
 }
 
 void buildCreditLib() {
-  String creditPath = "file://localhost/C%3a/netrunner/important%20stuff/credits/creditoverlays/";
-  String fileTemplateL = "credL_##.png";
-  String fileTemplateR = "credR_##.png";
-  int min = 0;
-  int max = 42;
-
+  String creditPath = expCreditsPath;
+  String fileTemplateL = expCreditsLeft;
+  String fileTemplateR = expCreditsRight;
+  int min = expCreditsMin;
+  int max = expCreditsMax;
+  
   creditLib = new ArrayList<Footage>();
 
   for (int i=min; i <= max; i++) {
