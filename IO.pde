@@ -44,6 +44,23 @@ void loadConfig() {
     expAgendasRight = _agendasNode.getChild("right").getContent();
     expAgendasMax = _agendasNode.getChild("max").getIntContent();
     expAgendasMin = _agendasNode.getChild("min").getIntContent();
+    
+    XML _animsNode = _xml.getChild("anims");
+    XML[] _animNodes = _animsNode.getChildren("anim");
+    
+    expAnims = new ArrayList <AnimConfig>();
+    
+    if (_animNodes != null) {
+      for (int i = 0; i < _animNodes.length; i++) {
+        AnimConfig _tCfg = new AnimConfig();
+        _tCfg.name = _animNodes[i].getChild("name").getContent();
+        _tCfg.path = _animNodes[i].getChild("path").getContent();
+        _tCfg.file = _animNodes[i].getChild("file").getContent();
+        _tCfg.length = _animNodes[i].getChild("length").getIntContent();
+        expAnims.add(_tCfg);
+      }
+    }
+    //println(expAnims.size() + " anim configs");
   }
 }
 

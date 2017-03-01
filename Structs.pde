@@ -43,7 +43,9 @@ public class VideoContainer {
 
 public class Footage {
   public int value;
+  public String stringValue;
   public int side;
+  public int duration;
   public String name;
   public String path;
   public String masterclipid;
@@ -53,7 +55,9 @@ public class Footage {
   Footage clone() {
     Footage tempF = new Footage();
     tempF.value = this.value;
+    tempF.stringValue = this.stringValue;
     tempF.side = this.side;
+    tempF.duration = this.duration;
     tempF.name = this.name;
     tempF.path = this.path;
     tempF.masterclipid = this.masterclipid;
@@ -69,4 +73,12 @@ public class KeyMap {
   public Butt down;
   public Butt left;
   public Butt right;
+}
+
+// This holds config data for export of animations
+public class AnimConfig {
+  public String name;
+  public String path;
+  public String file;
+  public int length;
 }

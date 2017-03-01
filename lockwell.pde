@@ -1,3 +1,12 @@
+// Todo:
+// - Ctrl + S for save
+// - Resolution select on start screen
+// - Keyboard controls on start screen
+// - Undo
+// - Animation Keyframes / Export etc...
+// - Multi-export
+// - UI Notification system
+
 import controlP5.*;
 import processing.video.*;
 
@@ -20,6 +29,7 @@ final int RIGHTPLAYER = 2;
 final int KFAGENDAS = 1;
 final int KFCREDITS = 2;
 final int KFCOMMENTS = 3;
+final int KFANIMS = 4;
 
 Movie myMovie;
 final float imageratio = 1920.0/1080.0;

@@ -18,6 +18,7 @@ String expAgendasLeft;
 String expAgendasRight;
 int expAgendasMax;
 int expAgendasMin;
+ArrayList <AnimConfig> expAnims;
 
 long premiereFrame = 8475667200L; // Weird-ass Premiere unit. This is how long a single frame is when specificing Workspace In/Out. FML. 
 
@@ -28,19 +29,20 @@ void export(String _path) {
 
   idCounter = 1;
   idCounterSeq = 1;
-
-  otherLib = new ArrayList <Footage>();
+  
+  buildAnimLib();  
   blankFootage = new Footage();
   blankFootage.path = "";
   blankFootage.name = "BLANK";
   blankFootage.value = 0;
   blankFootage.side = LEFTPLAYER;
+  blankFootage.duration = 18000;
   blankFootage.clipitemid = "clipitem-" + idCounter;
   blankFootage.fileid = "file-" + idCounter;
   blankFootage.masterclipid = "masterclip-" + idCounter;
   idCounter++;
   otherLib.add(blankFootage);
-
+  
   buildAgendaLib();
   buildCreditLib();
 
@@ -232,7 +234,7 @@ XML exportLib(ArrayList <Footage> _lib, String _name) {
     _tempX.setString("frameBlend", "FALSE");
     _tempX.addChild("masterclipid").setContent(_tempF.masterclipid);
     _tempX.addChild("ismasterclip").setContent("TRUE");
-    _tempX.addChild("duration").setContent("150");
+    _tempX.addChild("duration").setIntContent(_tempF.duration);
     _tempX.addChild(rateXML());
     _tempX.addChild("name").setContent(_tempF.name);
 
@@ -258,7 +260,7 @@ XML exportLib(ArrayList <Footage> _lib, String _name) {
 
     XML _media2 = _file.addChild("media");
     XML _video2 = _media2.addChild("video");
-    _video2.addChild("duration").setContent("18000");
+    _video2.addChild("duration").setIntContent(_tempF.duration);
     _video2.addChild(sticsXML());
   }
   return _ret;
@@ -301,6 +303,7 @@ void buildAgendaLib() {
     tempFL.name = fleL;
     tempFL.value = i;
     tempFL.side = LEFTPLAYER;
+    tempFL.duration = 18000;
     tempFL.clipitemid = "clipitem-" + idCounter;
     tempFL.fileid = "file-" + idCounter;
     tempFL.masterclipid = "masterclip-" + idCounter;
@@ -340,6 +343,7 @@ void buildCreditLib() {
     tempFL.name = fleL;
     tempFL.value = i;
     tempFL.side = LEFTPLAYER;
+    tempFL.duration = 18000;
     tempFL.clipitemid = "clipitem-" + idCounter;
     tempFL.fileid = "file-" + idCounter;
     tempFL.masterclipid = "masterclip-" + idCounter;
@@ -358,6 +362,30 @@ void buildCreditLib() {
     creditLib.add(tempFR);
   }
   //println("Generated " + creditLib.size() + " CreditLib entries.");
+}
+
+void buildAnimLib() {
+  
+  otherLib = new ArrayList <Footage>(); //<>//
+  if (expAnims != null) {
+    for (int i=0; i < expAnims.size(); i++) {
+      AnimConfig _tAnimCfg = expAnims.get(i);
+      Footage tempFL = new Footage();
+      
+      tempFL.path = _tAnimCfg.path + _tAnimCfg.file;
+      tempFL.name = _tAnimCfg.file;
+      tempFL.stringValue = _tAnimCfg.name;
+      tempFL.duration = _tAnimCfg.length;
+      tempFL.side = LEFTPLAYER;
+      tempFL.clipitemid = "clipitem-" + idCounter;
+      tempFL.fileid = "file-" + idCounter;
+      tempFL.masterclipid = "masterclip-" + idCounter;
+      idCounter++;
+  
+      otherLib.add(tempFL);
+    }
+  }
+  println("Generated " + otherLib.size() + " OtherLib entries.");
 }
 
 String fillInNumbers(String _s, int _n) {
