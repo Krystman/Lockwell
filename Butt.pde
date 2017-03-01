@@ -5,6 +5,7 @@ class Butt {
   public float x, y, w, h;
   public float r = 2;
   public String state = "";
+  public int sustain = 0; // sustains last state for this ammount of frames
   public String style = "";
   public String verb = "";
   public String noun = "";
@@ -185,7 +186,14 @@ class Butt {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+12+yOffset);
     } else if (style == "KEYFRAME") {
-      ellipse(x+w/2, y+h/2, w-4, h-4);
+      //ellipse(x+w/2, y+h/2, w-4, h-4);
+      float _cx = x+w/2;
+      float _cy = y+h/2;
+      float _cr = 5;
+      quad(_cx, _cy-_cr, 
+           _cx-_cr, _cy, 
+           _cx, _cy+_cr, 
+           _cx+_cr, _cy);
     } else if (style == "COMMENT") {
       textAlign(CENTER);
       /*if (state != "OVER" && state != "CLICK") {

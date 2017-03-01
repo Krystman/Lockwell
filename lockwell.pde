@@ -334,24 +334,28 @@ void keyPressed() {
       if (keyboardSelect != null) {
         if (buttonCommandMinus(keyboardSelect.verb,keyboardSelect.noun)) {
           keyboardSelect.state = "CLICK";
+          keyboardSelect.sustain = 3;
         }
       }
     } else if (key == '+') {
       if (keyboardSelect != null) {
         if (buttonCommandPlus(keyboardSelect.verb,keyboardSelect.noun)) {
           keyboardSelect.state = "CLICK";
+          keyboardSelect.sustain = 3;
         }
       }
     } else if (keyCode==ENTER || keyCode == RETURN) {
       if (keyboardSelect != null) {
         if (buttonCommandEnter(keyboardSelect.verb,keyboardSelect.noun)) {
           keyboardSelect.state = "CLICK";
+          keyboardSelect.sustain = 3;
         }
       }  
     } else if (keyCode==DELETE || keyCode == BACKSPACE) {
       if (keyboardSelect != null) {
         if (buttonCommandDel(keyboardSelect.verb,keyboardSelect.noun)) {
           keyboardSelect.state = "CLICK";
+          keyboardSelect.sustain = 3;
         }
       }  
     }

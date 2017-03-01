@@ -558,17 +558,21 @@ void updateMouseOver() {
   Butt tButt;
   for (int i = 0; i < butts.size(); i++) {
     tButt = butts.get(i);
-    if (tButt.visible &&
-        mouseX >= tButt.x &&
-        mouseX <= tButt.x+tButt.w &&
-        mouseY >= tButt.y &&
-        mouseY <= tButt.y+tButt.h) {
-      
-      tButt.state = "OVER";
-    } else if (tButt.visible && tButt == keyboardSelect) {
-      tButt.state = "OVER";
+    if (tButt.sustain > 0) {
+      tButt.sustain--;
     } else {
-      tButt.state = "";
+      if (tButt.visible &&
+          mouseX >= tButt.x &&
+          mouseX <= tButt.x+tButt.w &&
+          mouseY >= tButt.y &&
+          mouseY <= tButt.y+tButt.h) {
+        
+        tButt.state = "OVER";
+      } else if (tButt.visible && tButt == keyboardSelect) {
+        tButt.state = "OVER";
+      } else {
+        tButt.state = "";
+      }
     }
   }
   trackerMousePos = getTrackerMousePos();
@@ -601,21 +605,23 @@ void updateMouseClick() {
   Butt tButt;
   for (int i = 0; i < butts.size(); i++) {
     tButt = butts.get(i);
-    if (tButt.visible &&
-        mouseX >= tButt.x &&
-        mouseX <= tButt.x+tButt.w &&
-        mouseY >= tButt.y &&
-        mouseY <= tButt.y+tButt.h) {
-          
-      
-      tButt.state = "CLICK";
-      if (mouseButton == LEFT) { 
-        buttonCommand(tButt.verb, tButt.noun);
-      } else if (mouseButton == RIGHT) {
-        buttonCommandRight(tButt.verb, tButt.noun);
+    if (tButt.sustain <= 0) {
+      if (tButt.visible &&
+          mouseX >= tButt.x &&
+          mouseX <= tButt.x+tButt.w &&
+          mouseY >= tButt.y &&
+          mouseY <= tButt.y+tButt.h) {
+            
+        
+        tButt.state = "CLICK";
+        if (mouseButton == LEFT) { 
+          buttonCommand(tButt.verb, tButt.noun);
+        } else if (mouseButton == RIGHT) {
+          buttonCommandRight(tButt.verb, tButt.noun);
+        }
+      } else {
+        tButt.state = "";
       }
-    } else {
-      tButt.state = "";
     }
   }
   
