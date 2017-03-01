@@ -13,6 +13,8 @@ class Butt {
   public boolean caret = false;
   public boolean dirty = false;
   
+  public KeyMap keyMap;
+  
   private color overFill;
   private color overStroke;
   private color overText;
@@ -34,6 +36,7 @@ class Butt {
     w = _w;
     h = _h; 
     setStyle("");
+    keyMap = new KeyMap();
   }
   
   void setStyle(String _style) {

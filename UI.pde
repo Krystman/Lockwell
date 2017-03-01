@@ -17,6 +17,12 @@ Butt menuSave;
 Butt menuSaveClose;
 Butt menuExport;
 
+Butt keyboardSelect;
+
+KeyMap nullMap;
+
+void makeButtons() {
+}
 
 void beginCommentInput() {
   inputMode = "TEXT";
@@ -393,6 +399,30 @@ void switchToEdit() {
   menuExport.verb = "EXPORT";
   menuExport.noun = "";
   butts.add(menuExport);
+  
+  // Create keymap
+  creditButtL.keyMap.right = creditButtR;
+  creditButtL.keyMap.up = agendaButtL;
+  creditButtL.keyMap.down = commentButt;
+  
+  creditButtR.keyMap.left = creditButtL;
+  creditButtR.keyMap.up = agendaButtR;
+  creditButtR.keyMap.down = commentButt;
+
+  agendaButtL.keyMap.right = agendaButtR;
+  agendaButtL.keyMap.down = creditButtL;
+
+  agendaButtR.keyMap.left = agendaButtL;
+  agendaButtR.keyMap.down = creditButtR;
+  
+  commentButt.keyMap.left = creditButtL;
+  commentButt.keyMap.right = creditButtR;
+  commentButt.keyMap.up = creditButtL;
+  
+  nullMap = new KeyMap();
+  nullMap.left = creditButtL;
+  nullMap.right = creditButtR;
+  nullMap.down = commentButt;
 }
 
 void switchToLoad() {
@@ -534,6 +564,8 @@ void updateMouseOver() {
         mouseY >= tButt.y &&
         mouseY <= tButt.y+tButt.h) {
       
+      tButt.state = "OVER";
+    } else if (tButt.visible && tButt == keyboardSelect) {
       tButt.state = "OVER";
     } else {
       tButt.state = "";

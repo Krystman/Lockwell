@@ -242,6 +242,20 @@ void keyPressed() {
         setHead(getLastKeyframe());
       } else if (keyAlt) {
         moveHead(-10f);
+      } else {
+        KeyMap km;
+        if (keyboardSelect == null) {
+          km = nullMap;
+        } else {
+          km = keyboardSelect.keyMap;
+        }
+        if (km != null) {
+          Butt b = km.left;
+          if (b != null) {
+            pause();
+            keyboardSelect = b;
+          }
+        }
       }
     } else if (keyCode==RIGHT) {
       //This works well for frame-by-frame rewinding
@@ -252,6 +266,58 @@ void keyPressed() {
         setHead(getNextKeyframe());
       } else if (keyAlt) {
         moveHead(10f);
+      } else {
+        KeyMap km;
+        if (keyboardSelect == null) {
+          km = nullMap;
+        } else {
+          km = keyboardSelect.keyMap;
+        }
+        if (km != null) {
+          Butt b = km.right;
+          if (b != null) {
+            pause();
+            keyboardSelect = b;
+          }
+        }
+      }
+    } else if (keyCode==DOWN) {
+      if (keyShift) {
+      } else if (keyControl) {
+      } else if (keyAlt) {
+      } else {
+        KeyMap km;
+        if (keyboardSelect == null) {
+          km = nullMap;
+        } else {
+          km = keyboardSelect.keyMap;
+        }
+        if (km != null) {
+          Butt b = km.down;
+          if (b != null) {
+            pause();
+            keyboardSelect = b;
+          }
+        }
+      }
+    } else if (keyCode==UP) {
+      if (keyShift) {
+      } else if (keyControl) {
+      } else if (keyAlt) {
+      } else {
+        KeyMap km;
+        if (keyboardSelect == null) {
+          km = nullMap;
+        } else {
+          km = keyboardSelect.keyMap;
+        }
+        if (km != null) {
+          Butt b = km.up;
+          if (b != null) {
+            pause();
+            keyboardSelect = b;
+          }
+        }
       }
     } else if (keyCode==SHIFT) {
       keyShift = true;
@@ -327,6 +393,7 @@ void play() {
       myMovie.play();
       myMovie.read();
       moviePaused = false;
+      keyboardSelect = null;
       if (dirty) {
         dirty = false;
         saveVData();

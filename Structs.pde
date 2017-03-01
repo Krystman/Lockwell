@@ -62,3 +62,11 @@ public class Footage {
     return tempF;
   }
 }
+
+// This helps keeping track of which button to jump to when a key is pressed
+public class KeyMap {
+  public Butt up;
+  public Butt down;
+  public Butt left;
+  public Butt right;
+}
