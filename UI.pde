@@ -701,6 +701,72 @@ void buttonCommandRight(String _verb, String _noun) {
   }
 }
 
+boolean buttonCommandPlus(String _verb, String _noun) {
+  if (_verb == "AGENDA") {
+    buttonCommand(_verb, _noun);
+    return true;
+  } else if (_verb == "CREDIT") {
+    buttonCommand(_verb, _noun);
+    return true;
+  }
+  return false;
+}
+
+boolean buttonCommandMinus(String _verb, String _noun) {
+  if (_verb == "AGENDA") {
+    buttonCommandRight(_verb, _noun);
+    return true;
+  } else if (_verb == "CREDIT") {
+    buttonCommandRight(_verb, _noun);
+    return true;
+  }
+  return false;
+}
+
+boolean buttonCommandEnter(String _verb, String _noun) {
+  if (_verb == "LOAD") {
+    buttonCommand(_verb, _noun);
+    return true;
+  } else if (_verb == "COMMENT") {
+    buttonCommand(_verb, _noun);
+    return true;
+  } else if (_verb == "SAVE") {
+    buttonCommand(_verb, _noun);
+    return true;
+  } else if (_verb == "EXPORT") {
+    buttonCommand(_verb, _noun);
+    return true;
+  } else if (_verb == "SAVECLOSE") {
+    buttonCommand(_verb, _noun);
+    return true;
+  }
+  return false;
+}
+
+boolean buttonCommandDel(String _verb, String _noun) {
+  if (_verb == "AGENDA") {
+    if (_noun == "L") {
+      clearKeyframe(KFAGENDAS, headPos, LEFTPLAYER);
+    } else {
+      clearKeyframe(KFAGENDAS, headPos, RIGHTPLAYER);
+    }
+    return true;
+  } else if (_verb == "CREDIT") {
+    if (_noun == "L") {
+      clearKeyframe(KFCREDITS, headPos, LEFTPLAYER);
+    } else {
+      clearKeyframe(KFCREDITS, headPos, RIGHTPLAYER);
+    }
+    return true;
+  } else if (_verb == "COMMENT") {
+    commentConfirm("");
+    commentButt.dirty = true;
+    return true;
+  }
+  return false;
+}
+
+
 String formatTimeCode(float _t) {
   String ret;
   int mins;

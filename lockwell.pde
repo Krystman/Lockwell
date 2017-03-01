@@ -330,6 +330,30 @@ void keyPressed() {
     } else if (key == 'n') {
       pause();
       beginCommentInput();
+    } else if (key == '-') {
+      if (keyboardSelect != null) {
+        if (buttonCommandMinus(keyboardSelect.verb,keyboardSelect.noun)) {
+          keyboardSelect.state = "CLICK";
+        }
+      }
+    } else if (key == '+') {
+      if (keyboardSelect != null) {
+        if (buttonCommandPlus(keyboardSelect.verb,keyboardSelect.noun)) {
+          keyboardSelect.state = "CLICK";
+        }
+      }
+    } else if (keyCode==ENTER || keyCode == RETURN) {
+      if (keyboardSelect != null) {
+        if (buttonCommandEnter(keyboardSelect.verb,keyboardSelect.noun)) {
+          keyboardSelect.state = "CLICK";
+        }
+      }  
+    } else if (keyCode==DELETE || keyCode == BACKSPACE) {
+      if (keyboardSelect != null) {
+        if (buttonCommandDel(keyboardSelect.verb,keyboardSelect.noun)) {
+          keyboardSelect.state = "CLICK";
+        }
+      }  
     }
   } else if (inputMode == "TEXT") {
     if (keyCode == BACKSPACE) {
