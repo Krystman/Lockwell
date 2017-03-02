@@ -116,6 +116,12 @@ XML exportTimeline(VideoContainer _vCon, String _name) {
   keyframesToClips(_track, _vCon, LEFTPLAYER, KFAGENDAS);
 
   _track = _video.addChild("track");
+  _track.setString("MZ.TrackName", "Anims");
+  _track.addChild("enabled").setContent("TRUE");
+  _track.addChild("locked").setContent("FALSE");
+  keyframesToClips(_track, _vCon, BOTHPLAYERS, KFANIMS);
+
+  _track = _video.addChild("track");
   _track.setString("MZ.TrackName", "Notes");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
@@ -155,6 +161,8 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
     _lib = creditLib;
   } else if (_typeFilter == KFCOMMENTS) {
     _lib = null;
+  } else if (_typeFilter == KFANIMS) {
+    _lib = otherLib;
   } else {
     println("Can't keyframesToClips. Unknown type Filter " + _typeFilter);
     return;
@@ -183,15 +191,25 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
       if (frameIn != frameOut) {
         frameLength = frameOut - frameIn;
         _footage = null;
-        if (_typeFilter != KFCOMMENTS) {
+        if (_typeFilter == KFCOMMENTS) {
+          _footage = blankFootage;
+        } else if (_typeFilter == KFANIMS) {
+          for (int j = 0; j < _lib.size() && _footage == null; j++) {
+            _footage = _lib.get(j); //<>//
+            if (_footage.stringValue.equals(_tempF1.stringValue) == false) {
+              _footage = null;
+            }
+          }
+          if (_footage != null) {
+            frameOut = frameIn + _footage.duration;
+          }
+        } else {
           for (int j = 0; j < _lib.size() && _footage == null; j++) {
             _footage = _lib.get(j);
             if (_footage.value != _tempF1.value || _footage.side != _tempF1.side) {
               _footage = null;
             }
           }
-        } else {
-          _footage = blankFootage;
         }
         if (_footage == null) {
           println("Problems in keyframesToClips. Can't find value " + _tempF1.value + " for type " + _typeFilter + " for side " + _tempF1.side);
@@ -207,8 +225,13 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
           }
           _clipItem.addChild("start").setContent("" + frameIn);
           _clipItem.addChild("end").setContent("" + frameOut);
-          _clipItem.addChild("in").setContent("0");
-          _clipItem.addChild("out").setContent("" + frameLength);
+          if (_typeFilter != KFCOMMENTS && _typeFilter != KFANIMS) {
+            _clipItem.addChild("in").setContent("120");
+            _clipItem.addChild("out").setContent("" + (120 + frameLength));
+          } else {
+            _clipItem.addChild("in").setContent("0");
+            _clipItem.addChild("out").setContent("" + frameLength);            
+          }
           _clipItem.addChild("alphatype").setContent("straight");
           _clipItem.addChild("file").setString("id", _footage.fileid);
         }
@@ -366,7 +389,7 @@ void buildCreditLib() {
 
 void buildAnimLib() {
   
-  otherLib = new ArrayList <Footage>(); //<>//
+  otherLib = new ArrayList <Footage>();
   if (expAnims != null) {
     for (int i=0; i < expAnims.size(); i++) {
       AnimConfig _tAnimCfg = expAnims.get(i);

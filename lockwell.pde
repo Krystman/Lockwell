@@ -24,6 +24,7 @@ final color color5 = #EEEBD3; // Pale Yellow
 // Side definitions
 final int LEFTPLAYER = 1;
 final int RIGHTPLAYER = 2;
+final int BOTHPLAYERS = 0;
 
 // Keyframe type definitions
 final int KFAGENDAS = 1;

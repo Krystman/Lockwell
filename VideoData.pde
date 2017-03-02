@@ -202,7 +202,7 @@ ArrayList <Keyframe> filterKeyframes(ArrayList <Keyframe> _kf, int _sideFilter, 
   if (_kf != null) {
     for (int i = 0; i < _kf.size(); i++) {
       _tempFrame = _kf.get(i);
-      if (_tempFrame.side == _sideFilter && _tempFrame.type == _typeFilter) {
+      if ((_tempFrame.side == _sideFilter || _sideFilter == BOTHPLAYERS) && _tempFrame.type == _typeFilter) {
         filtered.add(_tempFrame);
       }
     }

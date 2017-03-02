@@ -182,6 +182,7 @@ void loadVData() {
   XML _creditsNode = _xml.getChild("credits");
   XML _agendasNode = _xml.getChild("agendas");
   XML _commentsNode = _xml.getChild("comments");
+  XML _animNode = _xml.getChild("anims");
   
   // ------ Load Settings -------
   // Set last head position
@@ -220,6 +221,17 @@ void loadVData() {
     }
   }
   
+  // ------ Load Anim Events -------
+  // Get all agenda events
+  if (_animNode != null) {
+    XML[] _anims = _animNode.getChildren("anim");
+    
+    // Fill Keyframe array with comment keyframes
+    for (int i = 0; i < _anims.length; i++) {
+      addKeyframe(KFANIMS, _anims[i].getFloat("t"), 0, _anims[i].getInt("side"), _anims[i].getContent());
+    }
+  }
+  
   println("Loaded " + keyframes.size() + " Keyframes");
 }
 
@@ -235,6 +247,7 @@ void saveVData() {
   XML _creditsNode = _xml.addChild("credits");
   XML _agendasNode = _xml.addChild("agendas");
   XML _commentsNode = _xml.addChild("comments");
+  XML _animNode = _xml.addChild("anims");
   
   // ------ Save Settings -------
   // Save last head position
@@ -259,6 +272,8 @@ void saveVData() {
       _temp = _agendasNode.addChild("agenda");
     } else if (_tempKeyframe.type == KFCOMMENTS) {
       _temp = _commentsNode.addChild("comment");
+    } else if (_tempKeyframe.type == KFANIMS) {
+      _temp = _animNode.addChild("anim");
     } else {
       println("Unknown keyframe type " + _tempKeyframe.type + "!!");
     }  
@@ -266,6 +281,9 @@ void saveVData() {
       _temp.setFloat("t", _tempKeyframe.time);
       if (_tempKeyframe.type == KFCOMMENTS) {
         _temp.setContent(_tempKeyframe.stringValue);
+      } else if (_tempKeyframe.type == KFANIMS) {
+        _temp.setContent(_tempKeyframe.stringValue);
+        _temp.setInt("side", _tempKeyframe.side);
       } else {
         _temp.setIntContent(_tempKeyframe.value);
         _temp.setInt("side", _tempKeyframe.side);
