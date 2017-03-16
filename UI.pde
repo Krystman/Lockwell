@@ -21,6 +21,9 @@ Butt keyboardSelect;
 
 KeyMap nullMap;
 
+ArrayList <Butt> animButtsL;
+ArrayList <Butt> animButtsR;
+
 void makeButtons() {
 }
 
@@ -419,6 +422,12 @@ void switchToEdit() {
   commentButt.keyMap.right = creditButtR;
   commentButt.keyMap.up = creditButtL;
   
+  animButtsR = new ArrayList<Butt>();
+  animButtsL = new ArrayList<Butt>();
+
+  selAnimsLeft = new ArrayList<Keyframe>();
+  selAnimsRight = new ArrayList<Keyframe>();
+  
   nullMap = new KeyMap();
   nullMap.left = creditButtL;
   nullMap.right = creditButtR;
@@ -525,6 +534,81 @@ void updateValues() {
     delCommentButt.visible = false;
   } else {
     delCommentButt.visible = true;
+  }
+  
+  // Anims
+  boolean _leftDirty = false;
+  boolean _rightDirty = false;
+  ArrayList <Keyframe> _tempAnisL = getAnims(headPos, LEFTPLAYER);
+  ArrayList <Keyframe> _tempAnisR = getAnims(headPos, RIGHTPLAYER);
+  if (_tempAnisL.size() != selAnimsLeft.size()) {
+    _leftDirty = true;
+  } else {
+    // Go through all entries in selAnims and check if they are still playing   
+    for (int i = 0; i < selAnimsLeft.size() || _leftDirty; i++) {
+      Keyframe _tempFrame = selAnimsLeft.get(i);
+      if (!(_tempFrame.time <= headPos && _tempFrame.time + _tempFrame.duration >= headPos)) {
+        _leftDirty = true;
+      }
+    }
+  }
+  if (_tempAnisR.size() != selAnimsRight.size()) {
+    _rightDirty = true;
+  } else {
+    // Go through all entries in selAnims and check if they are still playing   
+    for (int i = 0; i < selAnimsRight.size() || _rightDirty; i++) {
+      Keyframe _tempFrame = selAnimsRight.get(i);
+      if (!(_tempFrame.time <= headPos && _tempFrame.time + _tempFrame.duration >= headPos)) {
+        _rightDirty = true;
+      }
+    }   
+  }
+  
+  if (_leftDirty) {
+    // Repopulate
+    selAnimsLeft = _tempAnisL;
+    // Clear anim butts
+    if (animButtsL != null) {
+      for (int i = 0; i < animButtsL.size(); i++) {
+        butts.remove(animButtsL.get(i));
+      }
+    }
+    // Re-create anim butts
+    animButtsL = new ArrayList<Butt>();
+    for (int i = 0; i < selAnimsLeft.size(); i++) {
+      Keyframe _tempFrame = selAnimsLeft.get(i);
+      String buttname = _tempFrame.stringValue;
+      buttname = buttname.toUpperCase();
+      Butt tButt = new Butt(buttname, 5, creditButtL.y + creditButtL.h + 15 + (28 * i), 190, 24);
+      tButt.verb = "";
+      tButt.noun = "";
+      tButt.setStyle("ANIML");
+      butts.add(tButt);
+      animButtsL.add(tButt);
+    }
+  }
+  if (_rightDirty) {
+    // Repopulate
+    selAnimsRight = _tempAnisR;
+    // Clear anim butts
+    if (animButtsR != null) {
+      for (int i = 0; i < animButtsR.size(); i++) {
+        butts.remove(animButtsR.get(i));
+      }
+    }
+    // Re-create anim butts
+    animButtsR = new ArrayList<Butt>();
+    for (int i = 0; i < selAnimsRight.size(); i++) {
+      Keyframe _tempFrame = selAnimsRight.get(i);
+      String buttname = _tempFrame.stringValue;
+      buttname = buttname.toUpperCase();
+      Butt tButt = new Butt(buttname, videoWidth-(190+5), creditButtR.y + creditButtR.h + 15 + (28 * i), 190, 24);
+      tButt.verb = "";
+      tButt.noun = "";
+      tButt.setStyle("ANIMR");
+      butts.add(tButt);
+      animButtsR.add(tButt);
+    }
   }
 }
 

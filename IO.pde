@@ -228,7 +228,8 @@ void loadVData() {
     
     // Fill Keyframe array with comment keyframes
     for (int i = 0; i < _anims.length; i++) {
-      addKeyframe(KFANIMS, _anims[i].getFloat("t"), 0, _anims[i].getInt("side"), _anims[i].getContent());
+      Keyframe tKf = addKeyframe(KFANIMS, _anims[i].getFloat("t"), 0, _anims[i].getInt("side"), _anims[i].getContent());
+      tKf.duration = getAnimLength(tKf.stringValue);
     }
   }
   

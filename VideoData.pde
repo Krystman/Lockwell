@@ -1,6 +1,6 @@
 // Functions to manipulate Video Data
 
-// This creates a new Credit Event
+// This creates a new Keyframe of a certain type
 Keyframe addKeyframe(int _type, float _time, int _value, int _side, String _stingVal) {
   Keyframe _tempKeyframe;
   
@@ -25,6 +25,37 @@ void clearKeyframe(int _type, float _time, int _side) {
     keyframes.remove(_tempFrame);
     dirty = true;
   }
+}
+
+// This gets a list of all animations playing at a certain timecode
+ArrayList <Keyframe> getAnims(float _time, int _side) {
+  Keyframe _tempFrame = null;
+  ArrayList <Keyframe> ret = new ArrayList <Keyframe>();
+  
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      _tempFrame = keyframes.get(i);
+      if (_tempFrame.type == KFANIMS && (_tempFrame.side == _side || _side == BOTHPLAYERS) && _tempFrame.time <= _time && _tempFrame.time + _tempFrame.duration >= _time) {
+        ret.add(_tempFrame);
+      }
+    }
+  }
+  
+  return ret;
+}
+
+// Returns the length of an animation
+// The data is taken from the configuration file
+float getAnimLength(String _anim) {
+  if (expAnims != null) {
+    for (int i=0; i < expAnims.size(); i++) {
+      AnimConfig _tAnim = expAnims.get(i);
+      if (_tAnim.name.equals(_anim)) {
+        return _tAnim.length / 30.0;
+      }
+    }
+  }
+  return 1.0;
 }
 
 // This gets a value of the last keyframe of a certain stat at any given time

@@ -83,6 +83,7 @@ PFont smallRoboto;
 PFont agendaRoboto;
 PFont credRoboto;
 PFont commentRoboto;
+PFont animRoboto;
 
 boolean keyShift = false;
 boolean keyAlt = false;
@@ -93,6 +94,9 @@ Keyframe selFrameAgendaRight;
 Keyframe selFrameCreditLeft;
 Keyframe selFrameCreditRight;
 Keyframe selFrameComment;
+
+ArrayList <Keyframe> selAnimsLeft;
+ArrayList <Keyframe> selAnimsRight;
 
 ArrayList <Butt> butts;
 
@@ -116,8 +120,10 @@ void setup() {
   agendaRoboto = createFont("Roboto-Bold.ttf", 58);
   credRoboto = createFont("Roboto-Bold.ttf", 32);
   commentRoboto = createFont("Roboto-Bold.ttf", 22);
+  animRoboto = createFont("Roboto-Bold.ttf", 16);
   
   loadHistory();
+  loadConfig();
   switchToLoad();
 }
 

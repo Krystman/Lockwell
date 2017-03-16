@@ -86,6 +86,21 @@ class Butt {
       clickFill = color2;
       clickStroke = -1;
       clickText = #000000;
+    } else if (_style == "ANIML" || _style == "ANIMR") {
+      style = _style;
+      thisFont = animRoboto;
+      
+      overFill = color5;
+      overStroke = -1;
+      overText = #000000;
+  
+      outFill = -1;
+      outStroke = -1;
+      outText = color5;
+
+      clickFill = color2;
+      clickStroke = -1;
+      clickText = #000000;
     } else if (_style == "COMMENT") {
       style = "COMMENT";
       thisFont = commentRoboto;
@@ -207,6 +222,12 @@ class Butt {
       if (caret) {
         rect(x + (w/2) + (textWidth(t)/2)+3,y+4,2,h-8);
       }
+    } else if (style == "ANIML") {
+      textAlign(LEFT);
+      text(t,x+6,y+3,w-12,h-3);
+    } else if (style == "ANIMR") {
+      textAlign(RIGHT);
+      text(t,x+6,y+3,w-12,h-3);
     } else {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+5+yOffset);
