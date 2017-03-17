@@ -230,24 +230,24 @@ class Butt {
       }
     } else if (style == "ANIML") {
       textAlign(LEFT);
-      text(t,x+6+18,y+3,w-(12+18),h-3);
-      float perc;
       if (aniKeyframe != null) {
-        perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
+        text(t,x+6+18,y+3,w-(12+18),h-3);
+        float perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
+        arc(x+6+6,y+6+6,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
       } else {
-        perc = 1f;
+        text(t,x+6,y+3,w-12,h-3);
       }
-      arc(x+6+6,y+6+6,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
+      
     } else if (style == "ANIMR") {
       textAlign(RIGHT);
-      text(t,x+6,y+3,w-(12+18+6),h-3);
-      float perc;
       if (aniKeyframe != null) {
-        perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
+        text(t,x+6,y+3,w-(12+18+6),h-3);
+        float perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
+        arc(x+w-(12+6),y+6+6,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
       } else {
-        perc = 1f;
+        text(t,x+6,y+3,w-(12+6),h-3);
       }
-      arc(x+w-(12+6),y+6+6,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
+      
     } else {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+5+yOffset);

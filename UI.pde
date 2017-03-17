@@ -7,6 +7,9 @@ Butt creditButtR;
 
 Butt commentButt;
 
+Butt addAniButtL;
+Butt addAniButtR;
+
 Butt delAgendaButtL;
 Butt delAgendaButtR;
 Butt delCreditButtL;
@@ -357,6 +360,18 @@ void switchToEdit() {
   commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
   butts.add(commentButt);
   
+  addAniButtL = new Butt("ADD ANIMATION", 5, creditButtL.y + creditButtL.h + 15, 190, 24);
+  addAniButtL.verb = "";
+  addAniButtL.noun = "";
+  addAniButtL.setStyle("ANIML");
+  butts.add(addAniButtL);
+  
+  addAniButtR = new Butt("ADD ANIMATION", videoWidth-(190+5), creditButtR.y + creditButtR.h + 15, 190, 24);
+  addAniButtR.verb = "";
+  addAniButtR.noun = "";
+  addAniButtR.setStyle("ANIMR");
+  butts.add(addAniButtR);
+  
   // Buttons to delete Keyframes
   delAgendaButtL = new Butt("",agendaButtL.x + agendaButtL.w + 3,agendaButtL.y,14,14);
   delAgendaButtL.verb = "DELETE";
@@ -579,13 +594,13 @@ void updateValues() {
       Keyframe _tempFrame = selAnimsLeft.get(i);
       String buttname = _tempFrame.stringValue;
       buttname = buttname.toUpperCase();
-      Butt tButt = new Butt(buttname, 5+17, creditButtL.y + creditButtL.h + 15 + (28 * i), 190, 24);
+      Butt tButt = new Butt(buttname, 5+17+4, creditButtL.y + creditButtL.h + 15 + (28 * (i+1)), 190, 24);
       tButt.verb = "";
       tButt.noun = "";
       tButt.setStyle("ANIML");
       tButt.aniKeyframe = _tempFrame;
       
-      Butt tButt2 = new Butt("", 5, tButt.y, 14, 14);
+      Butt tButt2 = new Butt("", 5+4, tButt.y+5, 14, 14);
       tButt2.verb = "DELETE";
       tButt2.noun = "RC";
       tButt2.setStyle("KEYFRAME");
@@ -611,13 +626,13 @@ void updateValues() {
       Keyframe _tempFrame = selAnimsRight.get(i);
       String buttname = _tempFrame.stringValue;
       buttname = buttname.toUpperCase();
-      Butt tButt = new Butt(buttname, videoWidth-(190+5+17), creditButtR.y + creditButtR.h + 15 + (28 * i), 190, 24);
+      Butt tButt = new Butt(buttname, videoWidth-(190+5+17+4), creditButtR.y + creditButtR.h + 15 + (28 * (i+1)), 190, 24);
       tButt.verb = "";
       tButt.noun = "";
       tButt.setStyle("ANIMR");
       tButt.aniKeyframe = _tempFrame;
 
-      Butt tButt2 = new Butt("", tButt.x+tButt.w+3, tButt.y, 14, 14);
+      Butt tButt2 = new Butt("", tButt.x+tButt.w+3+4, tButt.y+5, 14, 14);
       tButt2.verb = "DELETE";
       tButt2.noun = "RC";
       tButt2.setStyle("KEYFRAME");
@@ -627,6 +642,13 @@ void updateValues() {
       animButtsR.add(tButt);
       animButtsR.add(tButt2);
     }
+  }
+  if (!moviePaused) {
+    addAniButtL.visible = false;
+    addAniButtR.visible = false;
+  } else {
+    addAniButtL.visible = true;
+    addAniButtR.visible = true;
   }
 }
 
