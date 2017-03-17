@@ -14,6 +14,12 @@ class Butt {
   public boolean caret = false;
   public boolean dirty = false;
   
+  // This is a bit of a hack
+  // It's a keyframe a button represents
+  // So far, it's only used for Anims
+  // We use it only to show the progress of an animation
+  public Keyframe aniKeyframe;
+  
   public KeyMap keyMap;
   
   private color overFill;
@@ -224,10 +230,24 @@ class Butt {
       }
     } else if (style == "ANIML") {
       textAlign(LEFT);
-      text(t,x+6,y+3,w-12,h-3);
+      text(t,x+6+18,y+3,w-(12+18),h-3);
+      float perc;
+      if (aniKeyframe != null) {
+        perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
+      } else {
+        perc = 1f;
+      }
+      arc(x+6+6,y+6+6,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
     } else if (style == "ANIMR") {
       textAlign(RIGHT);
-      text(t,x+6,y+3,w-12,h-3);
+      text(t,x+6,y+3,w-(12+18+6),h-3);
+      float perc;
+      if (aniKeyframe != null) {
+        perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
+      } else {
+        perc = 1f;
+      }
+      arc(x+w-(12+6),y+6+6,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
     } else {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+5+yOffset);

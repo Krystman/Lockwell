@@ -3,9 +3,17 @@
 // - Resolution select on start screen
 // - Keyboard controls on start screen
 // - Undo
-// - Animation Keyframes / Export etc...
 // - Multi-export
 // - UI Notification system
+
+// Currently Working on
+// Animation Keyframes / Export etc...
+// - Add progress clock in ani butt
+// - Add delete ani butt
+// - Add ani button
+// - Ani delete / creation functionality
+// - Ani position mode
+// - Keymap + Keyboard Shortcuts
 
 import controlP5.*;
 import processing.video.*;
@@ -125,6 +133,7 @@ void setup() {
   loadHistory();
   loadConfig();
   switchToLoad();
+  hint(ENABLE_STROKE_PURE);
 }
 
 void setup360() {

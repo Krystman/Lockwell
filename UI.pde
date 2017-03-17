@@ -583,6 +583,7 @@ void updateValues() {
       tButt.verb = "";
       tButt.noun = "";
       tButt.setStyle("ANIML");
+      tButt.aniKeyframe = _tempFrame;
       butts.add(tButt);
       animButtsL.add(tButt);
     }
@@ -606,6 +607,7 @@ void updateValues() {
       tButt.verb = "";
       tButt.noun = "";
       tButt.setStyle("ANIMR");
+      tButt.aniKeyframe = _tempFrame;
       butts.add(tButt);
       animButtsR.add(tButt);
     }
