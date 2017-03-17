@@ -40,8 +40,23 @@ ArrayList <Keyframe> getAnims(float _time, int _side) {
       }
     }
   }
-  
   return ret;
+}
+
+// Clears a Keyframe with the selAnimsLeft / selAnimsRight lists
+void clearAnimKeyframe(int _side, int _index) {
+  ArrayList <Keyframe> _myList;
+  if (_side == LEFTPLAYER) {
+    _myList = selAnimsLeft;
+  } else if (_side == RIGHTPLAYER) {
+    _myList = selAnimsRight;
+  } else {
+    return;
+  }
+  Keyframe _myKF = _myList.get(_index);
+  if (_myKF != null) {
+    keyframes.remove(_myKF);
+  }
 }
 
 // Returns the length of an animation
@@ -162,9 +177,7 @@ void commentConfirm(String _str) {
  
   _str = trim(_str);
   if (_str.length() == 0) {
-    println("Is nothing");
     if (selFrameComment != null) {
-      println("Removing");
       keyframes.remove(selFrameComment);
       selFrameComment = null;
     }

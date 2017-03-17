@@ -8,7 +8,6 @@
 
 // Currently Working on
 // Animation Keyframes / Export etc...
-// - Add ani button
 // - Ani delete / creation functionality
 // - Ani position mode
 // - Keymap + Keyboard Shortcuts

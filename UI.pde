@@ -361,14 +361,14 @@ void switchToEdit() {
   butts.add(commentButt);
   
   addAniButtL = new Butt("ADD ANIMATION", 5, creditButtL.y + creditButtL.h + 15, 190, 24);
-  addAniButtL.verb = "";
-  addAniButtL.noun = "";
+  addAniButtL.verb = "ANIM";
+  addAniButtL.noun = "L";
   addAniButtL.setStyle("ANIML");
   butts.add(addAniButtL);
   
   addAniButtR = new Butt("ADD ANIMATION", videoWidth-(190+5), creditButtR.y + creditButtR.h + 15, 190, 24);
-  addAniButtR.verb = "";
-  addAniButtR.noun = "";
+  addAniButtR.verb = "ANIM";
+  addAniButtR.noun = "R";
   addAniButtR.setStyle("ANIMR");
   butts.add(addAniButtR);
   
@@ -560,7 +560,7 @@ void updateValues() {
     _leftDirty = true;
   } else {
     // Go through all entries in selAnims and check if they are still playing   
-    for (int i = 0; i < selAnimsLeft.size() || _leftDirty; i++) {
+    for (int i = 0; i < selAnimsLeft.size(); i++) {
       Keyframe _tempFrame = selAnimsLeft.get(i);
       if (!(_tempFrame.time <= headPos && _tempFrame.time + _tempFrame.duration >= headPos)) {
         _leftDirty = true;
@@ -571,7 +571,7 @@ void updateValues() {
     _rightDirty = true;
   } else {
     // Go through all entries in selAnims and check if they are still playing   
-    for (int i = 0; i < selAnimsRight.size() || _rightDirty; i++) {
+    for (int i = 0; i < selAnimsRight.size(); i++) {
       Keyframe _tempFrame = selAnimsRight.get(i);
       if (!(_tempFrame.time <= headPos && _tempFrame.time + _tempFrame.duration >= headPos)) {
         _rightDirty = true;
@@ -601,8 +601,8 @@ void updateValues() {
       tButt.aniKeyframe = _tempFrame;
       
       Butt tButt2 = new Butt("", 5+4, tButt.y+5, 14, 14);
-      tButt2.verb = "DELETE";
-      tButt2.noun = "RC";
+      tButt2.verb = "DELETEANIL";
+      tButt2.noun = "" + i;
       tButt2.setStyle("KEYFRAME");
       
       butts.add(tButt);
@@ -627,14 +627,14 @@ void updateValues() {
       String buttname = _tempFrame.stringValue;
       buttname = buttname.toUpperCase();
       Butt tButt = new Butt(buttname, videoWidth-(190+5+17+4), creditButtR.y + creditButtR.h + 15 + (28 * (i+1)), 190, 24);
-      tButt.verb = "";
+      tButt.verb = "DELETEANI";
       tButt.noun = "";
       tButt.setStyle("ANIMR");
       tButt.aniKeyframe = _tempFrame;
 
       Butt tButt2 = new Butt("", tButt.x+tButt.w+3+4, tButt.y+5, 14, 14);
-      tButt2.verb = "DELETE";
-      tButt2.noun = "RC";
+      tButt2.verb = "DELETEANIR";
+      tButt2.noun = "" + i;
       tButt2.setStyle("KEYFRAME");
       
       butts.add(tButt);
@@ -828,6 +828,10 @@ void buttonCommandRight(String _verb, String _noun) {
       commentConfirm("");
       commentButt.dirty = true;
     }
+  } else if (_verb == "DELETEANIL") {
+    clearAnimKeyframe(LEFTPLAYER,int(_noun));
+  } else if (_verb == "DELETEANIR") {
+    clearAnimKeyframe(RIGHTPLAYER,int(_noun));
   }
 }
 
