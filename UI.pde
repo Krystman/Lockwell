@@ -579,13 +579,21 @@ void updateValues() {
       Keyframe _tempFrame = selAnimsLeft.get(i);
       String buttname = _tempFrame.stringValue;
       buttname = buttname.toUpperCase();
-      Butt tButt = new Butt(buttname, 5, creditButtL.y + creditButtL.h + 15 + (28 * i), 190, 24);
+      Butt tButt = new Butt(buttname, 5+17, creditButtL.y + creditButtL.h + 15 + (28 * i), 190, 24);
       tButt.verb = "";
       tButt.noun = "";
       tButt.setStyle("ANIML");
       tButt.aniKeyframe = _tempFrame;
+      
+      Butt tButt2 = new Butt("", 5, tButt.y, 14, 14);
+      tButt2.verb = "DELETE";
+      tButt2.noun = "RC";
+      tButt2.setStyle("KEYFRAME");
+      
       butts.add(tButt);
+      butts.add(tButt2);
       animButtsL.add(tButt);
+      animButtsL.add(tButt2);
     }
   }
   if (_rightDirty) {
@@ -603,13 +611,21 @@ void updateValues() {
       Keyframe _tempFrame = selAnimsRight.get(i);
       String buttname = _tempFrame.stringValue;
       buttname = buttname.toUpperCase();
-      Butt tButt = new Butt(buttname, videoWidth-(190+5), creditButtR.y + creditButtR.h + 15 + (28 * i), 190, 24);
+      Butt tButt = new Butt(buttname, videoWidth-(190+5+17), creditButtR.y + creditButtR.h + 15 + (28 * i), 190, 24);
       tButt.verb = "";
       tButt.noun = "";
       tButt.setStyle("ANIMR");
       tButt.aniKeyframe = _tempFrame;
+
+      Butt tButt2 = new Butt("", tButt.x+tButt.w+3, tButt.y, 14, 14);
+      tButt2.verb = "DELETE";
+      tButt2.noun = "RC";
+      tButt2.setStyle("KEYFRAME");
+      
       butts.add(tButt);
+      butts.add(tButt2);
       animButtsR.add(tButt);
+      animButtsR.add(tButt2);
     }
   }
 }

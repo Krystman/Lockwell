@@ -8,7 +8,6 @@
 
 // Currently Working on
 // Animation Keyframes / Export etc...
-// - Add progress clock in ani butt
 // - Add delete ani butt
 // - Add ani button
 // - Ani delete / creation functionality
