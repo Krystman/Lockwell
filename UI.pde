@@ -27,7 +27,29 @@ KeyMap nullMap;
 ArrayList <Butt> animButtsL;
 ArrayList <Butt> animButtsR;
 
+ArrayList <Butt> animMenuL;
+ArrayList <Butt> animMenuR;
+ArrayList <Butt> buttMenu;
+
 void makeButtons() {
+}
+
+void beginAddAnim(int _side) {
+  if (_side == LEFTPLAYER) {
+    inputTarget = "L";
+    buttMenu = animMenuL;
+  } else if (_side == RIGHTPLAYER) {
+    inputTarget = "R";
+    buttMenu = animMenuR;
+  } else {
+    return;
+  }
+  Butt tButt;
+  for (int i = 0; i < buttMenu.size(); i++) {
+    tButt = buttMenu.get(i);
+    tButt.state = "";
+  }
+  inputMode = "ANIM";
 }
 
 void beginCommentInput() {
@@ -62,7 +84,7 @@ void inputCancel() {
 }
 
 void drawInput() {
-  fill(0,0,0,128);
+  fill(0,0,0,162);
   rect(0,0,width,height);
   if (inputTarget == "COMMENT") {
     commentButt.visible = true;
@@ -81,6 +103,15 @@ void drawInput() {
 
 }
 
+void drawAnimInput() {
+  fill(0,0,0,162);
+  rect(0,0,width,height);
+  for (int i = 0; i < buttMenu.size(); i++) {
+    if (buttMenu.get(i).visible) {
+      buttMenu.get(i).drawMe();
+    }
+  }
+}
 
 // This draws the video tracker bar
 // Not sure if this this the right name
@@ -361,13 +392,13 @@ void switchToEdit() {
   butts.add(commentButt);
   
   addAniButtL = new Butt("ADD ANIMATION", 5, creditButtL.y + creditButtL.h + 15, 190, 24);
-  addAniButtL.verb = "ANIM";
+  addAniButtL.verb = "ADDANIM";
   addAniButtL.noun = "L";
   addAniButtL.setStyle("ANIML");
   butts.add(addAniButtL);
   
   addAniButtR = new Butt("ADD ANIMATION", videoWidth-(190+5), creditButtR.y + creditButtR.h + 15, 190, 24);
-  addAniButtR.verb = "ANIM";
+  addAniButtR.verb = "ADDANIM";
   addAniButtR.noun = "R";
   addAniButtR.setStyle("ANIMR");
   butts.add(addAniButtR);
@@ -447,6 +478,35 @@ void switchToEdit() {
   nullMap.left = creditButtL;
   nullMap.right = creditButtR;
   nullMap.down = commentButt;
+  
+  createAnimMenus();
+}
+
+void createAnimMenus() {
+  animMenuL = new ArrayList<Butt>();
+  animMenuR = new ArrayList<Butt>();
+  if (expAnims!=null) {
+    for (int i = 0; i < expAnims.size(); i++) {
+      AnimConfig _ACfg = expAnims.get(i); 
+      String buttname = _ACfg.name;
+      buttname = buttname.toUpperCase();
+      Butt tButt = new Butt(buttname, addAniButtL.x+190+5, addAniButtL.y + (28 * i), 190, 24);
+      tButt.verb = "ANIML";
+      tButt.noun = _ACfg.name;
+      tButt.setStyle("ANIML");
+      animMenuL.add(tButt);
+    }
+    for (int i = 0; i < expAnims.size(); i++) {
+      AnimConfig _ACfg = expAnims.get(i); 
+      String buttname = _ACfg.name;
+      buttname = buttname.toUpperCase();
+      Butt tButt = new Butt(buttname, addAniButtR.x-(190+5), addAniButtR.y + (28 * i), 190, 24);
+      tButt.verb = "ANIMR";
+      tButt.noun = _ACfg.name;
+      tButt.setStyle("ANIMR");
+      animMenuR.add(tButt);
+    }
+  }
 }
 
 void switchToLoad() {
@@ -703,6 +763,29 @@ void updateMouseOver() {
   detailMousePos = getDetailMousePos();
 }
 
+void updateMouseOverMenu() {
+  Butt tButt;
+  for (int i = 0; i < buttMenu.size(); i++) {
+    tButt = buttMenu.get(i);
+    if (tButt.sustain > 0) {
+      tButt.sustain--;
+    } else {
+      if (tButt.visible &&
+          mouseX >= tButt.x &&
+          mouseX <= tButt.x+tButt.w &&
+          mouseY >= tButt.y &&
+          mouseY <= tButt.y+tButt.h) {
+        
+        tButt.state = "OVER";
+      } else if (tButt.visible && tButt == keyboardSelect) {
+        tButt.state = "OVER";
+      } else {
+        tButt.state = "";
+      }
+    }
+  }  
+}
+
 float getTrackerMousePos() {
   float ret;
   if (mouseY > trackerBarY && mouseY < trackerBarY + 18 + trackerLineThickness + 8) {
@@ -757,6 +840,31 @@ void updateMouseClick() {
   }
 }
 
+void updateMouseClickMenu() {
+  Butt tButt;
+  for (int i = 0; i < buttMenu.size(); i++) {
+    tButt = buttMenu.get(i);
+    if (tButt.sustain <= 0) {
+      if (tButt.visible &&
+          mouseX >= tButt.x &&
+          mouseX <= tButt.x+tButt.w &&
+          mouseY >= tButt.y &&
+          mouseY <= tButt.y+tButt.h) {
+            
+        
+        tButt.state = "CLICK";
+        if (mouseButton == LEFT) { 
+          buttonCommand(tButt.verb, tButt.noun);
+        } else if (mouseButton == RIGHT) {
+          buttonCommandRight(tButt.verb, tButt.noun);
+        }
+      } else {
+        tButt.state = "";
+      }
+    }
+  }
+}
+
 void updateMousePressed() {
   if (UIMode=="EDIT") {
     trackerMousePos = getTrackerMousePos();
@@ -767,6 +875,7 @@ void updateMousePressed() {
 }
 
 void buttonCommand(String _verb, String _noun) {
+  //println(_verb + " " + _noun);
   if (_verb == "LOAD") {
     if (_noun == "") {
       dialogMouseLockout = true;
@@ -790,6 +899,12 @@ void buttonCommand(String _verb, String _noun) {
     }
   } else if (_verb == "COMMENT") {
     beginCommentInput();
+  } else if (_verb == "ADDANIM") {
+    if (_noun == "L") {
+      beginAddAnim(LEFTPLAYER);
+    } else {
+      beginAddAnim(RIGHTPLAYER);
+    }    
   } else if (_verb == "SAVE") {
     saveVData();
   } else if (_verb == "EXPORT") {
@@ -799,6 +914,12 @@ void buttonCommand(String _verb, String _noun) {
   } else if (_verb == "SAVECLOSE") {
     saveVData();
     switchToLoad();
+  } else if (_verb == "ANIML") {
+    animButt(_noun, LEFTPLAYER);
+    inputConfirm();
+  } else if (_verb == "ANIMR") {
+    animButt(_noun, RIGHTPLAYER);
+    inputConfirm();
   }
 }
 
@@ -833,6 +954,7 @@ void buttonCommandRight(String _verb, String _noun) {
   } else if (_verb == "DELETEANIR") {
     clearAnimKeyframe(RIGHTPLAYER,int(_noun));
   }
+  
 }
 
 boolean buttonCommandPlus(String _verb, String _noun) {

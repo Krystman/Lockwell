@@ -191,6 +191,12 @@ void commentConfirm(String _str) {
   dirty = true;  
 }
 
+// This is what gets executed when you press a button to add an Anim
+void animButt(String _anim, int _side) {
+  Keyframe tKf = addKeyframe(KFANIMS, headPos, 0, _side, _anim);
+  tKf.duration = getAnimLength(tKf.stringValue);
+}
+
 // This returns ANY keyframe time before the current head position if possible
 // Otherwise, it returns the head position
 float getLastKeyframe() {

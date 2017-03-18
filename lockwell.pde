@@ -8,9 +8,9 @@
 
 // Currently Working on
 // Animation Keyframes / Export etc...
-// - Ani delete / creation functionality
-// - Ani position mode
+// - Keyframe menu filtering
 // - Keymap + Keyboard Shortcuts
+// - Ani position mode
 
 import controlP5.*;
 import processing.video.*;
@@ -198,6 +198,8 @@ void draw() {
       
       if (inputMode == "TEXT") {
         drawInput();
+      } else if (inputMode == "ANIM") {
+        drawAnimInput();
       }
     }
   }
@@ -232,6 +234,22 @@ void update() {
       lastNoClick = true;
     }
   } else if (inputMode == "TEXT") {
+  } else if (inputMode == "ANIM") {
+    // Update stuff every frame
+    if (mousePressed == false) {
+      dialogMouseLockout = false;
+    }
+    
+    if (mousePressed && !dialogMouseLockout) {
+      // LMB
+      if (lastNoClick) {
+        updateMouseClickMenu();
+        lastNoClick = false;
+      }
+    } else {
+      updateMouseOverMenu();
+      lastNoClick = true;
+    }
   }
 
 }
@@ -395,6 +413,11 @@ void keyPressed() {
     } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT && keyCode!=LEFT && keyCode!=RIGHT && keyCode!=UP && keyCode!=DOWN) {
       inputText = inputText + key;
     }    
+  } else if (inputMode == "ANIM") {
+    if (keyCode == BACKSPACE || keyCode == ESC) {
+      inputCancel();
+      key = 0;
+    }
   }
 }
 
