@@ -10,6 +10,7 @@
 // Animation Keyframes / Export etc...
 // - Keyframe menu filtering
 // - Keymap + Keyboard Shortcuts
+// - Ani positioning export & struct stuff
 // - Ani position mode
 
 import controlP5.*;

@@ -66,7 +66,7 @@ float getAnimLength(String _anim) {
     for (int i=0; i < expAnims.size(); i++) {
       AnimConfig _tAnim = expAnims.get(i);
       if (_tAnim.name.equals(_anim)) {
-        return _tAnim.length / 30.0;
+        return _tAnim.length / 29.97;
       }
     }
   }

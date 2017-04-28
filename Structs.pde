@@ -23,8 +23,8 @@ public class AgendaEvent {
 // stats (credits, agendas, etc...)
 
 public class Keyframe {
-  public float time;
-  public float duration;
+  public float time; // Keyframe timecode in seconds
+  public float duration; // Keyframe duration in seconds. Used for animations.
   public int value;
   public String stringValue;
   public int side;
