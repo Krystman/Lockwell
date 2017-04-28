@@ -68,6 +68,8 @@ void export(String _path) {
 }
 
 XML exportTimeline(VideoContainer _vCon, String _name) {
+  int aniCount = 1;
+  ArrayList <Keyframe> _aniLeftOvers = null;
   XML _ret;
   _ret = new XML("sequence");
   _ret.setString("id", "sequence-" + idCounterSeq);
@@ -95,37 +97,41 @@ XML exportTimeline(VideoContainer _vCon, String _name) {
   _track.setString("MZ.TrackName", "Credits R");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _vCon, RIGHTPLAYER, KFCREDITS);
+  keyframesToClips(_track, _vCon, RIGHTPLAYER, KFCREDITS, null);
 
   _track = _video.addChild("track");
   _track.setString("MZ.TrackName", "Credits L");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _vCon, LEFTPLAYER, KFCREDITS);
+  keyframesToClips(_track, _vCon, LEFTPLAYER, KFCREDITS, null);
 
   _track = _video.addChild("track");
   _track.setString("MZ.TrackName", "Agendas R");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _vCon, RIGHTPLAYER, KFAGENDAS);
+  keyframesToClips(_track, _vCon, RIGHTPLAYER, KFAGENDAS, null);
 
   _track = _video.addChild("track");
   _track.setString("MZ.TrackName", "Agendas L");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _vCon, LEFTPLAYER, KFAGENDAS);
-
-  _track = _video.addChild("track");
-  _track.setString("MZ.TrackName", "Anims");
-  _track.addChild("enabled").setContent("TRUE");
-  _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _vCon, BOTHPLAYERS, KFANIMS);
+  keyframesToClips(_track, _vCon, LEFTPLAYER, KFAGENDAS, null);
+  
+  // Export animations
+  do {
+    _track = _video.addChild("track");
+    _track.setString("MZ.TrackName", "Anims " + aniCount);
+    _track.addChild("enabled").setContent("TRUE");
+    _track.addChild("locked").setContent("FALSE");
+    _aniLeftOvers = keyframesToClips(_track, _vCon, BOTHPLAYERS, KFANIMS, _aniLeftOvers);
+    aniCount = aniCount + 1;
+  } while (_aniLeftOvers.size() > 0);
 
   _track = _video.addChild("track");
   _track.setString("MZ.TrackName", "Notes");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
-  keyframesToClips(_track, _vCon, LEFTPLAYER, KFCOMMENTS);
+  keyframesToClips(_track, _vCon, LEFTPLAYER, KFCOMMENTS, null);
 
   XML _audio = _media.addChild("audio");
   XML _audioFormat = _audio.addChild("format");
@@ -136,25 +142,43 @@ XML exportTimeline(VideoContainer _vCon, String _name) {
   return _ret;
 }
 
-void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _typeFilter) {
+ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _typeFilter, ArrayList <Keyframe> _lastLeftOvers) {
+  // Outputs keyframes of a specific type to an XML parent
+  // Returns leftover keyframes if one track wasn't enough
+  // The latter is used for animations
+  
+  // Warning. This has grown to be a bit of Spaghetti Code.
   Keyframe _tempF1 = null;
   Keyframe _tempF2 = null;
-
+  Keyframe _tempF3 = null;
+  
   int frameIn;
   int frameOut;
+  int frameIn2;
+  int frameOut2;
   int frameLength;
-
+  
+  Boolean overlap = false;
+  
   Footage _footage;
-
-  ArrayList <Keyframe> _kf = _vCon.keyframes;
+  ArrayList <Keyframe> _kf ;
   ArrayList <Footage> _lib;
-
-  // Get a filtered Arraylist
-  ArrayList <Keyframe> _filtered = filterKeyframes(_kf, _sideFilter, _typeFilter);
-
-  // Sort by time
-  sortByTime(_filtered);
-
+  ArrayList <Keyframe> _filtered;
+  ArrayList <Keyframe> _leftOvers = new ArrayList <Keyframe>();
+  
+  if (_lastLeftOvers != null) {
+    _kf = _lastLeftOvers;
+    _filtered = _lastLeftOvers;
+  } else {
+    _kf = _vCon.keyframes;
+    
+    // Get a filtered Arraylist
+    _filtered = filterKeyframes(_kf, _sideFilter, _typeFilter);
+  
+    // Sort by time
+    sortByTime(_filtered);
+  }
+  
   if (_typeFilter == KFAGENDAS) {
     _lib = agendaLib;
   } else if (_typeFilter == KFCREDITS) {
@@ -165,7 +189,7 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
     _lib = otherLib;
   } else {
     println("Can't keyframesToClips. Unknown type Filter " + _typeFilter);
-    return;
+    return null;
   }
 
   if (_filtered != null) {
@@ -179,11 +203,12 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
     _filtered.add(_tkf);
 
     for (int i = 0; i < _filtered.size()-1; i++) {
+      overlap = false;
       _tempF1 = _filtered.get(i);
       _tempF2 = _filtered.get(i+1);
       frameIn = int(_tempF1.time * 29.97);
       frameOut = int(_tempF2.time * 29.97);
-
+      
       if (_typeFilter == KFCOMMENTS) {
         frameOut = int((_tempF1.time+1.0f) * 29.97);
       }
@@ -193,15 +218,34 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
         _footage = null;
         if (_typeFilter == KFCOMMENTS) {
           _footage = blankFootage;
-        } else if (_typeFilter == KFANIMS) {
-          for (int j = 0; j < _lib.size() && _footage == null; j++) {
-            _footage = _lib.get(j); //<>//
-            if (_footage.stringValue.equals(_tempF1.stringValue) == false) {
-              _footage = null;
+        } else if (_typeFilter == KFANIMS) {     
+          // If Animation, check if it overlaps with a previous animation
+          if (i>0) {
+            for (int j = 0; j < i; j++) {
+              _tempF3 = _filtered.get(j);
+              frameIn2 = int(_tempF3.time * 29.97);
+              frameOut2 = frameIn2 + int(_tempF3.duration * 29.97);
+              if ((frameIn2 < frameIn && frameOut2 > frameIn) || (frameIn2 >= frameIn && frameIn2 < frameOut)) {
+                // Current animation is overlapping with a previous one.
+                // Put this into the leftover ArrayList
+                _leftOvers.add(_tempF1);
+                overlap = true;
+                break;
+              }
             }
           }
-          if (_footage != null) {
-            frameOut = frameIn + _footage.duration;
+          
+          // Now find the clip associated with the keyframe
+          if (!overlap) {
+            for (int j = 0; j < _lib.size() && _footage == null; j++) {
+              _footage = _lib.get(j); //<>//
+              if (_footage.stringValue.equals(_tempF1.stringValue) == false) {
+                _footage = null;
+              }
+            }
+            if (_footage != null) {
+              frameOut = frameIn + _footage.duration;
+            }
           }
         } else {
           for (int j = 0; j < _lib.size() && _footage == null; j++) {
@@ -211,9 +255,9 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
             }
           }
         }
-        if (_footage == null) {
+        if (_footage == null && !overlap) {
           println("Problems in keyframesToClips. Can't find value " + _tempF1.value + " for type " + _typeFilter + " for side " + _tempF1.side);
-        } else {
+        } else if (!overlap) {
           XML _clipItem = _track.addChild("clipitem");
           _clipItem.addChild("masterclipid").setContent(_footage.masterclipid);
           if (_typeFilter == KFCOMMENTS) {
@@ -238,6 +282,7 @@ void keyframesToClips(XML _track, VideoContainer _vCon, int _sideFilter, int _ty
       }
     }
   }
+  return _leftOvers;
 }
 
 
