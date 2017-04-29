@@ -295,10 +295,10 @@ void saveVData() {
         _temp.setIntContent(_tempKeyframe.value);
         _temp.setInt("side", _tempKeyframe.side);
       }
-      if (_tempKeyframe.x != 0.5) {
+      if (_tempKeyframe.x != 0.0) {
         _temp.setFloat("x", _tempKeyframe.x);
       }
-      if (_tempKeyframe.y != 0.5) {
+      if (_tempKeyframe.y != 0.0) {
         _temp.setFloat("y", _tempKeyframe.y);
       }
     }

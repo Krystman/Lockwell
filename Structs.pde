@@ -29,8 +29,14 @@ public class Keyframe {
   public String stringValue;
   public int side;
   public int type;
-  public float x = 0.5;
-  public float y = 0.5;  
+  // Position of the clip on the screen.
+  // Units are multiples of screen width / height
+  // 0.0 means centered
+  // -1.0 means offscreen left or up
+  // 1.0 means offscreen right or down
+  // -0.5 means the center of the clip is at the left or upper edge
+  public float x = 0.0;
+  public float y = 0.0;  
 }
 
 // This is to old video information so that multiple videos can be loaded

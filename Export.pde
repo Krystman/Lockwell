@@ -211,6 +211,8 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
       
       if (_typeFilter == KFCOMMENTS) {
         frameOut = int((_tempF1.time+1.0f) * 29.97);
+      } else if (_typeFilter == KFANIMS) {
+        frameOut = frameIn + int(_tempF1.duration * 29.97);
       }
 
       if (frameIn != frameOut) {
@@ -220,7 +222,7 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
           _footage = blankFootage;
         } else if (_typeFilter == KFANIMS) {     
           // If Animation, check if it overlaps with a previous animation
-          if (i>0) {
+          if (i > 0) { //<>//
             for (int j = 0; j < i; j++) {
               _tempF3 = _filtered.get(j);
               frameIn2 = int(_tempF3.time * 29.97);
@@ -238,7 +240,7 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
           // Now find the clip associated with the keyframe
           if (!overlap) {
             for (int j = 0; j < _lib.size() && _footage == null; j++) {
-              _footage = _lib.get(j); //<>//
+              _footage = _lib.get(j);
               if (_footage.stringValue.equals(_tempF1.stringValue) == false) {
                 _footage = null;
               }
@@ -278,6 +280,11 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
           }
           _clipItem.addChild("alphatype").setContent("straight");
           _clipItem.addChild("file").setString("id", _footage.fileid);
+          
+          // Add transform filter if clip is supposed to appear at a certain postion
+          if (_tempF1.x != 0.0 || _tempF1.y != 0.0) {
+            _clipItem.addChild(filterXML(_tempF1.x, _tempF1.y));
+          }
         }
       }
     }
@@ -330,6 +337,27 @@ XML exportLib(ArrayList <Footage> _lib, String _name) {
     _video2.addChild("duration").setIntContent(_tempF.duration);
     _video2.addChild(sticsXML());
   }
+  return _ret;
+}
+
+XML filterXML(float _x, float _y) {
+  XML _ret = new XML("filter");
+  XML _effect = _ret.addChild("effect");
+  
+  _effect.addChild("name").setContent("Basic Motion");
+  _effect.addChild("effectid").setContent("basic");
+  _effect.addChild("effectcategory").setContent("motion");
+  _effect.addChild("effecttype").setContent("motion");
+  _effect.addChild("mediatype").setContent("video");
+  
+  XML _param = _effect.addChild("parameter");
+  _param.setString("authoringApp", "PremierePro");
+  _param.addChild("parameterid").setContent("center");
+  _param.addChild("name").setContent("Center");
+  
+  XML _val = _param.addChild("value");
+  _val.addChild("horiz").setFloatContent(_x);
+  _val.addChild("vert").setFloatContent(_y);
   return _ret;
 }
 
