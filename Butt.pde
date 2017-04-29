@@ -233,7 +233,7 @@ class Butt {
       if (aniKeyframe != null) {
         text(t,x+6+18,y+3+yOffset,w-(12+18),h-3);
         float perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
-        arc(x+6+6,y+6+6+yOffset,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
+        arc(x+6+6,y+6+6+yOffset,12,12,(-2*PI) * (1-perc) - (PI/2),0f - (PI/2));
       } else {
         text(t,x+6,y+3+yOffset,w-12,h-3);
       }
@@ -243,7 +243,8 @@ class Butt {
       if (aniKeyframe != null) {
         text(t,x+6,y+3+yOffset,w-(12+18+6),h-3);
         float perc = ((headPos - aniKeyframe.time)/aniKeyframe.duration);
-        arc(x+w-(12+6),y+6+6+yOffset,12,12,0f - (PI/2),(2*PI) * perc - (PI/2));
+        //arc(x+w-(12+6),y+6+6+yOffset,12,12,0f - (PI/2),(2*PI) * perc - (PI/2)); // Old style
+        arc(x+w-(12+6),y+6+6+yOffset,12,12,(-2*PI) * (1-perc) - (PI/2),0f - (PI/2));
       } else {
         text(t,x+6,y+3+yOffset,w-(12+6),h-3);
       }

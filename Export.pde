@@ -212,7 +212,7 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
       if (_typeFilter == KFCOMMENTS) {
         frameOut = int((_tempF1.time+1.0f) * 29.97);
       } else if (_typeFilter == KFANIMS) {
-        frameOut = frameIn + int(_tempF1.duration * 29.97);
+        frameOut = frameIn + round(_tempF1.duration * 29.97);
       }
 
       if (frameIn != frameOut) {
@@ -247,6 +247,7 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
             }
             if (_footage != null) {
               frameOut = frameIn + _footage.duration;
+              frameLength = _footage.duration;
             }
           }
         } else {
@@ -276,7 +277,8 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
             _clipItem.addChild("out").setContent("" + (120 + frameLength));
           } else {
             _clipItem.addChild("in").setContent("0");
-            _clipItem.addChild("out").setContent("" + frameLength);            
+            _clipItem.addChild("out").setContent("" + frameLength);
+            _clipItem.addChild("duration").setContent("" + frameLength);
           }
           _clipItem.addChild("alphatype").setContent("straight");
           _clipItem.addChild("file").setString("id", _footage.fileid);
