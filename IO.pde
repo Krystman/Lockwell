@@ -230,6 +230,12 @@ void loadVData() {
     for (int i = 0; i < _anims.length; i++) {
       Keyframe tKf = addKeyframe(KFANIMS, _anims[i].getFloat("t"), 0, _anims[i].getInt("side"), _anims[i].getContent());
       tKf.duration = getAnimLength(tKf.stringValue);
+      if (_anims[i].getString("x") != null) {
+        tKf.x = _anims[i].getFloat("x");
+      }
+      if (_anims[i].getString("y") != null) {
+        tKf.y = _anims[i].getFloat("y");
+      }
     }
   }
   
@@ -288,6 +294,12 @@ void saveVData() {
       } else {
         _temp.setIntContent(_tempKeyframe.value);
         _temp.setInt("side", _tempKeyframe.side);
+      }
+      if (_tempKeyframe.x != 0.5) {
+        _temp.setFloat("x", _tempKeyframe.x);
+      }
+      if (_tempKeyframe.y != 0.5) {
+        _temp.setFloat("y", _tempKeyframe.y);
       }
     }
   }

@@ -29,6 +29,8 @@ public class Keyframe {
   public String stringValue;
   public int side;
   public int type;
+  public float x = 0.5;
+  public float y = 0.5;  
 }
 
 // This is to old video information so that multiple videos can be loaded
