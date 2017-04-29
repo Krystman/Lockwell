@@ -485,26 +485,34 @@ void switchToEdit() {
 void createAnimMenus() {
   animMenuL = new ArrayList<Butt>();
   animMenuR = new ArrayList<Butt>();
+  int j = 0;
   if (expAnims!=null) {
     for (int i = 0; i < expAnims.size(); i++) {
       AnimConfig _ACfg = expAnims.get(i); 
-      String buttname = _ACfg.name;
-      buttname = buttname.toUpperCase();
-      Butt tButt = new Butt(buttname, addAniButtL.x+190+5, addAniButtL.y + (28 * i), 190, 24);
-      tButt.verb = "ANIML";
-      tButt.noun = _ACfg.name;
-      tButt.setStyle("ANIML");
-      animMenuL.add(tButt);
+      if (_ACfg.side != RIGHTPLAYER) {
+        String buttname = _ACfg.name;
+        buttname = buttname.toUpperCase();
+        Butt tButt = new Butt(buttname, addAniButtL.x+190+5, addAniButtL.y + (28 * j), 190, 24);
+        tButt.verb = "ANIML";
+        tButt.noun = _ACfg.name;
+        tButt.setStyle("ANIML");
+        animMenuL.add(tButt);
+        j++;
+      }
     }
+    j = 0;
     for (int i = 0; i < expAnims.size(); i++) {
-      AnimConfig _ACfg = expAnims.get(i); 
-      String buttname = _ACfg.name;
-      buttname = buttname.toUpperCase();
-      Butt tButt = new Butt(buttname, addAniButtR.x-(190+5), addAniButtR.y + (28 * i), 190, 24);
-      tButt.verb = "ANIMR";
-      tButt.noun = _ACfg.name;
-      tButt.setStyle("ANIMR");
-      animMenuR.add(tButt);
+      AnimConfig _ACfg = expAnims.get(i);
+      if (_ACfg.side != LEFTPLAYER) {
+        String buttname = _ACfg.name;
+        buttname = buttname.toUpperCase();
+        Butt tButt = new Butt(buttname, addAniButtR.x-(190+5), addAniButtR.y + (28 * j), 190, 24);
+        tButt.verb = "ANIMR";
+        tButt.noun = _ACfg.name;
+        tButt.setStyle("ANIMR");
+        animMenuR.add(tButt);
+        j++;
+      }
     }
   }
 }

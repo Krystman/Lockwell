@@ -8,7 +8,6 @@
 
 // Currently Working on
 // Animation Keyframes / Export etc...
-// - Keyframe menu filtering
 // - Keymap + Keyboard Shortcuts
 // - Ani position mode
 

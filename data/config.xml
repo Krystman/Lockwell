@@ -22,12 +22,14 @@
 			<path>file://localhost/C%3a/netrunner/important%20stuff/runani/</path>
 			<file>RunL.avi</file>
 			<length>40</length>
+			<side>R</side>
 		</anim>
 		<anim>
 			<name>run right</name>
 			<path>file://localhost/C%3a/netrunner/important%20stuff/runani/</path>
 			<file>RunR.avi</file>
 			<length>40</length>
+			<side>L</side>
 		</anim>
 		<anim>
 			<name>mandatory draw</name>

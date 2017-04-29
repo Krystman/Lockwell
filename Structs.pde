@@ -90,4 +90,5 @@ public class AnimConfig {
   public String path;
   public String file;
   public int length;
+  public int side;
 }

@@ -57,6 +57,16 @@ void loadConfig() {
         _tCfg.path = _animNodes[i].getChild("path").getContent();
         _tCfg.file = _animNodes[i].getChild("file").getContent();
         _tCfg.length = _animNodes[i].getChild("length").getIntContent();
+        _tCfg.side = BOTHPLAYERS;
+        if (_animNodes[i].getChild("side") != null) {
+          String _mySide = _animNodes[i].getChild("side").getContent();
+          _mySide = _mySide.toUpperCase();
+          if (_mySide.equals("L") || _mySide.equals("LEFT")) {
+            _tCfg.side = LEFTPLAYER;
+          } else if (_mySide.equals("R") || _mySide.equals("RIGHT")) {
+            _tCfg.side = RIGHTPLAYER;
+          }
+        }
         expAnims.add(_tCfg);
       }
     }
