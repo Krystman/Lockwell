@@ -16,6 +16,11 @@ Keyframe addKeyframe(int _type, float _time, int _value, int _side, String _stin
   return _tempKeyframe;
 }
 
+void addThisKeyframe(Keyframe _kf) {
+  keyframes.add(_kf);
+  dirty = true;  
+}
+
 // This deletes a keyframe
 void clearKeyframe(int _type, float _time, int _side) {
   Keyframe _tempFrame;
@@ -189,12 +194,6 @@ void commentConfirm(String _str) {
     }
   }
   dirty = true;  
-}
-
-// This is what gets executed when you press a button to add an Anim
-void animButt(String _anim, int _side) {
-  Keyframe tKf = addKeyframe(KFANIMS, headPos, 0, _side, _anim);
-  tKf.duration = getAnimLength(tKf.stringValue);
 }
 
 // This returns ANY keyframe time before the current head position if possible

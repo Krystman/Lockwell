@@ -52,6 +52,10 @@ void beginAddAnim(int _side) {
   inputMode = "ANIM";
 }
 
+void beginAnimPos() {
+  inputMode = "ANIMPOS";
+}
+
 void beginCommentInput() {
   inputMode = "TEXT";
   if (selFrameComment == null) {
@@ -65,6 +69,9 @@ void beginCommentInput() {
 }
 
 void inputConfirm() {
+  if (inputMode == "ANIMPOS") {
+    addThisKeyframe(inputKeyframe);
+  }
   inputMode = "";
   if (inputTarget == "COMMENT") {
     commentConfirm(inputText);
@@ -111,6 +118,16 @@ void drawAnimInput() {
       buttMenu.get(i).drawMe();
     }
   }
+}
+
+void drawAnimPosInput() {
+  for (int i = 0; i < buttMenu.size(); i++) {
+    if (buttMenu.get(i).visible) {
+      buttMenu.get(i).drawMe();
+    }
+  }
+  fill(0,0,0,162);
+  rect(0,0,width,height);
 }
 
 // This draws the video tracker bar
@@ -924,10 +941,10 @@ void buttonCommand(String _verb, String _noun) {
     switchToLoad();
   } else if (_verb == "ANIML") {
     animButt(_noun, LEFTPLAYER);
-    inputConfirm();
+    beginAnimPos();
   } else if (_verb == "ANIMR") {
     animButt(_noun, RIGHTPLAYER);
-    inputConfirm();
+    beginAnimPos();
   }
 }
 
@@ -1030,6 +1047,16 @@ boolean buttonCommandDel(String _verb, String _noun) {
   return false;
 }
 
+// This is what gets executed when you press a button to add an Anim
+void animButt(String _anim, int _side) {
+  inputKeyframe = new Keyframe();
+  inputKeyframe.type = KFANIMS;
+  inputKeyframe.time = headPos;
+  inputKeyframe.value = 0;
+  inputKeyframe.side = _side;
+  inputKeyframe.stringValue = _anim;
+  inputKeyframe.duration = getAnimLength(_anim);
+}
 
 String formatTimeCode(float _t) {
   String ret;

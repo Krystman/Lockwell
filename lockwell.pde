@@ -8,8 +8,11 @@
 
 // Currently Working on
 // Animation Keyframes / Export etc...
-// - Keymap + Keyboard Shortcuts
 // - Ani position mode
+// - Ani position axis restrict
+// - Ani position memory
+// - Keymap + Keyboard Shortcuts
+
 
 import controlP5.*;
 import processing.video.*;
@@ -73,6 +76,8 @@ String UIMode = "LOAD";
 String inputMode = "";
 String inputText = "";
 String inputTarget = "";
+Keyframe inputKeyframe;
+
 boolean blink; // This is to make some UI stuff blink
 int blinker;
 
@@ -199,6 +204,8 @@ void draw() {
         drawInput();
       } else if (inputMode == "ANIM") {
         drawAnimInput();
+      } else if (inputMode == "ANIMPOS") {
+        drawAnimPosInput();
       }
     }
   }
@@ -249,6 +256,21 @@ void update() {
       updateMouseOverMenu();
       lastNoClick = true;
     }
+  } else if (inputMode == "ANIMPOS") {
+    // Update stuff every frame
+    if (mousePressed == false) {
+      dialogMouseLockout = false;
+    }
+    
+    if (mousePressed && !dialogMouseLockout) {
+      // LMB
+      if (lastNoClick) {
+        inputConfirm();
+        lastNoClick = false;
+      }
+    } else {
+      lastNoClick = true;
+    }    
   }
 
 }
@@ -413,6 +435,11 @@ void keyPressed() {
       inputText = inputText + key;
     }    
   } else if (inputMode == "ANIM") {
+    if (keyCode == BACKSPACE || keyCode == ESC) {
+      inputCancel();
+      key = 0;
+    }
+  } else if (inputMode == "ANIMPOS") {
     if (keyCode == BACKSPACE || keyCode == ESC) {
       inputCancel();
       key = 0;
