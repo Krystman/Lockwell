@@ -54,8 +54,6 @@ void beginAddAnim(int _side) {
 
 void beginAnimPos() {
   inputMode = "ANIMPOS";
-  inputLastX = 0.5;
-  inputLastY = 0.5;
 }
 
 void beginCommentInput() {
@@ -141,14 +139,16 @@ void drawAnimPosInput() {
   
   inputX = constrain(inputX, 0.0, 1.0);
   inputY = constrain(inputY, 0.0, 1.0);
+  inputX = inputX - 0.5;
+  inputY = inputY - 0.5;
   
-  line(0, videoY + (inputY * videoHeight), videoWidth, videoY + (inputY * videoHeight));
-  line(inputX * videoWidth, videoY, inputX * videoWidth, videoHeight + videoY);
+  line(0, videoY + ((inputY + 0.5) * videoHeight), videoWidth, videoY + ((inputY + 0.5) * videoHeight));
+  line((inputX + 0.5) * videoWidth, videoY, (inputX + 0.5) * videoWidth, videoHeight + videoY);
   
   stroke(color5);
   
-  dashedLine(0, videoY + (inputLastY * videoHeight), videoWidth, videoY + (inputLastY * videoHeight), 3);
-  dashedLine(inputLastX * videoWidth, videoY, inputLastX * videoWidth, videoHeight + videoY, 3);
+  dashedLine(0, videoY + ((inputLastY + 0.5) * videoHeight), videoWidth, videoY + ((inputLastY + 0.5) * videoHeight), 3);
+  dashedLine((inputLastX + 0.5) * videoWidth, videoY, (inputLastX + 0.5) * videoWidth, videoHeight + videoY, 3);
   
 }
 
@@ -702,7 +702,7 @@ void updateValues() {
       String buttname = _tempFrame.stringValue;
       buttname = buttname.toUpperCase();
       Butt tButt = new Butt(buttname, 5+17+4, creditButtL.y + creditButtL.h + 15 + (28 * (i+1)), 190, 24);
-      tButt.verb = "";
+      tButt.verb = "EDITANI";
       tButt.noun = "";
       tButt.setStyle("ANIML");
       tButt.aniKeyframe = _tempFrame;
@@ -734,7 +734,7 @@ void updateValues() {
       String buttname = _tempFrame.stringValue;
       buttname = buttname.toUpperCase();
       Butt tButt = new Butt(buttname, videoWidth-(190+5+17+4), creditButtR.y + creditButtR.h + 15 + (28 * (i+1)), 190, 24);
-      tButt.verb = "DELETEANI";
+      tButt.verb = "EDITANI";
       tButt.noun = "";
       tButt.setStyle("ANIMR");
       tButt.aniKeyframe = _tempFrame;
@@ -869,7 +869,7 @@ void updateMouseClick() {
         
         tButt.state = "CLICK";
         if (mouseButton == LEFT) { 
-          buttonCommand(tButt.verb, tButt.noun);
+          buttonCommand(tButt.verb, tButt.noun, tButt.aniKeyframe);
         } else if (mouseButton == RIGHT) {
           buttonCommandRight(tButt.verb, tButt.noun);
         }
@@ -901,7 +901,7 @@ void updateMouseClickMenu() {
         
         tButt.state = "CLICK";
         if (mouseButton == LEFT) { 
-          buttonCommand(tButt.verb, tButt.noun);
+          buttonCommand(tButt.verb, tButt.noun, null);
         } else if (mouseButton == RIGHT) {
           buttonCommandRight(tButt.verb, tButt.noun);
         }
@@ -921,7 +921,7 @@ void updateMousePressed() {
   }
 }
 
-void buttonCommand(String _verb, String _noun) {
+void buttonCommand(String _verb, String _noun, Keyframe _kf) {
   //println(_verb + " " + _noun);
   if (_verb == "LOAD") {
     if (_noun == "") {
@@ -962,10 +962,13 @@ void buttonCommand(String _verb, String _noun) {
     saveVData();
     switchToLoad();
   } else if (_verb == "ANIML") {
-    animButt(_noun, LEFTPLAYER);
+    animNewButt(_noun, LEFTPLAYER);
     beginAnimPos();
   } else if (_verb == "ANIMR") {
-    animButt(_noun, RIGHTPLAYER);
+    animNewButt(_noun, RIGHTPLAYER);
+    beginAnimPos();
+  } else if (_verb == "EDITANI") {
+    animButt(_kf);
     beginAnimPos();
   }
 }
@@ -1006,10 +1009,10 @@ void buttonCommandRight(String _verb, String _noun) {
 
 boolean buttonCommandPlus(String _verb, String _noun) {
   if (_verb == "AGENDA") {
-    buttonCommand(_verb, _noun);
+    buttonCommand(_verb, _noun, null);
     return true;
   } else if (_verb == "CREDIT") {
-    buttonCommand(_verb, _noun);
+    buttonCommand(_verb, _noun, null);
     return true;
   }
   return false;
@@ -1028,19 +1031,19 @@ boolean buttonCommandMinus(String _verb, String _noun) {
 
 boolean buttonCommandEnter(String _verb, String _noun) {
   if (_verb == "LOAD") {
-    buttonCommand(_verb, _noun);
+    buttonCommand(_verb, _noun, null);
     return true;
   } else if (_verb == "COMMENT") {
-    buttonCommand(_verb, _noun);
+    buttonCommand(_verb, _noun, null);
     return true;
   } else if (_verb == "SAVE") {
-    buttonCommand(_verb, _noun);
+    buttonCommand(_verb, _noun, null);
     return true;
   } else if (_verb == "EXPORT") {
-    buttonCommand(_verb, _noun);
+    buttonCommand(_verb, _noun, null);
     return true;
   } else if (_verb == "SAVECLOSE") {
-    buttonCommand(_verb, _noun);
+    buttonCommand(_verb, _noun, null);
     return true;
   }
   return false;
@@ -1070,7 +1073,7 @@ boolean buttonCommandDel(String _verb, String _noun) {
 }
 
 // This is what gets executed when you press a button to add an Anim
-void animButt(String _anim, int _side) {
+void animNewButt(String _anim, int _side) {
   inputKeyframe = new Keyframe();
   inputKeyframe.type = KFANIMS;
   inputKeyframe.time = headPos;
@@ -1078,7 +1081,17 @@ void animButt(String _anim, int _side) {
   inputKeyframe.side = _side;
   inputKeyframe.stringValue = _anim;
   inputKeyframe.duration = getAnimLength(_anim);
+  inputLastX = 0.0;
+  inputLastY = 0.0;
   inputTarget = "NEW";
+}
+
+// This is what gets executed when you press a button to edit an animation
+void animButt(Keyframe _kf) {
+  inputKeyframe = _kf;
+  inputLastX = _kf.x;
+  inputLastY = _kf.y;
+  inputTarget = "EDIT";
 }
 
 String formatTimeCode(float _t) {
