@@ -84,11 +84,16 @@ public class KeyMap {
   public Butt right;
 }
 
-// This holds config data for export of animations
+// This holds various data about animations. Mainly for export. But also for UI stuff.
 public class AnimConfig {
   public String name;
   public String path;
   public String file;
   public int length;
   public int side;
+  public int positioning;
+  float lastXL = 0.0;
+  float lastYL = 0.0;
+  float lastXR = 0.0;
+  float lastYR = 0.0;  
 }

@@ -23,6 +23,7 @@
 			<file>RunL.avi</file>
 			<length>40</length>
 			<side>R</side>
+			<positioning>Y</positioning>
 		</anim>
 		<anim>
 			<name>run right</name>
@@ -30,12 +31,14 @@
 			<file>RunR.avi</file>
 			<length>40</length>
 			<side>L</side>
+			<positioning>Y</positioning>
 		</anim>
 		<anim>
 			<name>mandatory draw</name>
 			<path>file://localhost/C%3a/netrunner/important%20stuff/overlays2/</path>
 			<file>pulse_mandraw.avi</file>
 			<length>61</length>
+			<positioning>X</positioning>
 		</anim>
 		<anim>
 			<name>draw</name>

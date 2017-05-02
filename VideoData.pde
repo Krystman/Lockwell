@@ -78,6 +78,21 @@ float getAnimLength(String _anim) {
   return 1.0;
 }
 
+// Returns the length of an animation
+AnimConfig getAnimCfg(String _anim) {
+  AnimConfig _found = null;
+  if (expAnims != null) {
+    for (int i=0; i < expAnims.size(); i++) {
+      AnimConfig _tAnim = expAnims.get(i);
+      if (_tAnim.name.equals(_anim)) {
+        _found = _tAnim;
+        break;
+      }
+    }
+  }
+  return _found;
+}
+
 // This gets a value of the last keyframe of a certain stat at any given time
 // Basically it gets the credit count at any given time for example
 Keyframe getKeyframe(int _type, float _time, int _side) {

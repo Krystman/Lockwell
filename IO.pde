@@ -67,6 +67,16 @@ void loadConfig() {
             _tCfg.side = RIGHTPLAYER;
           }
         }
+        _tCfg.positioning = 0;
+        if (_animNodes[i].getChild("positioning") != null) {
+          String _myP = _animNodes[i].getChild("positioning").getContent();
+          _myP = _myP.toUpperCase();
+          if (_myP.equals("X")) {
+            _tCfg.positioning = 1;
+          } else if (_myP.equals("Y")) {
+            _tCfg.positioning = 2;
+          }
+        }
         expAnims.add(_tCfg);
       }
     }

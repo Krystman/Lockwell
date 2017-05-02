@@ -124,32 +124,44 @@ void drawAnimInput() {
   }
 }
 
-void drawAnimPosInput() {  
-  for (int i = 0; i < buttMenu.size(); i++) {
-    if (buttMenu.get(i).visible) {
-      buttMenu.get(i).drawMe();
+void drawAnimPosInput() {
+  if (inputTarget == "NEW") {
+    for (int i = 0; i < buttMenu.size(); i++) {
+      if (buttMenu.get(i).visible) {
+        buttMenu.get(i).drawMe();
+      }
     }
   }
   fill(0,0,0,162);
   rect(0,0,width,height);
-  stroke(color2);
-  
-  inputX = mouseX / videoWidth;
-  inputY = (mouseY - videoY) / videoHeight;
-  
-  inputX = constrain(inputX, 0.0, 1.0);
-  inputY = constrain(inputY, 0.0, 1.0);
-  inputX = inputX - 0.5;
-  inputY = inputY - 0.5;
-  
-  line(0, videoY + ((inputY + 0.5) * videoHeight), videoWidth, videoY + ((inputY + 0.5) * videoHeight));
-  line((inputX + 0.5) * videoWidth, videoY, (inputX + 0.5) * videoWidth, videoHeight + videoY);
   
   stroke(color5);
+  if (inputPositioning == 0 || inputPositioning == 1) {
+    dashedLine((inputLastX + 0.5) * videoWidth, videoY, (inputLastX + 0.5) * videoWidth, videoHeight + videoY, 3);
+  } else {
+    inputLastX = 0.0;
+  }
+  if (inputPositioning == 0 || inputPositioning == 2) {
+    dashedLine(0, videoY + ((inputLastY + 0.5) * videoHeight), videoWidth, videoY + ((inputLastY + 0.5) * videoHeight), 3);
+  } else {
+    inputLastY = 0.0;
+  }
   
-  dashedLine(0, videoY + ((inputLastY + 0.5) * videoHeight), videoWidth, videoY + ((inputLastY + 0.5) * videoHeight), 3);
-  dashedLine((inputLastX + 0.5) * videoWidth, videoY, (inputLastX + 0.5) * videoWidth, videoHeight + videoY, 3);
-  
+  stroke(color2);
+  if (inputPositioning == 0 || inputPositioning == 1) {
+    inputX = mouseX / videoWidth;
+    inputX = constrain(inputX, 0.0, 1.0) - 0.5;
+    line((inputX + 0.5) * videoWidth, videoY, (inputX + 0.5) * videoWidth, videoHeight + videoY);
+  } else {
+    inputX = 0.0;
+  } 
+  if (inputPositioning == 0 || inputPositioning == 2) {
+    inputY = (mouseY - videoY) / videoHeight;
+    inputY = constrain(inputY, 0.0, 1.0) - 0.5;
+    line(0, videoY + ((inputY + 0.5) * videoHeight), videoWidth, videoY + ((inputY + 0.5) * videoHeight));
+  } else {
+    inputY = 0.0;
+  }
 }
 
 // This draws the video tracker bar
@@ -1084,6 +1096,14 @@ void animNewButt(String _anim, int _side) {
   inputLastX = 0.0;
   inputLastY = 0.0;
   inputTarget = "NEW";
+  
+  AnimConfig _ac = getAnimCfg(_anim);
+  if (_ac != null) {
+    inputPositioning = _ac.positioning;
+  } else {
+    inputPositioning = 0;
+  }
+  
 }
 
 // This is what gets executed when you press a button to edit an animation
@@ -1092,6 +1112,13 @@ void animButt(Keyframe _kf) {
   inputLastX = _kf.x;
   inputLastY = _kf.y;
   inputTarget = "EDIT";
+  
+  AnimConfig _ac = getAnimCfg(_kf.stringValue);
+  if (_ac != null) {
+    inputPositioning = _ac.positioning;
+  } else {
+    inputPositioning = 0;
+  }
 }
 
 String formatTimeCode(float _t) {

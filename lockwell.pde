@@ -80,7 +80,7 @@ Float inputX;
 Float inputY;
 Float inputLastX;
 Float inputLastY;
-
+int inputPositioning; // Positioning mode for Animations. 0 - Free, 1 - Only X, 2 - Only Y 
 Keyframe inputKeyframe;
 
 boolean blink; // This is to make some UI stuff blink
