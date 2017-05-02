@@ -43,9 +43,9 @@ Movie myMovie;
 final float imageratio = 1920.0/1080.0;
 final int bottomUI = 40;
 
-int videoHeight = 360;
-int videoWidth = 360;
-int videoY = 0;
+float videoHeight = 360;
+float videoWidth = 360;
+float videoY = 0;
 
 int menuY = 0;
 int menuHeight = 5 + 24 + 5;
@@ -76,6 +76,11 @@ String UIMode = "LOAD";
 String inputMode = "";
 String inputText = "";
 String inputTarget = "";
+Float inputX;
+Float inputY;
+Float inputLastX;
+Float inputLastY;
+
 Keyframe inputKeyframe;
 
 boolean blink; // This is to make some UI stuff blink

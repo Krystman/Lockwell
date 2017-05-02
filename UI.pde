@@ -54,6 +54,8 @@ void beginAddAnim(int _side) {
 
 void beginAnimPos() {
   inputMode = "ANIMPOS";
+  inputLastX = 0.5;
+  inputLastY = 0.5;
 }
 
 void beginCommentInput() {
@@ -70,7 +72,11 @@ void beginCommentInput() {
 
 void inputConfirm() {
   if (inputMode == "ANIMPOS") {
-    addThisKeyframe(inputKeyframe);
+    inputKeyframe.x = inputX;
+    inputKeyframe.y = inputY;
+    if (inputTarget == "NEW") {
+      addThisKeyframe(inputKeyframe);
+    }
   }
   inputMode = "";
   if (inputTarget == "COMMENT") {
@@ -120,7 +126,7 @@ void drawAnimInput() {
   }
 }
 
-void drawAnimPosInput() {
+void drawAnimPosInput() {  
   for (int i = 0; i < buttMenu.size(); i++) {
     if (buttMenu.get(i).visible) {
       buttMenu.get(i).drawMe();
@@ -128,6 +134,22 @@ void drawAnimPosInput() {
   }
   fill(0,0,0,162);
   rect(0,0,width,height);
+  stroke(color2);
+  
+  inputX = mouseX / videoWidth;
+  inputY = (mouseY - videoY) / videoHeight;
+  
+  inputX = constrain(inputX, 0.0, 1.0);
+  inputY = constrain(inputY, 0.0, 1.0);
+  
+  line(0, videoY + (inputY * videoHeight), videoWidth, videoY + (inputY * videoHeight));
+  line(inputX * videoWidth, videoY, inputX * videoWidth, videoHeight + videoY);
+  
+  stroke(color5);
+  
+  dashedLine(0, videoY + (inputLastY * videoHeight), videoWidth, videoY + (inputLastY * videoHeight), 3);
+  dashedLine(inputLastX * videoWidth, videoY, inputLastX * videoWidth, videoHeight + videoY, 3);
+  
 }
 
 // This draws the video tracker bar
@@ -1056,6 +1078,7 @@ void animButt(String _anim, int _side) {
   inputKeyframe.side = _side;
   inputKeyframe.stringValue = _anim;
   inputKeyframe.duration = getAnimLength(_anim);
+  inputTarget = "NEW";
 }
 
 String formatTimeCode(float _t) {
@@ -1098,3 +1121,33 @@ String trimStringToSize(String _s, int _maxw) {
   }
   return _ret;
 }
+
+void dashedLine(float _x1, float _y1, float _x2, float _y2, float _dashLen) {
+  float _dist = dist(_x1, _y1, _x2, _y2);
+  float dashCount = _dist / _dashLen;
+  
+  float xdiff = (_x2 - _x1) / dashCount;
+  float ydiff = (_y2 - _y1) / dashCount;
+  
+  float _sx = _x1;
+  float _sy = _y1;
+  float _dx = _sx + xdiff;
+  float _dy = _sy + ydiff;
+  
+  int i;
+  
+  i = 0;
+  do {
+    if (i % 4 == 0) {
+      line(_sx, _sy, _dx, _dy);
+    }
+    _sx = _dx;
+    _sy = _dy;
+    _dx = _sx + xdiff;
+    _dy = _sy + ydiff;
+    i++;
+
+  } while (i < int(dashCount));
+
+}  
+  
