@@ -83,5 +83,23 @@
 			<length>61</length>
 			<key>4</key>
 		</anim>
+		<anim>
+			<name>card left</name>
+			<path>file://localhost/C%3a/netrunner/important%20stuff/overlays2/</path>
+			<file>card_placeholder_L.avi</file>
+			<length>144</length>
+			<key>c</key>
+			<side>L</side>
+			<positioning>X</positioning>
+		</anim>
+		<anim>
+			<name>card right</name>
+			<path>file://localhost/C%3a/netrunner/important%20stuff/overlays2/</path>
+			<file>card_placeholder_R.avi</file>
+			<length>144</length>
+			<key>c</key>
+			<side>R</side>
+			<positioning>X</positioning>
+		</anim>
 	</anims>
 </config>

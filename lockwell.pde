@@ -8,9 +8,6 @@
 
 // Currently Working on
 // Animation Keyframes / Export etc...
-// - Ani position memory
-// - Keymap + Keyboard Shortcuts
-// - Keyboard reminders
 // - Delete Keyframes with buttons
 
 import controlP5.*;
@@ -304,7 +301,7 @@ void keyPressed() {
         AnimConfig _found = null;
         for (int i=0; i < expAnims.size(); i++) {
           AnimConfig _tacfg = expAnims.get(i);
-          if (_tacfg.keyShortcut == key) {
+          if (_tacfg.keyShortcut == key && (_tacfg.side == keyboardSelect.side || _tacfg.side == BOTHPLAYERS)) {
             _found = _tacfg;
             break;
           }
@@ -392,8 +389,10 @@ void keyPressed() {
     } else if (keyCode==DELETE || keyCode == BACKSPACE) {
       if (keyboardSelect != null) {
         if (buttonCommandDel(keyboardSelect.verb,keyboardSelect.noun,keyboardSelect.aniKeyframe)) {
-          keyboardSelect.state = "CLICK";
-          keyboardSelect.sustain = 3;
+          if (keyboardSelect != null) {
+            keyboardSelect.state = "CLICK";
+            keyboardSelect.sustain = 3;
+          }
         }
       }  
     }
@@ -436,6 +435,13 @@ void keyPressed() {
       key = 0;
     } else if (keyCode == ENTER || keyCode == RETURN) {
       inputAnimPosLast();
+    } else {
+      if (!keyShift && !keyControl && !keyAlt) {
+        AnimConfig _acfg = getAnimCfg(inputKeyframe.stringValue);
+        if (_acfg != null && _acfg.keyShortcut != 0 && _acfg.keyShortcut == key) {
+          inputAnimPosLast();
+        }
+      }
     }
   }
 }

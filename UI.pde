@@ -290,7 +290,7 @@ void switchToEdit() {
 }
 
 void createKeymap() {
-  
+ 
   // Create keymap
   creditButtL.keyMap.right = creditButtR;
   creditButtL.keyMap.up = agendaButtL;
@@ -594,7 +594,7 @@ void updateValues() {
       buttname = buttname.toUpperCase();
       Butt tButt = new Butt(buttname, 5+17+4, creditButtL.y + creditButtL.h + 15 + (28 * (i+1)), 190, 24);
       tButt.verb = "EDITANI";
-      tButt.noun = "";
+      tButt.noun = "" + i;
       tButt.side = LEFTPLAYER;
       tButt.setStyle("ANIML");
       tButt.aniKeyframe = _tempFrame;
@@ -628,7 +628,7 @@ void updateValues() {
       buttname = buttname.toUpperCase();
       Butt tButt = new Butt(buttname, videoWidth-(190+5+17+4), creditButtR.y + creditButtR.h + 15 + (28 * (i+1)), 190, 24);
       tButt.verb = "EDITANI";
-      tButt.noun = "";
+      tButt.noun = "" + i;
       tButt.side = RIGHTPLAYER;
       tButt.setStyle("ANIMR");
       tButt.aniKeyframe = _tempFrame;
@@ -949,8 +949,14 @@ boolean buttonCommandDel(String _verb, String _noun, Keyframe _kf) {
     commentConfirm("");
     commentButt.dirty = true;
     return true;
+  } else if (_verb == "EDITANI") {
+    clearAnimKeyframe(_kf.side,int(_noun));
+    keyboardSelect = null;
+    return true;
   }
   return false;
+  
+  
 }
 
 // This is what gets executed when you press a button from the dropdown list of animations to add an Anim
@@ -1074,7 +1080,7 @@ void drawAniPosReminder() {
   noStroke();
   fill(color1);
   rect(_x, _y, _w, _h, 2);
-  
+  textAlign(LEFT);
   textFont(smallRoboto);
   fill(color1b);
   text(t,_x+12,_y+4,_w-12,_h-4);
