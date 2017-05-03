@@ -297,6 +297,27 @@ void keyPressed() {
       }
     }
     
+    // Check if animation keyframe shortcut
+    if (expAnims != null && keyboardSelect != null && keyboardSelect.side != BOTHPLAYERS) {
+      AnimConfig _found = null;
+      for (int i=0; i < expAnims.size(); i++) {
+        AnimConfig _tacfg = expAnims.get(i);
+        if (_tacfg.keyShortcut == key) {
+          _found = _tacfg;
+          break;
+        }
+      }
+      if (_found != null) {
+        if (keyboardSelect.side == LEFTPLAYER) {
+          println("LEFT " + _found.name);
+        } else if (keyboardSelect.side == RIGHTPLAYER) {
+          println("RIGHT " + _found.name);
+        }
+        
+      }
+    }
+    
+    
     if (keyCode==32) {
       flipPause();
     } else if (keyCode==LEFT) {

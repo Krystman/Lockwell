@@ -73,6 +73,7 @@ public class AnimConfig {
   public String name;
   public String path;
   public String file;
+  public char keyShortcut;
   public int length;
   public int side; // This restricts the animation to show up for a specific side only
   public int positioning;

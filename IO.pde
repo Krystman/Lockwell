@@ -77,6 +77,10 @@ void loadConfig() {
             _tCfg.positioning = 2;
           }
         }
+        if (_animNodes[i].getChild("key") != null) {
+          String myTempString = _animNodes[i].getChild("key").getContent().toString();
+          _tCfg.keyShortcut = myTempString.charAt(0);
+        }
         expAnims.add(_tCfg);
       }
     }

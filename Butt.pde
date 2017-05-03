@@ -9,6 +9,7 @@ class Butt {
   public String style = "";
   public String verb = "";
   public String noun = "";
+  public int side;
   
   public boolean visible = true;
   public boolean caret = false;

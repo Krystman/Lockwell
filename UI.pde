@@ -160,24 +160,29 @@ void switchToEdit() {
   agendaButtL = new Butt("1",5,5 + videoY,40,48);
   agendaButtL.verb = "AGENDA";
   agendaButtL.noun = "L";
+  agendaButtL.side = LEFTPLAYER;
   agendaButtL.setStyle("AGENDA");
+  agendaButtL.side = LEFTPLAYER;
   butts.add(agendaButtL); 
   
   agendaButtR = new Butt("9",videoWidth-(40+5),5 + videoY,40,48);
   agendaButtR.verb = "AGENDA";
   agendaButtR.noun = "R";
+  agendaButtR.side = RIGHTPLAYER;
   agendaButtR.setStyle("AGENDA");
   butts.add(agendaButtR);
   
   creditButtL = new Butt("55",5,agendaButtL.y + agendaButtL.h + 5,40,32);
   creditButtL.verb = "CREDIT";
   creditButtL.noun = "L";
+  creditButtL.side = LEFTPLAYER;
   creditButtL.setStyle("CREDIT");
   butts.add(creditButtL);
 
   creditButtR = new Butt("49",videoWidth-(40+5),agendaButtR.y + agendaButtR.h + 5,40,32);
   creditButtR.verb = "CREDIT";
   creditButtR.noun = "R";
+  creditButtR.side = RIGHTPLAYER;
   creditButtR.setStyle("CREDIT");
   butts.add(creditButtR);
   
@@ -186,17 +191,20 @@ void switchToEdit() {
   commentButt.setStyle("COMMENT");
   commentButt.w = int(stringButtSize(commentButt.t)+20);
   commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
+  commentButt.side = BOTHPLAYERS;
   butts.add(commentButt);
   
   addAniButtL = new Butt("ADD ANIMATION", 5, creditButtL.y + creditButtL.h + 15, 190, 24);
   addAniButtL.verb = "ADDANIM";
   addAniButtL.noun = "L";
+  addAniButtL.side = LEFTPLAYER;
   addAniButtL.setStyle("ANIML");
   butts.add(addAniButtL);
   
   addAniButtR = new Butt("ADD ANIMATION", videoWidth-(190+5), creditButtR.y + creditButtR.h + 15, 190, 24);
   addAniButtR.verb = "ADDANIM";
   addAniButtR.noun = "R";
+  addAniButtR.side = RIGHTPLAYER;
   addAniButtR.setStyle("ANIMR");
   butts.add(addAniButtR);
   
@@ -204,30 +212,35 @@ void switchToEdit() {
   delAgendaButtL = new Butt("",agendaButtL.x + agendaButtL.w + 3,agendaButtL.y,14,14);
   delAgendaButtL.verb = "DELETE";
   delAgendaButtL.noun = "LA";
+  delAgendaButtL.side = LEFTPLAYER;
   delAgendaButtL.setStyle("KEYFRAME");
   butts.add(delAgendaButtL);
 
   delAgendaButtR = new Butt("",agendaButtR.x - 17,agendaButtR.y,14,14);
   delAgendaButtR.verb = "DELETE";
   delAgendaButtR.noun = "RA";
+  delAgendaButtR.side = RIGHTPLAYER;
   delAgendaButtR.setStyle("KEYFRAME");
   butts.add(delAgendaButtR);
   
   delCreditButtL = new Butt("",creditButtL.x + creditButtL.w + 3,creditButtL.y,14,14);
   delCreditButtL.verb = "DELETE";
   delCreditButtL.noun = "LC";
+  delCreditButtL.side = LEFTPLAYER;
   delCreditButtL.setStyle("KEYFRAME");
   butts.add(delCreditButtL);
   
   delCreditButtR = new Butt("",creditButtR.x - 17,creditButtR.y,14,14);
   delCreditButtR.verb = "DELETE";
   delCreditButtR.noun = "RC";
+  delCreditButtR.side = BOTHPLAYERS;
   delCreditButtR.setStyle("KEYFRAME");
   butts.add(delCreditButtR);
 
   delCommentButt = new Butt("",commentButt.x - 17,commentButt.y,14,14);
   delCommentButt.verb = "DELETE";
   delCommentButt.noun = "COMMENT";
+  delCommentButt.side = BOTHPLAYERS;
   delCommentButt.setStyle("KEYFRAME");
   butts.add(delCommentButt);
   
@@ -348,6 +361,7 @@ void createAnimMenus() {
         tButt.verb = "ANIML";
         tButt.noun = _ACfg.name;
         tButt.setStyle("ANIML");
+        tButt.side = LEFTPLAYER;
         animMenuL.add(tButt);
         j++;
       }
@@ -362,6 +376,7 @@ void createAnimMenus() {
         tButt.verb = "ANIMR";
         tButt.noun = _ACfg.name;
         tButt.setStyle("ANIMR");
+        tButt.side = RIGHTPLAYER;
         animMenuR.add(tButt);
         j++;
       }
@@ -554,12 +569,14 @@ void updateValues() {
       Butt tButt = new Butt(buttname, 5+17+4, creditButtL.y + creditButtL.h + 15 + (28 * (i+1)), 190, 24);
       tButt.verb = "EDITANI";
       tButt.noun = "";
+      tButt.side = LEFTPLAYER;
       tButt.setStyle("ANIML");
       tButt.aniKeyframe = _tempFrame;
       
       Butt tButt2 = new Butt("", 5+4, tButt.y+5, 14, 14);
       tButt2.verb = "DELETEANIL";
       tButt2.noun = "" + i;
+      tButt2.side = LEFTPLAYER;
       tButt2.setStyle("KEYFRAME");
       
       butts.add(tButt);
@@ -586,12 +603,14 @@ void updateValues() {
       Butt tButt = new Butt(buttname, videoWidth-(190+5+17+4), creditButtR.y + creditButtR.h + 15 + (28 * (i+1)), 190, 24);
       tButt.verb = "EDITANI";
       tButt.noun = "";
+      tButt.side = RIGHTPLAYER;
       tButt.setStyle("ANIMR");
       tButt.aniKeyframe = _tempFrame;
 
       Butt tButt2 = new Butt("", tButt.x+tButt.w+3+4, tButt.y+5, 14, 14);
       tButt2.verb = "DELETEANIR";
       tButt2.noun = "" + i;
+      tButt2.side = RIGHTPLAYER;
       tButt2.setStyle("KEYFRAME");
       
       butts.add(tButt);
