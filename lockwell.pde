@@ -309,19 +309,7 @@ void keyPressed() {
       } else if (keyAlt) {
         moveHead(-10f);
       } else {
-        KeyMap km;
-        if (keyboardSelect == null) {
-          km = nullMap;
-        } else {
-          km = keyboardSelect.keyMap;
-        }
-        if (km != null) {
-          Butt b = km.left;
-          if (b != null) {
-            pause();
-            keyboardSelect = b;
-          }
-        }
+        moveKeySelect(keyCode);
       }
     } else if (keyCode==RIGHT) {
       //This works well for frame-by-frame rewinding
@@ -333,57 +321,21 @@ void keyPressed() {
       } else if (keyAlt) {
         moveHead(10f);
       } else {
-        KeyMap km;
-        if (keyboardSelect == null) {
-          km = nullMap;
-        } else {
-          km = keyboardSelect.keyMap;
-        }
-        if (km != null) {
-          Butt b = km.right;
-          if (b != null) {
-            pause();
-            keyboardSelect = b;
-          }
-        }
+        moveKeySelect(keyCode);
       }
     } else if (keyCode==DOWN) {
       if (keyShift) {
       } else if (keyControl) {
       } else if (keyAlt) {
       } else {
-        KeyMap km;
-        if (keyboardSelect == null) {
-          km = nullMap;
-        } else {
-          km = keyboardSelect.keyMap;
-        }
-        if (km != null) {
-          Butt b = km.down;
-          if (b != null) {
-            pause();
-            keyboardSelect = b;
-          }
-        }
+        moveKeySelect(keyCode);
       }
     } else if (keyCode==UP) {
       if (keyShift) {
       } else if (keyControl) {
       } else if (keyAlt) {
       } else {
-        KeyMap km;
-        if (keyboardSelect == null) {
-          km = nullMap;
-        } else {
-          km = keyboardSelect.keyMap;
-        }
-        if (km != null) {
-          Butt b = km.up;
-          if (b != null) {
-            pause();
-            keyboardSelect = b;
-          }
-        }
+        moveKeySelect(keyCode);
       }
     } else if (keyCode==SHIFT) {
       keyShift = true;
@@ -398,28 +350,28 @@ void keyPressed() {
       beginCommentInput();
     } else if (key == '-') {
       if (keyboardSelect != null) {
-        if (buttonCommandMinus(keyboardSelect.verb,keyboardSelect.noun)) {
+        if (buttonCommandMinus(keyboardSelect.verb,keyboardSelect.noun,keyboardSelect.aniKeyframe)) {
           keyboardSelect.state = "CLICK";
           keyboardSelect.sustain = 3;
         }
       }
     } else if (key == '+') {
       if (keyboardSelect != null) {
-        if (buttonCommandPlus(keyboardSelect.verb,keyboardSelect.noun)) {
+        if (buttonCommandPlus(keyboardSelect.verb,keyboardSelect.noun,keyboardSelect.aniKeyframe)) {
           keyboardSelect.state = "CLICK";
           keyboardSelect.sustain = 3;
         }
       }
     } else if (keyCode==ENTER || keyCode == RETURN) {
       if (keyboardSelect != null) {
-        if (buttonCommandEnter(keyboardSelect.verb,keyboardSelect.noun)) {
+        if (buttonCommandEnter(keyboardSelect.verb,keyboardSelect.noun,keyboardSelect.aniKeyframe)) {
           keyboardSelect.state = "CLICK";
           keyboardSelect.sustain = 3;
         }
       }  
     } else if (keyCode==DELETE || keyCode == BACKSPACE) {
       if (keyboardSelect != null) {
-        if (buttonCommandDel(keyboardSelect.verb,keyboardSelect.noun)) {
+        if (buttonCommandDel(keyboardSelect.verb,keyboardSelect.noun,keyboardSelect.aniKeyframe)) {
           keyboardSelect.state = "CLICK";
           keyboardSelect.sustain = 3;
         }
@@ -442,11 +394,55 @@ void keyPressed() {
     if (keyCode == BACKSPACE || keyCode == ESC) {
       inputCancel();
       key = 0;
+    } else if (keyCode==LEFT) {
+      moveKeySelect(keyCode);
+    } else if (keyCode==RIGHT) {
+      moveKeySelect(keyCode);
+    } else if (keyCode==DOWN) {
+      moveKeySelect(keyCode);
+    } else if (keyCode==UP) {
+      moveKeySelect(keyCode);
+    } else if (keyCode==ENTER || keyCode == RETURN) {
+      if (keyboardSelect != null) {
+        if (buttonCommandEnter(keyboardSelect.verb,keyboardSelect.noun,keyboardSelect.aniKeyframe)) {
+          keyboardSelect.state = "CLICK";
+          //keyboardSelect.sustain = 3;
+        }
+      }
     }
   } else if (inputMode == "ANIMPOS") {
     if (keyCode == BACKSPACE || keyCode == ESC) {
       inputCancel();
       key = 0;
+    } else if (keyCode == ENTER || keyCode == RETURN) {
+      inputAnimPosLast();
+    }
+  }
+}
+
+void moveKeySelect(int kc) {
+  if (kc == LEFT || kc == UP || kc == RIGHT || kc == DOWN) {
+    KeyMap km;
+    if (keyboardSelect == null) {
+      km = nullMap;
+    } else {
+      km = keyboardSelect.keyMap;
+    }
+    if (km != null) {
+      Butt b = null;
+      if (kc == LEFT) {
+        b = km.left;
+      } else if (kc == UP) {
+        b = km.up;
+      } else if (kc == RIGHT) {
+        b = km.right;
+      } else if (kc == DOWN) {
+        b = km.down;
+      } 
+      if (b != null) {
+        pause();
+        keyboardSelect = b;
+      }
     }
   }
 }

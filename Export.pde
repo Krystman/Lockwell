@@ -222,7 +222,7 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
           _footage = blankFootage;
         } else if (_typeFilter == KFANIMS) {     
           // If Animation, check if it overlaps with a previous animation
-          if (i > 0) { //<>// //<>// //<>//
+          if (i > 0) { //<>//
             for (int j = 0; j < i; j++) {
               _tempF3 = _filtered.get(j);
               frameIn2 = int(_tempF3.time * 29.97);
