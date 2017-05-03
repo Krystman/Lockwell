@@ -147,6 +147,7 @@ void loadMovie(String _f, VideoContainer _vCon) {
     loadVData();
   }
   _vCon.keyframes = keyframes;
+  _vCon.animPosMem = animPosMem;
 }
 
 void logHistory(String _f) {
@@ -197,12 +198,14 @@ void loadVData() {
   XML _xml; 
   _xml = loadXML(vDataPath);
   keyframes = new ArrayList<Keyframe>();
+  animPosMem = new ArrayList<AnimPos>();
   
   XML _settingsNode = _xml.getChild("settings");
   XML _creditsNode = _xml.getChild("credits");
   XML _agendasNode = _xml.getChild("agendas");
   XML _commentsNode = _xml.getChild("comments");
   XML _animNode = _xml.getChild("anims");
+  XML _animPosNode = _xml.getChild("animposmem");
   
   // ------ Load Settings -------
   // Set last head position
@@ -259,7 +262,33 @@ void loadVData() {
     }
   }
   
+  // ------ Load Anim Position Memors -------
+  if (_animPosNode != null) {
+    XML[] _animpos = _animPosNode.getChildren("animpos");
+    for (int i = 0; i < _animpos.length; i++) {
+      AnimPos _tapos = new AnimPos();
+      _tapos.name = _animpos[i].getString("name");
+      _tapos.side = _animpos[i].getInt("side");
+      
+      XML _x = _animpos[i].getChild("x");
+      if (_x == null) {
+        _tapos.x = 0.0;
+      } else {
+        _tapos.x = _x.getFloatContent();
+      }
+
+      XML _y = _animpos[i].getChild("y");
+      if (_y == null) {
+        _tapos.y = 0.0;
+      } else {
+        _tapos.y = _y.getFloatContent();
+      }
+      animPosMem.add(_tapos);
+    }
+  }
+  
   println("Loaded " + keyframes.size() + " Keyframes");
+  println("Loaded " + animPosMem.size() + " AnimPosMems");
 }
 
 void saveVData() {
@@ -275,6 +304,7 @@ void saveVData() {
   XML _agendasNode = _xml.addChild("agendas");
   XML _commentsNode = _xml.addChild("comments");
   XML _animNode = _xml.addChild("anims");
+  XML _animPosNode = _xml.addChild("animposmem");
   
   // ------ Save Settings -------
   // Save last head position
@@ -324,6 +354,25 @@ void saveVData() {
     }
   }
   
+  // ------ Save Anim Position -------
+  if (animPosMem != null) {
+    for (int i = 0; i < animPosMem.size(); i++) {
+      AnimPos _tapos = animPosMem.get(i);
+      if (_tapos.x != 0.0 || _tapos.y != 0.0) {
+        _temp = _animPosNode.addChild("animpos");
+        _temp.setString("name",_tapos.name);
+        _temp.setInt("side",_tapos.side);
+        if (_tapos.x != 0.0) {
+          _temp.addChild("x").setFloatContent(_tapos.x);
+        }
+        if (_tapos.y != 0.0) {
+          _temp.addChild("y").setFloatContent(_tapos.y);
+        }
+
+      }
+    }
+  }
+  
   // Save a new XML file
   saveXML(_xml, vDataPath);
   dirty = false;
@@ -333,6 +382,7 @@ void resetVData() {
   //Resets the Video Data to a blank Template  
   headPos = 0f;
   keyframes = new ArrayList<Keyframe>();
+  animPosMem = new ArrayList<AnimPos>();
   
   // Add starting values
   addKeyframe(KFCREDITS, 0.0, 5, LEFTPLAYER, "");

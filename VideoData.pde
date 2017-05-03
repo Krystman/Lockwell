@@ -93,6 +93,39 @@ AnimConfig getAnimCfg(String _anim) {
   return _found;
 }
 
+// Returns the last remembered position for an animation
+AnimPos getAnimPosMem(String _anim, int _side) {
+  AnimPos _found = null;
+  if (animPosMem != null) {
+    for (int i=0; i < animPosMem.size(); i++) {
+      AnimPos _tapos = animPosMem.get(i);
+      if (_tapos.name.equals(_anim) && _tapos.side == _side) {
+        _found = _tapos;
+        break;
+      }
+    }
+  }
+  return _found;
+}
+
+// Remembers the posion of an animation keyframe
+void rememberAnimPos(Keyframe _kf) {
+  if (_kf.x != 0.0 || _kf.y != 0.0) {
+    AnimPos _tapos = getAnimPosMem(_kf.stringValue, _kf.side);
+    if (_tapos == null) {
+      _tapos = new AnimPos();
+      _tapos.name = _kf.stringValue;
+      _tapos.side = _kf.side;
+      animPosMem.add(_tapos);
+    }
+    if (_tapos.x != _kf.x || _tapos.y != _kf.y) { 
+      dirty = true;
+      _tapos.x = _kf.x;
+      _tapos.y = _kf.y;
+    }
+  }
+}
+
 // This gets a value of the last keyframe of a certain stat at any given time
 // Basically it gets the credit count at any given time for example
 Keyframe getKeyframe(int _type, float _time, int _side) {

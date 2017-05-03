@@ -8,11 +8,9 @@
 
 // Currently Working on
 // Animation Keyframes / Export etc...
-// - Ani position mode
-// - Ani position axis restrict
 // - Ani position memory
 // - Keymap + Keyboard Shortcuts
-
+// - Keyboard reminders
 
 import controlP5.*;
 import processing.video.*;
@@ -115,6 +113,7 @@ ArrayList <Keyframe> selAnimsRight;
 ArrayList <Butt> butts;
 
 ArrayList <Keyframe> keyframes;
+ArrayList <AnimPos> animPosMem;
 VideoContainer videoCon;
 
 Float headPos;

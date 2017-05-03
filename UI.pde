@@ -75,6 +75,7 @@ void inputConfirm() {
     if (inputTarget == "NEW") {
       addThisKeyframe(inputKeyframe);
     }
+    rememberAnimPos(inputKeyframe);
   }
   inputMode = "";
   if (inputTarget == "COMMENT") {
@@ -234,7 +235,7 @@ void drawTrackerBar() {
 
 // This deals with a click on the Detail bar
 // Detail bar is a zoomed-in timeline above the tracker bar 
-void detailBarClick() {  
+void detailBarClick() {
   float _realdWidth = detailBarWidth - 20; // adding padding to the edges;
   float mouseline = -20; // A mouse line is a selection line showing up one mouse over.
   float mouseTime = -1; // The timecode underneath the mouse
@@ -1093,8 +1094,16 @@ void animNewButt(String _anim, int _side) {
   inputKeyframe.side = _side;
   inputKeyframe.stringValue = _anim;
   inputKeyframe.duration = getAnimLength(_anim);
-  inputLastX = 0.0;
-  inputLastY = 0.0;
+  
+  AnimPos _tapos =  getAnimPosMem(_anim, _side);
+  if (_tapos == null) {
+    inputLastX = 0.0;
+    inputLastY = 0.0;
+  } else {
+    inputLastX = _tapos.x;
+    inputLastY = _tapos.y;
+  }
+
   inputTarget = "NEW";
   
   AnimConfig _ac = getAnimCfg(_anim);

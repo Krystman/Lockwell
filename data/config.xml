@@ -38,7 +38,6 @@
 			<path>file://localhost/C%3a/netrunner/important%20stuff/overlays2/</path>
 			<file>pulse_mandraw.avi</file>
 			<length>61</length>
-			<positioning>X</positioning>
 		</anim>
 		<anim>
 			<name>draw</name>

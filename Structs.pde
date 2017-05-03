@@ -46,6 +46,7 @@ public class VideoContainer {
   public String path;
   public float duration;
   public ArrayList <Keyframe> keyframes;
+  public ArrayList <AnimPos> animPosMem;
 }
 
 // This one is to hold library data when exporting to Final Cut XML
@@ -90,10 +91,15 @@ public class AnimConfig {
   public String path;
   public String file;
   public int length;
-  public int side;
+  public int side; // This restricts the animation to show up for a specific side only
   public int positioning;
-  float lastXL = 0.0;
-  float lastYL = 0.0;
-  float lastXR = 0.0;
-  float lastYR = 0.0;  
+}
+
+// This is to remember the last position each animation was set to
+// Speeds up editing as animations tend to re-appear on the same positions
+public class AnimPos {
+  public String name;
+  public int side;
+  public float x;
+  public float y;
 }
