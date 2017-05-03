@@ -55,7 +55,7 @@ void drawAnimPosInput() {
   } else {
     inputLastY = 0.0;
   }
-  
+  drawAniPosReminder();
   stroke(color2);
   if (inputPositioning == 0 || inputPositioning == 1) {
     inputX = mouseX / videoWidth;

@@ -299,19 +299,21 @@ void keyPressed() {
     }
     
     // Check if animation keyframe shortcut
-    if (expAnims != null && keyboardSelect != null && keyboardSelect.side != BOTHPLAYERS) {
-      AnimConfig _found = null;
-      for (int i=0; i < expAnims.size(); i++) {
-        AnimConfig _tacfg = expAnims.get(i);
-        if (_tacfg.keyShortcut == key) {
-          _found = _tacfg;
-          break;
+    if (!keyShift && !keyControl && !keyAlt) {
+      if (expAnims != null && keyboardSelect != null && keyboardSelect.side != BOTHPLAYERS) {
+        AnimConfig _found = null;
+        for (int i=0; i < expAnims.size(); i++) {
+          AnimConfig _tacfg = expAnims.get(i);
+          if (_tacfg.keyShortcut == key) {
+            _found = _tacfg;
+            break;
+          }
         }
-      }
-      if (_found != null) {
-        mouseClearButts();
-        animNewButt(_found.name,keyboardSelect.side);
-        keyboardSelect = null;
+        if (_found != null) {
+          mouseClearButts();
+          animNewButt(_found.name,keyboardSelect.side);
+          keyboardSelect = null;
+        }
       }
     }
     

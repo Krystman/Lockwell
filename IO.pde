@@ -292,7 +292,6 @@ void loadVData() {
   }
   
   println("Loaded " + keyframes.size() + " Keyframes");
-  println("Loaded " + animPosMem.size() + " AnimPosMems");
 }
 
 void saveVData() {

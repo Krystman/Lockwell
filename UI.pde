@@ -1063,6 +1063,19 @@ void dashedLine(float _x1, float _y1, float _x2, float _y2, float _dashLen) {
     i++;
 
   } while (i < int(dashCount));
+}
 
-}  
+void drawAniPosReminder() {
+  String t = "CLICK - Place\nENTER - Place at previous position\nESC - Cancel";
+  float _w = 220;
+  float _h = 63;
+  float _x = (videoWidth /2) - (_w/2);
+  float _y = videoY + videoHeight - (_h+5);
+  noStroke();
+  fill(color1);
+  rect(_x, _y, _w, _h, 2);
   
+  textFont(smallRoboto);
+  fill(color1b);
+  text(t,_x+12,_y+4,_w-12,_h-4);
+}
