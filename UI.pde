@@ -55,6 +55,22 @@ void beginAddAnim(int _side) {
 }
 
 void beginAnimPos() {
+  if (buttMenu == null) {
+    String tmpTarget = inputTarget;
+    beginAddAnim(inputKeyframe.side);
+    inputTarget = tmpTarget;
+    for (int i = 0; i < buttMenu.size(); i++) {
+      Butt tButt = buttMenu.get(i);
+      if (tButt.noun == inputKeyframe.stringValue) {
+        tButt.state = "CLICK";
+      }
+    }
+    if (inputKeyframe.side == LEFTPLAYER) {
+      addAniButtL.state = "CLICK";
+    } else if (inputKeyframe.side == RIGHTPLAYER) {
+      addAniButtR.state = "CLICK";
+    }
+  }
   inputMode = "ANIMPOS";
 }
 
@@ -84,6 +100,7 @@ void inputConfirm() {
       addThisKeyframe(inputKeyframe);
     }
     rememberAnimPos(inputKeyframe);
+    buttMenu = null;
   }
   inputMode = "";
   if (inputTarget == "COMMENT") {
@@ -105,6 +122,7 @@ void inputCancel() {
   }
   keyboardSelect = null;
   createKeymap();
+  buttMenu = null;
 }
 
 // This deals with a click on the Detail bar
@@ -455,6 +473,14 @@ void drawButts() {
   }
 }
 
+void mouseClearButts() {
+  for (int i = 0; i < butts.size(); i++) {
+    if (butts.get(i).visible) {
+      butts.get(i).state = "";
+    }
+  }
+}
+
 // This updates the overlay values
 void updateValues() {
   String _s;
@@ -628,32 +654,6 @@ void updateValues() {
   } else {
     addAniButtL.visible = true;
     addAniButtR.visible = true;
-  }
-}
-
-// Draws buttons next to overlay buttons to indicate
-// if you are currently on a keyframe
-// You can click the buttons to delete a keyframe
-void drawKeyframes() {
-  fill(color5);
-  noStroke();
-  
-  delAgendaButtL.visible = false;
-  delAgendaButtR.visible = false;
-  delCreditButtL.visible = false;
-  delCreditButtR.visible = false;
-  
-  if (selFrameAgendaLeft != null) {
-    delAgendaButtL.visible = true; 
-  }
-  if (selFrameAgendaRight != null) {
-    delAgendaButtR.visible = true;  
-  }
-  if (selFrameCreditLeft != null) {
-    delCreditButtL.visible = true;
-  }
-  if (selFrameCreditRight != null) {
-    delCreditButtR.visible = true;
   }
 }
 
@@ -835,10 +835,8 @@ void buttonCommand(String _verb, String _noun, Keyframe _kf) {
     switchToLoad();
   } else if (_verb == "ANIML") {
     animNewButt(_noun, LEFTPLAYER);
-    beginAnimPos();
   } else if (_verb == "ANIMR") {
     animNewButt(_noun, RIGHTPLAYER);
-    beginAnimPos();
   } else if (_verb == "EDITANI") {
     animButt(_kf);
     beginAnimPos();
@@ -973,16 +971,14 @@ void animNewButt(String _anim, int _side) {
     inputLastX = _tapos.x;
     inputLastY = _tapos.y;
   }
-
   inputTarget = "NEW";
-  
   AnimConfig _ac = getAnimCfg(_anim);
   if (_ac != null) {
     inputPositioning = _ac.positioning;
   } else {
     inputPositioning = 0;
   }
-  
+  beginAnimPos();
 }
 
 // This is what gets executed when you press a button to edit an animation

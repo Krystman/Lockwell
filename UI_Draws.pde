@@ -269,3 +269,29 @@ void drawDetailBar() {
     text(formatTimeCode(_showTime),_showX,detailBarY-3);
   }
 }
+
+// Draws buttons next to overlay buttons to indicate
+// if you are currently on a keyframe
+// You can click the buttons to delete a keyframe
+void drawKeyframes() {
+  fill(color5);
+  noStroke();
+  
+  delAgendaButtL.visible = false;
+  delAgendaButtR.visible = false;
+  delCreditButtL.visible = false;
+  delCreditButtR.visible = false;
+  
+  if (selFrameAgendaLeft != null) {
+    delAgendaButtL.visible = true; 
+  }
+  if (selFrameAgendaRight != null) {
+    delAgendaButtR.visible = true;  
+  }
+  if (selFrameCreditLeft != null) {
+    delCreditButtL.visible = true;
+  }
+  if (selFrameCreditRight != null) {
+    delCreditButtR.visible = true;
+  }
+}

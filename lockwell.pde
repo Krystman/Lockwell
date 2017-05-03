@@ -11,6 +11,7 @@
 // - Ani position memory
 // - Keymap + Keyboard Shortcuts
 // - Keyboard reminders
+// - Delete Keyframes with buttons
 
 import controlP5.*;
 import processing.video.*;
@@ -308,15 +309,11 @@ void keyPressed() {
         }
       }
       if (_found != null) {
-        if (keyboardSelect.side == LEFTPLAYER) {
-          println("LEFT " + _found.name);
-        } else if (keyboardSelect.side == RIGHTPLAYER) {
-          println("RIGHT " + _found.name);
-        }
-        
+        mouseClearButts();
+        animNewButt(_found.name,keyboardSelect.side);
+        keyboardSelect = null;
       }
     }
-    
     
     if (keyCode==32) {
       flipPause();
