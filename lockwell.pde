@@ -1,10 +1,11 @@
 // Todo:
 // - Ctrl + S for save
-// - Resolution select on start screen
+// - Right-click to manually clear history files
 // - Keyboard controls on start screen
 // - Undo
 // - Multi-export
 // - UI Notification system
+// - Resolution select on start screen
 
 // Currently Working on
 // Animation Keyframes / Export etc...
@@ -68,6 +69,7 @@ float detailMousePos;
 
 String moviePath = "";
 String vDataPath = "";
+int gapTracks = 0; // How many extra tracks should be added between the video and the overlays. You can set this in the config.xml file
 String UIMode = "LOAD";
 String inputMode = "";
 String inputText = "";
@@ -293,6 +295,14 @@ void keyPressed() {
       } else {
         println("vData clean");     
       }
+      int mando = 0;
+      if (keyframes != null) {
+        for (int i = 0; i < keyframes.size(); i++) {
+          Keyframe _tempFrame = keyframes.get(i);
+          if (_tempFrame.stringValue.equals("mandatory draw")) {mando++;};
+        }
+      }
+      println("Mandos: " + mando);
     }
     
     // Check if animation keyframe shortcut

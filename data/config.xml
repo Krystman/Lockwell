@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This file configure paths for the Final Cut pro XML export -->
-
 <config>
+	<gaptracks>3</gaptracks>
 	<credits>
 		<path>file://localhost/C%3a/netrunner/important%20stuff/credits/creditoverlays/</path>
 		<left>credL_##.png</left>

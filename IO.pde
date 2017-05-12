@@ -7,6 +7,28 @@ void loadHistory() {
     history = new String[0];
     saveHistory();
   }
+  
+  String[] newHistory;
+  newHistory = new String[0];
+  // Check History for duds
+  for (int i = 0; i < history.length; i++) {
+    if (fileExists(history[i])) {
+      String lockwellFile = history[i].substring(0, history[i].lastIndexOf('.')) + ".lockwell";
+      if (fileExists(lockwellFile)) {
+        newHistory = append(newHistory, history[i]);
+      } else {
+        //println(lockwellFile + " doesn't exist");
+      }
+    } else {
+      //println(history[i] + " doesn't exist");
+    }
+  }
+  //println("Final history count " + newHistory.length);
+
+  if (newHistory.length != history.length) {
+    history = newHistory;
+    saveHistory();
+  }
 }
 
 void loadConfig() {
@@ -32,7 +54,13 @@ void loadConfig() {
     
     XML _creditsNode = _xml.getChild("credits");
     XML _agendasNode = _xml.getChild("agendas");
-  
+    XML _gapNode = _xml.getChild("gaptracks");
+    if (_gapNode != null) {
+      gapTracks = _gapNode.getIntContent();
+    } else {
+      gapTracks = 0;
+    }
+    
     expCreditsPath = _creditsNode.getChild("path").getContent();
     expCreditsLeft = _creditsNode.getChild("left").getContent();
     expCreditsRight = _creditsNode.getChild("right").getContent();

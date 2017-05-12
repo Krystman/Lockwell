@@ -60,7 +60,7 @@ void export(String _path) {
   if (videoCon == null) {
     println("No videoCon!");
   } else {
-    _xmlChildren.addChild(exportTimeline(videoCon, "Test Sequence"));
+    _xmlChildren.addChild(exportTimeline(videoCon, videoCon.file));
   }
 
   saveXML(_xml, _path);
@@ -92,6 +92,15 @@ XML exportTimeline(VideoContainer _vCon, String _name) {
   _track.setString("MZ.TrackName", "Video");
   _track.addChild("enabled").setContent("TRUE");
   _track.addChild("locked").setContent("FALSE");
+
+  if (gapTracks > 0) {
+    for (int i = 0; i < gapTracks; i++) {
+      _track = _video.addChild("track");
+      _track.setString("MZ.TrackName", "Gap Track " + (i+1));
+      _track.addChild("enabled").setContent("TRUE");
+      _track.addChild("locked").setContent("FALSE");      
+    }
+  }
 
   _track = _video.addChild("track");
   _track.setString("MZ.TrackName", "Credits R");
