@@ -63,6 +63,21 @@ class Butt {
       clickFill = color4;
       clickStroke = color4;
       clickText = color1;
+    } else if (_style == "CHECKLIST") {
+      style = "CHECKLIST";
+      thisFont = smallRoboto;
+      
+      overFill = color3;
+      overStroke = color3;
+      overText = color1;
+  
+      outFill = color1;
+      outStroke = color1;
+      outText = color4;
+
+      clickFill = color4;
+      clickStroke = color4;
+      clickText = color1;
     } else if (_style == "AGENDA") {
       style = "AGENDA";
       thisFont = agendaRoboto;

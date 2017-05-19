@@ -6,10 +6,7 @@
 // - Multi-export
 // - UI Notification system
 // - Resolution select on start screen
-
-// Currently Working on
-// Animation Keyframes / Export etc...
-// - Delete Keyframes with buttons
+// - ESC back from animation shortcut to last button
 
 import controlP5.*;
 import processing.video.*;

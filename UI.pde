@@ -443,21 +443,62 @@ void switchToLoad() {
   int j;
   
   Butt tButt;
+  Butt tButt2;
   
   UIMode="LOAD";
   purgeButts();
+
   tButt = new Butt("LOAD VIDEO",24,24,94,24);
   tButt.verb = "LOAD";
   tButt.noun = "";
   butts.add(tButt);
+  
+  tButt = new Butt("EXPORT MULTIPLE",123,24,130,24);
+  tButt.verb = "EXPORTMULT";
+  tButt.noun = "";
+  butts.add(tButt);
+  
+  tButt = new Butt("EXPORT",24,24,94,24);
+  tButt.verb = "EXPORTCONFIRM";
+  tButt.noun = "";
+  tButt.visible = false;
+  butts.add(tButt);
+  
+  tButt = new Butt("CANCEL",123,24,94,24);
+  tButt.verb = "EXPORTCANCEL";
+  tButt.noun = "";
+  tButt.visible = false;
+  butts.add(tButt);
+  
   j = 0;
   for (int i = history.length-1; i >= 0; i--) {
-    tButt = new Butt(history[i],24,64+25*j,512,24);
+    tButt = new Butt(history[i],24+5+24,64+25*j,512,24);
     tButt.setStyle("LIST");
     tButt.verb = "LOAD";
     tButt.noun = history[i];
     butts.add(tButt);
+    
+    tButt2 = new Butt("0",24,64+25*j,24,24);
+    tButt2.setStyle("CHECKLIST");
+    tButt2.verb = "CHECKLIST";
+    tButt2.noun = history[i];
+    tButt2.visible = false;
+    butts.add(tButt2);
     j++;
+  }
+}
+
+void switchToExport() {
+  for (int i = 0; i < butts.size(); i++) {
+    Butt tButt = butts.get(i);
+    if (tButt.verb == "CHECKLIST") {
+      tButt.visible = true;
+    } else if (tButt.verb == "EXPORTMULT" || (tButt.verb == "LOAD" && tButt.noun == "")) {
+      tButt.visible = false;
+    } else if (tButt.verb == "EXPORTCONFIRM" || tButt.verb == "EXPORTCANCEL") {
+      tButt.visible = true;
+      tButt.sustain = 15;
+    }
   }
 }
 
@@ -741,7 +782,16 @@ void updateMouseClick() {
         
         tButt.state = "CLICK";
         if (mouseButton == LEFT) { 
-          buttonCommand(tButt.verb, tButt.noun, tButt.aniKeyframe);
+          if (tButt.verb == "CHECKLIST") {
+            // This is such a hack
+            if (tButt.t.equals("0")) {
+              tButt.t = "1";
+            } else {
+              tButt.t = "0";
+            }
+          } else {
+            buttonCommand(tButt.verb, tButt.noun, tButt.aniKeyframe);
+          }
         } else if (mouseButton == RIGHT) {
           buttonCommandRight(tButt.verb, tButt.noun);
         }
@@ -768,14 +818,17 @@ void updateMouseClickMenu() {
           mouseX >= tButt.x &&
           mouseX <= tButt.x+tButt.w &&
           mouseY >= tButt.y &&
-          mouseY <= tButt.y+tButt.h) {
+          mouseY <= tButt.y+tButt.h &&
+          tButt.state != "CLICK") {
             
         
         tButt.state = "CLICK";
         if (mouseButton == LEFT) { 
           buttonCommand(tButt.verb, tButt.noun, null);
+          return;
         } else if (mouseButton == RIGHT) {
           buttonCommandRight(tButt.verb, tButt.noun);
+          return;
         }
       } else {
         tButt.state = "";
@@ -840,6 +893,14 @@ void buttonCommand(String _verb, String _noun, Keyframe _kf) {
   } else if (_verb == "EDITANI") {
     animButt(_kf);
     beginAnimPos();
+  } else if (_verb == "EXPORTMULT") {
+    switchToExport();
+  } else if (_verb == "EXPORTCANCEL") {
+    switchToLoad();
+  } else if (_verb == "EXPORTCONFIRM") {
+    dialogMouseLockout = true;
+    selectOutput("Export as Final Cut XML:", "fileSelectedExportM");
+    lastNoClick = true;
   }
 }
 

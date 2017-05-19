@@ -513,3 +513,12 @@ void fileSelectedExport(File selection) {
   }
   frame.requestFocus();
 }
+
+void fileSelectedExportM(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    //export(selection.getAbsolutePath());
+  }
+  frame.requestFocus();
+}
