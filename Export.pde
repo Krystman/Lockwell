@@ -67,6 +67,60 @@ void export(String _path) {
   println("Export done");
 }
 
+void exportMult(String _path) {
+  loadConfig();
+    
+  println("Exporting list to " + _path);
+
+  idCounter = 1;
+  idCounterSeq = 1;
+  
+  buildAnimLib();  
+  blankFootage = new Footage();
+  blankFootage.path = "";
+  blankFootage.name = "BLANK";
+  blankFootage.value = 0;
+  blankFootage.side = LEFTPLAYER;
+  blankFootage.duration = 18000;
+  blankFootage.clipitemid = "clipitem-" + idCounter;
+  blankFootage.fileid = "file-" + idCounter;
+  blankFootage.masterclipid = "masterclip-" + idCounter;
+  idCounter++;
+  otherLib.add(blankFootage);
+  
+  buildAgendaLib();
+  buildCreditLib();
+
+  XML _xml;
+  _xml = new XML("xmeml");
+  _xml.setString("version", "4");
+  XML _xmlProject = _xml.addChild("project");
+  _xmlProject.addChild("name").setContent("Test Export");
+  XML _xmlChildren = _xmlProject.addChild("children");
+  _xmlChildren.addChild(exportLib(agendaLib, "Lockwell - Agendas"));
+  _xmlChildren.addChild(exportLib(creditLib, "Lockwell - Credits"));
+  _xmlChildren.addChild(exportLib(otherLib, "Lockwell - Other"));
+
+  // Actually export Timelines
+  VideoContainer tempVCon;
+  for (int i = 0; i < exportList.length; i++) {
+    // Derive Video Data filename from Movie Path
+    String vDataPath = exportList[i].substring(0, exportList[i].lastIndexOf('.')) + ".lockwell";
+    
+    // Check if XML for Video Data already exists
+    if (!fileExists(vDataPath)) {
+      println(vDataPath + " does not exist");
+    } else {
+      tempVCon = new VideoContainer(); //<>//
+      loadVData(vDataPath, tempVCon);
+      _xmlChildren.addChild(exportTimeline(tempVCon, exportList[i]));
+    }
+  }
+
+  saveXML(_xml, _path);
+  println("Export done"); 
+}
+
 XML exportTimeline(VideoContainer _vCon, String _name) {
   int aniCount = 1;
   ArrayList <Keyframe> _aniLeftOvers = null;
@@ -231,7 +285,7 @@ ArrayList <Keyframe> keyframesToClips(XML _track, VideoContainer _vCon, int _sid
           _footage = blankFootage;
         } else if (_typeFilter == KFANIMS) {     
           // If Animation, check if it overlaps with a previous animation
-          if (i > 0) { //<>//
+          if (i > 0) {
             for (int j = 0; j < i; j++) {
               _tempF3 = _filtered.get(j);
               frameIn2 = int(_tempF3.time * 29.97);
@@ -518,7 +572,8 @@ void fileSelectedExportM(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
   } else {
-    //export(selection.getAbsolutePath());
+    exportMult(selection.getAbsolutePath());
+    switchToLoad();
   }
   frame.requestFocus();
 }

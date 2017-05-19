@@ -502,6 +502,16 @@ void switchToExport() {
   }
 }
 
+void createExportList() {
+  exportList = new String[0];
+  for (int i = 0; i < butts.size(); i++) {
+    Butt tButt = butts.get(i);
+    if (tButt.verb == "CHECKLIST" && tButt.t == "1") {
+      exportList = append(exportList, tButt.noun);
+    }
+  }
+}
+
 void purgeButts() {
   butts = new ArrayList<Butt>();
 }
@@ -898,9 +908,12 @@ void buttonCommand(String _verb, String _noun, Keyframe _kf) {
   } else if (_verb == "EXPORTCANCEL") {
     switchToLoad();
   } else if (_verb == "EXPORTCONFIRM") {
-    dialogMouseLockout = true;
-    selectOutput("Export as Final Cut XML:", "fileSelectedExportM");
-    lastNoClick = true;
+    createExportList();
+    if (exportList.length > 0) {
+      dialogMouseLockout = true;
+      selectOutput("Export as Final Cut XML:", "fileSelectedExportM");
+      lastNoClick = true;
+    }
   }
 }
 

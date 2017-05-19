@@ -1,7 +1,7 @@
 // Functions to manipulate Video Data
 
 // This creates a new Keyframe of a certain type
-Keyframe addKeyframe(int _type, float _time, int _value, int _side, String _stingVal) {
+Keyframe addKeyframe(ArrayList <Keyframe> _kf, int _type, float _time, int _value, int _side, String _stingVal) {
   Keyframe _tempKeyframe;
   
   _tempKeyframe = new Keyframe();
@@ -10,7 +10,7 @@ Keyframe addKeyframe(int _type, float _time, int _value, int _side, String _stin
   _tempKeyframe.value = _value;
   _tempKeyframe.side = _side;
   _tempKeyframe.stringValue = _stingVal;
-  keyframes.add(_tempKeyframe);
+  _kf.add(_tempKeyframe);
   dirty = true;
   
   return _tempKeyframe;
@@ -172,9 +172,9 @@ void agendaButt(int _side, int _d) {
   if ((_side == LEFTPLAYER && selFrameAgendaLeft == null) || (_side == RIGHTPLAYER && selFrameAgendaRight == null)) {
     _lastKeyframe = getKeyframe(KFAGENDAS, headPos, _side);
     if (_lastKeyframe == null) {
-      _newKeyframe = addKeyframe(KFAGENDAS, headPos, 0, _side, "");
+      _newKeyframe = addKeyframe(keyframes, KFAGENDAS, headPos, 0, _side, "");
     } else {
-      _newKeyframe = addKeyframe(KFAGENDAS, headPos, _lastKeyframe.value, _side, "");
+      _newKeyframe = addKeyframe(keyframes, KFAGENDAS, headPos, _lastKeyframe.value, _side, "");
     }
     if (_side == LEFTPLAYER) {
       selFrameAgendaLeft = _newKeyframe;
@@ -202,9 +202,9 @@ void creditButt(int _side, int _d) {
   if ((_side == LEFTPLAYER && selFrameCreditLeft == null) || (_side == RIGHTPLAYER && selFrameCreditRight == null)) {
     _lastKeyframe = getKeyframe(KFCREDITS, headPos, _side);
     if (_lastKeyframe == null) {
-      _newKeyframe = addKeyframe(KFCREDITS, headPos, 0, _side, "");
+      _newKeyframe = addKeyframe(keyframes, KFCREDITS, headPos, 0, _side, "");
     } else {
-      _newKeyframe = addKeyframe(KFCREDITS, headPos, _lastKeyframe.value, _side, "");
+      _newKeyframe = addKeyframe(keyframes, KFCREDITS, headPos, _lastKeyframe.value, _side, "");
     }
     if (_side == LEFTPLAYER) {
       selFrameCreditLeft = _newKeyframe;
@@ -236,7 +236,7 @@ void commentConfirm(String _str) {
     }
   } else {
     if (selFrameComment == null) {
-      selFrameComment = addKeyframe(KFCOMMENTS, headPos, 0, LEFTPLAYER, _str);
+      selFrameComment = addKeyframe(keyframes, KFCOMMENTS, headPos, 0, LEFTPLAYER, _str);
     } else {
       selFrameComment.stringValue = _str;
     }

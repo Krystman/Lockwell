@@ -117,6 +117,7 @@ Float headPos;
 boolean headLocked = false;
 
 String[] history;
+String[] exportList;
 
 void setup() {
   size(640, 400);

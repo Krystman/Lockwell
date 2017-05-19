@@ -158,28 +158,30 @@ void loadMovie(String _f, VideoContainer _vCon) {
   myMovie.jump(0);
   switchToEdit();
   logHistory(_f);
-
+  
   _vCon.keyframes = null;
   _vCon.duration = myMovie.duration();
   _vCon.file = _thisFile.getName();
   _vCon.path = pathComponent(_thisFile.getAbsolutePath()) + File.separator;
-
+  
   // Load XML of Video Data
   
   // Derive Video Data filename from Movie Path
   vDataPath = moviePath.substring(0, moviePath.lastIndexOf('.')) + ".lockwell";
-
+  
   // Check if XML for Video Data already exists
   if (!fileExists(vDataPath)) {
     println("vData does not exist");
     resetVData();
     saveVData();
+    _vCon.keyframes = keyframes;
+    _vCon.animPosMem = animPosMem;
   } else {
     println("vData is there!");
-    loadVData();
+    loadVData(vDataPath, _vCon);
   }
-  _vCon.keyframes = keyframes;
-  _vCon.animPosMem = animPosMem;
+  keyframes = _vCon.keyframes;
+  animPosMem = _vCon.animPosMem;
 }
 
 void logHistory(String _f) {
@@ -223,14 +225,15 @@ void fileSelected(File selection) {
   mousePressed = false;
 }
 
-void loadVData() { 
+void loadVData(String _f, VideoContainer _vCon) { 
  // Load XML file with Video Data
-  println("Loading " + vDataPath);
+  println("Loading " + _f);
   
   XML _xml; 
-  _xml = loadXML(vDataPath);
-  keyframes = new ArrayList<Keyframe>();
-  animPosMem = new ArrayList<AnimPos>();
+  _xml = loadXML(_f);
+  
+  _vCon.keyframes = new ArrayList<Keyframe>();
+  _vCon.animPosMem = new ArrayList<AnimPos>();
   
   XML _settingsNode = _xml.getChild("settings");
   XML _creditsNode = _xml.getChild("credits");
@@ -241,8 +244,16 @@ void loadVData() {
   
   // ------ Load Settings -------
   // Set last head position
-  setHead(_settingsNode.getChild("lastheadpos").getFloatContent());
-
+  if (myMovie != null) {
+    setHead(_settingsNode.getChild("lastheadpos").getFloatContent());
+  }
+  if (_vCon.duration == 0) {
+    _vCon.duration = _settingsNode.getChild("duration").getFloatContent();
+  }
+  if (_vCon.file == "") {
+    _vCon.file = _settingsNode.getChild("file").getContent();
+  }
+  
   // ------ Load Credit Keyframes -------
   // Get all credit keyframes
   if (_creditsNode != null) {
@@ -250,7 +261,7 @@ void loadVData() {
     
     // Fill Keyframe array with credit keyframes
     for (int i = 0; i < _credits.length; i++) {
-      addKeyframe(KFCREDITS, _credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"), "");
+      addKeyframe(_vCon.keyframes, KFCREDITS, _credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"), "");
     }
   }
   
@@ -261,7 +272,7 @@ void loadVData() {
     
     // Fill Keyframe array with agenda keyframes
     for (int i = 0; i < _agendas.length; i++) {
-      addKeyframe(KFAGENDAS, _agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"), "");
+      addKeyframe(_vCon.keyframes, KFAGENDAS, _agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"), "");
     }
   }
   
@@ -272,7 +283,7 @@ void loadVData() {
     
     // Fill Keyframe array with comment keyframes
     for (int i = 0; i < _comments.length; i++) {
-      addKeyframe(KFCOMMENTS, _comments[i].getFloat("t"), 0, LEFTPLAYER, _comments[i].getContent());
+      addKeyframe(_vCon.keyframes, KFCOMMENTS, _comments[i].getFloat("t"), 0, LEFTPLAYER, _comments[i].getContent());
     }
   }
   
@@ -283,7 +294,7 @@ void loadVData() {
     
     // Fill Keyframe array with comment keyframes
     for (int i = 0; i < _anims.length; i++) {
-      Keyframe tKf = addKeyframe(KFANIMS, _anims[i].getFloat("t"), 0, _anims[i].getInt("side"), _anims[i].getContent());
+      Keyframe tKf = addKeyframe(_vCon.keyframes, KFANIMS, _anims[i].getFloat("t"), 0, _anims[i].getInt("side"), _anims[i].getContent());
       tKf.duration = getAnimLength(tKf.stringValue);
       if (_anims[i].getString("x") != null) {
         tKf.x = _anims[i].getFloat("x");
@@ -315,11 +326,11 @@ void loadVData() {
       } else {
         _tapos.y = _y.getFloatContent();
       }
-      animPosMem.add(_tapos);
+      _vCon.animPosMem.add(_tapos);
     }
   }
   
-  println("Loaded " + keyframes.size() + " Keyframes");
+  println("Loaded " + _vCon.keyframes.size() + " Keyframes");
 }
 
 void saveVData() {
@@ -416,11 +427,11 @@ void resetVData() {
   animPosMem = new ArrayList<AnimPos>();
   
   // Add starting values
-  addKeyframe(KFCREDITS, 0.0, 5, LEFTPLAYER, "");
-  addKeyframe(KFCREDITS, 0.0, 5, RIGHTPLAYER, "");
+  addKeyframe(keyframes, KFCREDITS, 0.0, 5, LEFTPLAYER, "");
+  addKeyframe(keyframes, KFCREDITS, 0.0, 5, RIGHTPLAYER, "");
   
-  addKeyframe(KFAGENDAS, 0.0, 0, LEFTPLAYER, "");
-  addKeyframe(KFAGENDAS, 0.0, 0, RIGHTPLAYER, "");
+  addKeyframe(keyframes, KFAGENDAS, 0.0, 0, LEFTPLAYER, "");
+  addKeyframe(keyframes, KFAGENDAS, 0.0, 0, RIGHTPLAYER, "");
 }
 
 public String pathComponent(String filename) {
