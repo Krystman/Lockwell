@@ -216,16 +216,8 @@ class Butt {
     if(style == "LIST") {
       textAlign(LEFT);
       text(t,x+10,y+h/2+5+yOffset);
-    } else if (style == "CHECKLIST") {
-      noFill();
-      stroke(textColor);
-      strokeWeight(2);
-      rect(x+5,y+5,w-10,h-10);
-      if (t.equals("1")) {
-        int xpad = 9;
-        line(x+xpad,y+xpad,x+w-xpad,y+h-xpad);
-        line(x+w-xpad,y+xpad,x+xpad,y+h-xpad);
-      }
+    if(style == "CHECKLIST") {
+      rect(x-5,y-5,w-10,h-10);
     } else if (style == "AGENDA") {
       textAlign(CENTER);
       text(t,x+w/2,y+h/2+21+yOffset);
