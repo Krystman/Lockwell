@@ -130,7 +130,6 @@ void loadMovie(String _f, VideoContainer _vCon) {
 
   File _thisFile = new File(_f);
   
-  
   println("Loading movie " + _f);
   /*if (!fileExists(_f)) {
     println("File Not Found");
@@ -152,6 +151,7 @@ void loadMovie(String _f, VideoContainer _vCon) {
   moviePath = _f;
   myMovie = new Movie(this, _f);
   moviePaused = true;
+  
   myMovie.play();
   myMovie.pause();
   myMovie.read();

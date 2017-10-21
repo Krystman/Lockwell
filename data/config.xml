@@ -6,7 +6,7 @@
 		<path>file://localhost/C%3a/netrunner/important%20stuff/credits/creditoverlays/</path>
 		<left>credL_##.png</left>
 		<right>credR_##.png</right>
-		<max>42</max>
+		<max>59</max>
 		<min>0</min>
 	</credits>
 	<agendas>

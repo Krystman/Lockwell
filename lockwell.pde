@@ -1,10 +1,12 @@
 // Todo:
 // - Ctrl + S for save
+// - Volume
 // - Right-click to manually clear history files
 // - Keyboard controls on start screen
 // - Undo
 // - Multi-export
 // - UI Notification system
+// - Stats display
 // - Resolution select on start screen
 // - ESC back from animation shortcut to last button
 
@@ -524,8 +526,10 @@ void play() {
     if (moviePaused) {
       println("Plaing...");
       headLocked = false;
+      
       myMovie.play();
       myMovie.read();
+      //myMovie.volume(0.1f); // TODO Debug
       moviePaused = false;
       keyboardSelect = null;
       if (dirty) {
