@@ -6,3 +6,5 @@ application.windows32
 application.windows64
 application.macosx
 /data/history.txt
+/build-tmp/
+/build/

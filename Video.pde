@@ -47,3 +47,53 @@ void setHead(float _s) {
     headPos = 0f;
   }
 }
+
+void flipPause() {
+  if (moviePath != "") {
+    if (moviePaused) {
+      play();
+    } else {
+      pause();  
+    }
+  }
+}
+
+void pause() {
+  if (moviePath != "") {
+    if (!moviePaused) {
+      println("Pausing...");
+      headLocked = false;
+      myMovie.pause();
+      moviePaused = true;
+      myMovie.read();
+      myMovie.jump(headPos);      
+    }
+  }
+}
+
+void play() {
+  if (moviePath != "") {
+    if (moviePaused) {
+      println("Plaing...");
+      headLocked = false;
+      
+      myMovie.play();
+      myMovie.read();
+      //myMovie.volume(0.1f); // TODO Debug
+      moviePaused = false;
+      keyboardSelect = null;
+      if (dirty) {
+        dirty = false;
+        saveVData();
+      }     
+    }
+  }
+}
+
+void stop() {
+  if (myMovie!=null) {
+    myMovie.stop();
+    myMovie.dispose();
+    myMovie = null;
+  }
+}
