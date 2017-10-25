@@ -1,30 +1,29 @@
 
 void keyPressed() {
+  // Dealing with the Modifier Keys
+  if (keyCode==SHIFT) {
+    keyShift = true;
+  } else if (keyCode==CONTROL) {
+    keyControl = true;
+  } else if (keyCode==ALT) {
+    keyAlt = true;
+  } else if (keyCode == ESC) {
+    // Cancel the ESC
+    key = 0;
+  }
+
   if (inputMode == "") {
     //println("key: " + key + " keyCode: " + keyCode); 
     
+    // Pre-baked shortcuts
+
     if (key=='q') {
-      println("head at " + headPos);
-      if (headLocked) {
-        println("head locked");
-      } else {
-        println("head not locked");     
-      }
-      if (dirty) {
-        println("vData dirty");
-      } else {
-        println("vData clean");     
-      }
-      int mando = 0;
-      if (keyframes != null) {
-        for (int i = 0; i < keyframes.size(); i++) {
-          Keyframe _tempFrame = keyframes.get(i);
-          if (_tempFrame.stringValue.equals("mandatory draw")) {mando++;};
-        }
-      }
-      println("Mandos: " + mando);
+      // Print debug into the Processing console on q
+      printDebug();
+    } else if (keyCode==83 && keyControl) {
+        // Ctrl + S for Save Project
+        saveVData();
     }
-    
     // Check if animation keyframe shortcut
     if (!keyShift && !keyControl && !keyAlt) {
       if (expAnims != null && keyboardSelect != null && keyboardSelect.side != BOTHPLAYERS) {
@@ -45,6 +44,7 @@ void keyPressed() {
     }
     
     if (keyCode==32) {
+      // Space
       flipPause();
     } else if (keyCode==LEFT) {
       //This works well for frame-by-frame rewinding
@@ -70,28 +70,10 @@ void keyPressed() {
       } else {
         moveKeySelect(keyCode);
       }
-    } else if (keyCode==DOWN) {
-      if (keyShift) {
-      } else if (keyControl) {
-      } else if (keyAlt) {
-      } else {
+    } else if (keyCode==DOWN || keyCode==UP) {
+      if (!keyShift && !keyControl && !keyAlt) {
         moveKeySelect(keyCode);
       }
-    } else if (keyCode==UP) {
-      if (keyShift) {
-      } else if (keyControl) {
-      } else if (keyAlt) {
-      } else {
-        moveKeySelect(keyCode);
-      }
-    } else if (keyCode==SHIFT) {
-      keyShift = true;
-    } else if (keyCode==CONTROL) {
-      keyControl = true;
-    } else if (keyCode==ALT) {
-      keyAlt = true;
-    } else if (keyCode == ESC) {
-      key = 0;
     } else if (key == 'n') {
       pause();
       beginCommentInput();

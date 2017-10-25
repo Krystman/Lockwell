@@ -1,5 +1,6 @@
 // Todo:
-// - Ctrl + S for save
+// - Seperate into Keybord commands during editng and in main screen
+// - Keyboard Debug Overlay
 // - Volume
 // - Right-click to manually clear history files
 // - Keyboard controls on start screen
@@ -9,6 +10,7 @@
 // - Stats display
 // - Resolution select on start screen
 // - ESC back from animation shortcut to last button
+// - Video Export
 
 import controlP5.*;
 import processing.video.*;
@@ -277,4 +279,26 @@ void update() {
     }    
   }
 
+}
+
+void printDebug() {
+  println("head at " + headPos);
+  if (headLocked) {
+    println("head locked");
+  } else {
+    println("head not locked");     
+  }
+  if (dirty) {
+    println("vData dirty");
+  } else {
+    println("vData clean");     
+  }
+  int mando = 0;
+  if (keyframes != null) {
+    for (int i = 0; i < keyframes.size(); i++) {
+      Keyframe _tempFrame = keyframes.get(i);
+      if (_tempFrame.stringValue.equals("mandatory draw")) {mando++;};
+    }
+  }
+  println("Mandos: " + mando);
 }
