@@ -9,7 +9,7 @@ void drawInput() {
     if (commentButt.w < 100) {
       commentButt.w = 100;
     }
-    
+
     commentButt.x = int((videoWidth / 2) - (commentButt.w / 2));
     delCommentButt.x = commentButt.x - 17;
     commentButt.drawMe();
@@ -37,14 +37,14 @@ void drawAnimPosInput() {
   }
   fill(0,0,0,128);
   rect(0,0,width,height);
-  
+
   if (inputTarget == "NEW") {
     stroke(color5);
   } else {
     stroke(color3);
   }
   strokeWeight(2);
-  
+
   if (inputPositioning == 0 || inputPositioning == 1) {
     dashedLine((inputLastX + 0.5) * videoWidth, videoY, (inputLastX + 0.5) * videoWidth, videoHeight + videoY, 3);
   } else {
@@ -63,7 +63,7 @@ void drawAnimPosInput() {
     line((inputX + 0.5) * videoWidth, videoY, (inputX + 0.5) * videoWidth, videoHeight + videoY);
   } else {
     inputX = 0.0;
-  } 
+  }
   if (inputPositioning == 0 || inputPositioning == 2) {
     inputY = (mouseY - videoY) / videoHeight;
     inputY = constrain(inputY, 0.0, 1.0) - 0.5;
@@ -80,15 +80,15 @@ void drawAnimPosInput() {
 
 void drawTrackerBar() {
   float mousePos;
-  
+
   // this is the y position of the actual progress bar line
   float _lineY = trackerBarY + 18;
-  
+
   // draw background
   noStroke();
   fill(color1c);
   rect(trackerBarX, trackerBarY, trackerBarWidth, trackerBarHeight);
-  
+
   // Draw timecode / time remaining
   noStroke();
   textSize(11);
@@ -98,17 +98,17 @@ void drawTrackerBar() {
   text(formatTimeCode(headPos), trackerBarX + 10, _lineY + 20);
   textAlign(RIGHT);
   text("-" + formatTimeCode(myMovie.duration()-headPos), trackerBarWidth-10, _lineY + 20);
-  
+
   // Draw bar
   fill(color1d);
   rect(trackerBarX + 10, _lineY, trackerBarWidth-20, trackerLineThickness);
-  
+
   // Draw progress
   fill(color1b);
   if (myMovie.duration() > 0) {
     rect(trackerBarX + 10, _lineY, (trackerBarWidth-20) * (headPos/myMovie.duration()), trackerLineThickness);
   }
-  
+
   // Draw keyframe ticks
   fill(color3);
   noStroke();
@@ -118,21 +118,21 @@ void drawTrackerBar() {
       rect(int(trackerBarX + 10 + ((trackerBarWidth-20) * (_tickPos/myMovie.duration()))), _lineY - 10, 1, 5);
     }
   }
-  
+
   // Draw mouse over info
   if (trackerMousePos!=-1) {
     fill(color2, 255);
     mousePos = 10 + (trackerMousePos * (trackerBarWidth-20));
-    
+
     triangle(mousePos, _lineY+trackerLineThickness+1, mousePos-4, _lineY+trackerLineThickness+5, mousePos+4, _lineY+trackerLineThickness+5);
     rect(mousePos, _lineY, 1, trackerLineThickness);
     //ellipse(mousePos,  _lineY + (trackerLineThickness/2), trackerLineThickness, trackerLineThickness);
-    
+
     fill(color1);
-    stroke(color1b);  
+    stroke(color1b);
     strokeWeight(1.2);
     rect(mousePos - (64/2), trackerBarY - 8 , 64, 18, 2);
-      
+
     fill(color1b);
     noStroke();
     textFont(smallRobotoMono);
@@ -142,23 +142,23 @@ void drawTrackerBar() {
 }
 
 // This draws the Detail bar
-// Detail bar is a zoomed-in timeline above the tracker bar 
+// Detail bar is a zoomed-in timeline above the tracker bar
 void drawDetailBar() {
-  int _thisx; 
-  
+  int _thisx;
+
   float _ticksY = detailBarY + 20; // this is the y position of ticks of the timeline
   float _keysY = _ticksY - 14; // this is the y position of the top corner of the keyframe diamonds
   float _realdWidth = detailBarWidth - 20; // adding padding to the edges;
   float mouseline = -20; // A mouse line is a selection line showing up one mouse over.
   float mouseTime = -1; // The timecode underneath the mouse
   float mouseKeyTime = -1; // The timecode of the keyframe currently being hovered on my the mouse
-  
-  // Deal with mouse selection. 
+
+  // Deal with mouse selection.
   if (detailMousePos!=-1) {
     mouseline = detailMousePos * detailBarWidth;
     mouseTime = detailBarScroll + (((mouseline-10) / _realdWidth) * detailBarZoom);
     mouseTime = constrain(mouseTime, 0, myMovie.duration());
-    
+
     // Snap to keyframes
     float bestDist = myMovie.duration()*2;
     float bestTime = -1;
@@ -174,7 +174,7 @@ void drawDetailBar() {
     if (bestDist < 0.25) {
       mouseKeyTime = bestTime;
     }
-    
+
   } else {
     // Show a mouse line if the mouse is over the tracker bar too!
     if (trackerMousePos!=-1) {
@@ -184,12 +184,12 @@ void drawDetailBar() {
       }
     }
   }
-  
+
   // draw background
   noStroke();
   fill(color1);
   rect(detailBarX, detailBarY, detailBarWidth, detailBarHeight);
-  
+
   // draw second ticks
   noStroke();
   fill(color1d);
@@ -203,17 +203,17 @@ void drawDetailBar() {
       rect(_thisx, _ticksY, 1, _tickH);
     }
   }
-  
+
   // draw mouseline
   fill(color2);
-  noStroke();  
+  noStroke();
   if (mouseKeyTime == -1) {
     rect(mouseline, detailBarY, 1, detailBarHeight);
   } else {
     _thisx = 10 + int(((mouseKeyTime-detailBarScroll) / detailBarZoom) * _realdWidth);
     rect(_thisx, detailBarY, 1, detailBarHeight);
   }
-  
+
   // draw keyframe diamonds
   fill(color3);
   noStroke();
@@ -232,12 +232,12 @@ void drawDetailBar() {
       if (_keyPos > detailBarScroll-1 && _keyPos < detailBarScroll + detailBarZoom) {
         _thisx = 10 + int(((_keyPos-detailBarScroll) / detailBarZoom) * _realdWidth);
         quad(_thisx, _keysY, _thisx-4, _keysY+4, _thisx, _keysY+8, _thisx+4, _keysY+4);
-        
+
         //rect(int(trackerBarX + 10 + ((trackerBarWidth-20) * (_tickPos/myMovie.duration()))), _lineY - 10, 1, 5);
       }
     }
   }
-  
+
   // draw cursor
   noStroke();
   fill(color2);
@@ -247,21 +247,21 @@ void drawDetailBar() {
     rect(_thisx-4, _ticksY+4, 7.8, 5);
   }
 
-  // draw tooltip   
+  // draw tooltip
   if (detailMousePos!=-1) {
     float _showTime = mouseTime;
-    float _showX = mouseline; 
+    float _showX = mouseline;
     if (mouseKeyTime != -1) {
       _showTime = mouseKeyTime;
       _showX = 10 + int(((mouseKeyTime-detailBarScroll) / detailBarZoom) * _realdWidth);
     } else {
-      
+
     }
     fill(color1);
-    stroke(color1b);  
+    stroke(color1b);
     strokeWeight(1.2);
     rect(_showX - (64/2), detailBarY - 15 , 64, 18, 2);
-      
+
     fill(color1b);
     noStroke();
     textFont(smallRobotoMono);
@@ -276,17 +276,17 @@ void drawDetailBar() {
 void drawKeyframes() {
   fill(color5);
   noStroke();
-  
+
   delAgendaButtL.visible = false;
   delAgendaButtR.visible = false;
   delCreditButtL.visible = false;
   delCreditButtR.visible = false;
-  
+
   if (selFrameAgendaLeft != null) {
-    delAgendaButtL.visible = true; 
+    delAgendaButtL.visible = true;
   }
   if (selFrameAgendaRight != null) {
-    delAgendaButtR.visible = true;  
+    delAgendaButtR.visible = true;
   }
   if (selFrameCreditLeft != null) {
     delCreditButtL.visible = true;
@@ -294,4 +294,27 @@ void drawKeyframes() {
   if (selFrameCreditRight != null) {
     delCreditButtR.visible = true;
   }
+}
+
+// Draws a Debug Overlay
+void drawDebugOverlay() {
+  float thisWidth = 200;
+  float thisHeight = 150;
+  float thisX = (videoWidth/2)-(thisWidth/2);
+  float thisY = videoY+100;
+  float thisPadding = 15;
+  noStroke();
+  fill(color1, 230);
+  rect(thisX, thisY, thisWidth, thisHeight, 2);
+  fill(color1b);
+  textFont(smallRobotoMono);
+  textAlign(LEFT);
+  String t = "UIMode     - " + UIMode + "\n";
+  t +=       "InputMode  - " + inputMode + "\n";
+  t +=       "keyShift   - " + keyShift + "\n";
+  t +=       "keyControl - " + keyControl + "\n";
+  t +=       "keyAlt     - " + keyAlt + "\n";
+  t +=       "key        - " + key + "\n";
+  t +=       "keyCode    - " + keyCode + "\n";
+  text(t, thisX + thisPadding, thisY + thisPadding, thisWidth - (thisPadding * 2), thisHeight-(thisPadding*2));
 }

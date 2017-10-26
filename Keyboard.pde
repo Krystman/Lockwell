@@ -42,9 +42,13 @@ void keyPressedEditing() {
     // Print debug into the Processing console on q
     printDebug();
   } else if (keyCode==83 && keyControl) {
-      // Ctrl + S for Save Project
-      saveVData();
+    // Ctrl + S for Save Project
+    saveVData();
+  } else if (keyCode==123) {
+    // Toggle Debug Overlay
+    debugOverlay = !debugOverlay;
   }
+
   // Check if animation keyframe shortcut
   if (!keyShift && !keyControl && !keyAlt) {
     if (expAnims != null && keyboardSelect != null && keyboardSelect.side != BOTHPLAYERS) {

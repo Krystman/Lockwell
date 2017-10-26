@@ -1,6 +1,4 @@
 // Todo:
-// - Seperate into Keybord commands during editng and in main screen
-// - Keyboard Debug Overlay
 // - Volume
 // - Right-click to manually clear history files
 // - Keyboard controls on start screen
@@ -86,6 +84,7 @@ boolean blink; // This is to make some UI stuff blink
 int blinker;
 
 boolean moviePaused = false;
+boolean debugOverlay = false; // An overlay for debugging stuff. Can be toggled with F12.
 boolean lastNoClick = true;
 boolean dialogMouseLockout = false; // Little hack because mouse kept registering as clicked after selectInput
 
@@ -212,6 +211,10 @@ void draw() {
         drawAnimInput();
       } else if (inputMode == "ANIMPOS") {
         drawAnimPosInput();
+      }
+
+      if (debugOverlay) {
+        drawDebugOverlay();
       }
     }
   }
