@@ -57,7 +57,7 @@ float trackerBarHeight = 50;
 float trackerMousePos;
 final float trackerLineThickness = 5;
 
-// Detail bar is a zoomed-in timeline above the tracker bar 
+// Detail bar is a zoomed-in timeline above the tracker bar
 // It shows the keyframes nearby
 float detailBarX = 0;
 float detailBarY = 0;
@@ -72,14 +72,14 @@ String moviePath = "";
 String vDataPath = "";
 int gapTracks = 0; // How many extra tracks should be added between the video and the overlays. You can set this in the config.xml file
 String UIMode = "LOAD";
-String inputMode = "";
+String inputMode = "MENU";
 String inputText = "";
 String inputTarget = "";
 Float inputX;
 Float inputY;
 Float inputLastX;
 Float inputLastY;
-int inputPositioning; // Positioning mode for Animations. 0 - Free, 1 - Only X, 2 - Only Y 
+int inputPositioning; // Positioning mode for Animations. 0 - Free, 1 - Only X, 2 - Only Y
 Keyframe inputKeyframe;
 
 boolean blink; // This is to make some UI stuff blink
@@ -125,18 +125,18 @@ String[] exportList;
 
 void setup() {
   size(640, 400);
-  
+
   //setup360();
   //setup480();
   setup720();
-  
+
   smallRobotoMono = createFont("RobotoMono-Bold.ttf", 10);
   smallRoboto = createFont("Roboto-Bold.ttf", 12);
   agendaRoboto = createFont("Roboto-Bold.ttf", 58);
   credRoboto = createFont("Roboto-Bold.ttf", 32);
   commentRoboto = createFont("Roboto-Bold.ttf", 22);
   animRoboto = createFont("Roboto-Bold.ttf", 16);
-  
+
   loadHistory();
   loadConfig();
   switchToLoad();
@@ -167,7 +167,7 @@ void draw() {
   // Draw stuff
   clear();
   background(color1);
-  
+
   if (UIMode=="LOAD") {
     drawButts();
   } else if (UIMode=="EDIT") {
@@ -182,10 +182,10 @@ void draw() {
         // So we "freeze" the head position if we jump to a specific time
         headPos = myMovie.time();
       }
-      
+
       // Draw Video
       image(myMovie, 0, videoY, videoWidth,videoHeight);
-    
+
       // Update the scroll of the detail bar and animate
       detailBarTScroll = headPos - (detailBarZoom / 2);
       detailBarTScroll = constrain(detailBarTScroll, 0, myMovie.duration()-detailBarZoom);
@@ -194,18 +194,18 @@ void draw() {
       } else {
         detailBarScroll = detailBarTScroll;
       }
-      
+
       // Update Overlay Values
       updateValues();
       drawKeyframes();
-      
+
       // Draw all buttons
       drawButts();
-      
+
       // Draw Bars
       drawDetailBar();
       drawTrackerBar();
-      
+
       if (inputMode == "TEXT") {
         drawInput();
       } else if (inputMode == "ANIM") {
@@ -215,7 +215,7 @@ void draw() {
       }
     }
   }
-  
+
 }
 
 void update() {
@@ -227,13 +227,13 @@ void update() {
   } else {
     blinker = 0;
   }
-  
-  if (inputMode == "") {
+
+  if (inputMode == "MENU" || inputMode == "EDITING") {
     // Update stuff every frame
     if (mousePressed == false) {
       dialogMouseLockout = false;
     }
-    
+
     if (mousePressed && !dialogMouseLockout) {
       // LMB
       if (lastNoClick) {
@@ -251,7 +251,7 @@ void update() {
     if (mousePressed == false) {
       dialogMouseLockout = false;
     }
-    
+
     if (mousePressed && !dialogMouseLockout) {
       // LMB
       if (lastNoClick) {
@@ -267,7 +267,7 @@ void update() {
     if (mousePressed == false) {
       dialogMouseLockout = false;
     }
-    
+
     if (mousePressed && !dialogMouseLockout) {
       // LMB
       if (lastNoClick) {
@@ -276,7 +276,7 @@ void update() {
       }
     } else {
       lastNoClick = true;
-    }    
+    }
   }
 
 }
@@ -286,12 +286,12 @@ void printDebug() {
   if (headLocked) {
     println("head locked");
   } else {
-    println("head not locked");     
+    println("head not locked");
   }
   if (dirty) {
     println("vData dirty");
   } else {
-    println("vData clean");     
+    println("vData clean");
   }
   int mando = 0;
   if (keyframes != null) {

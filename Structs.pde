@@ -1,4 +1,4 @@
-// A bunch of Structs 
+// A bunch of Structs
 // Mainly to hold information for Video Data
 
 // We are going to use a universal keyframe struct
@@ -19,7 +19,7 @@ public class Keyframe {
   // 1.0 means offscreen right or down
   // -0.5 means the center of the clip is at the left or upper edge
   public float x = 0.0;
-  public float y = 0.0;  
+  public float y = 0.0;
 }
 
 // This is to old video information so that multiple videos can be loaded
@@ -44,7 +44,7 @@ public class Footage {
   public String masterclipid;
   public String fileid;
   public String clipitemid;
-  
+
   Footage clone() {
     Footage tempF = new Footage();
     tempF.value = this.value;
