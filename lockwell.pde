@@ -3,7 +3,6 @@
 // - Right-click to manually clear history files
 // - Keyboard controls on start screen
 // - Undo
-// - Multi-export
 // - UI Notification system
 // - Stats display
 // - Resolution select on start screen

@@ -163,6 +163,8 @@ void switchToEdit() {
 
   UIMode = "EDIT";
   inputMode = "EDITING";
+  File _thisFile = new File(moviePath);
+  surface.setTitle("Lockwell - " + _thisFile.getName());
 
   videoY = menuHeight;
 
@@ -448,6 +450,7 @@ void switchToLoad() {
 
   UIMode = "LOAD";
   inputMode = "MENU";
+  surface.setTitle("Lockwell");
 
   purgeButts();
 
