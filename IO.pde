@@ -7,7 +7,7 @@ void loadHistory() {
     history = new String[0];
     saveHistory();
   }
-  
+
   String[] newHistory;
   newHistory = new String[0];
   // Check History for duds
@@ -35,23 +35,23 @@ void loadConfig() {
   println("Loading config");
   if (!fileExists(dataPath("config.xml"))) {
     println("Config not found. :( Will use Krystian's default values but export is likely to be all wrong.");
-    
+
     expCreditsPath = "file://localhost/C%3a/netrunner/important%20stuff/credits/creditoverlays/";
     expCreditsLeft = "credL_##.png";
     expCreditsRight = "credR_##.png";
     expCreditsMax = 0;
     expCreditsMin = 42;
-    
+
     expAgendasPath = "file://localhost/C%3a/netrunner/important%20stuff/overlays2/";
     expAgendasLeft = "left_#.png";
     expAgendasRight = "right_#.png";
     expAgendasMax = 0;
     expAgendasMin = 9;
-    
-  } else {   
-    XML _xml; 
+
+  } else {
+    XML _xml;
     _xml = loadXML(dataPath("config.xml"));
-    
+
     XML _creditsNode = _xml.getChild("credits");
     XML _agendasNode = _xml.getChild("agendas");
     XML _gapNode = _xml.getChild("gaptracks");
@@ -60,24 +60,24 @@ void loadConfig() {
     } else {
       gapTracks = 0;
     }
-    
+
     expCreditsPath = _creditsNode.getChild("path").getContent();
     expCreditsLeft = _creditsNode.getChild("left").getContent();
     expCreditsRight = _creditsNode.getChild("right").getContent();
     expCreditsMax = _creditsNode.getChild("max").getIntContent();
     expCreditsMin = _creditsNode.getChild("min").getIntContent();
-    
+
     expAgendasPath = _agendasNode.getChild("path").getContent();
     expAgendasLeft = _agendasNode.getChild("left").getContent();
     expAgendasRight = _agendasNode.getChild("right").getContent();
     expAgendasMax = _agendasNode.getChild("max").getIntContent();
     expAgendasMin = _agendasNode.getChild("min").getIntContent();
-    
+
     XML _animsNode = _xml.getChild("anims");
     XML[] _animNodes = _animsNode.getChildren("anim");
-    
+
     expAnims = new ArrayList <AnimConfig>();
-    
+
     if (_animNodes != null) {
       for (int i = 0; i < _animNodes.length; i++) {
         AnimConfig _tCfg = new AnimConfig();
@@ -129,7 +129,7 @@ void loadMovie(String _f, VideoContainer _vCon) {
   // Load a Movie
 
   File _thisFile = new File(_f);
-  
+
   println("Loading movie " + _f);
   /*if (!fileExists(_f)) {
     println("File Not Found");
@@ -147,28 +147,29 @@ void loadMovie(String _f, VideoContainer _vCon) {
     println(_f + " is not a file");
     return;
   }
-   
+
   moviePath = _f;
   myMovie = new Movie(this, _f);
+  myMovie.volume(movieVol);
   moviePaused = true;
-  
+
   myMovie.play();
   myMovie.pause();
   myMovie.read();
   myMovie.jump(0);
   switchToEdit();
   logHistory(_f);
-  
+
   _vCon.keyframes = null;
   _vCon.duration = myMovie.duration();
   _vCon.file = _thisFile.getName();
   _vCon.path = pathComponent(_thisFile.getAbsolutePath()) + File.separator;
-  
+
   // Load XML of Video Data
-  
+
   // Derive Video Data filename from Movie Path
   vDataPath = moviePath.substring(0, moviePath.lastIndexOf('.')) + ".lockwell";
-  
+
   // Check if XML for Video Data already exists
   if (!fileExists(vDataPath)) {
     println("vData does not exist");
@@ -193,13 +194,13 @@ void logHistory(String _f) {
       found = i;
     }
   }
-  
+
   if (found == -1) {
     if (history.length >= 12) {
       for (int i = 1; i <= history.length-1; i++) {
         history[i-1] = history[i];
       }
-      history[history.length-1] = _f; 
+      history[history.length-1] = _f;
     } else {
       history = append(history, _f);
     }
@@ -225,23 +226,23 @@ void fileSelected(File selection) {
   mousePressed = false;
 }
 
-void loadVData(String _f, VideoContainer _vCon) { 
+void loadVData(String _f, VideoContainer _vCon) {
  // Load XML file with Video Data
   println("Loading " + _f);
-  
-  XML _xml; 
+
+  XML _xml;
   _xml = loadXML(_f);
-  
+
   _vCon.keyframes = new ArrayList<Keyframe>();
   _vCon.animPosMem = new ArrayList<AnimPos>();
-  
+
   XML _settingsNode = _xml.getChild("settings");
   XML _creditsNode = _xml.getChild("credits");
   XML _agendasNode = _xml.getChild("agendas");
   XML _commentsNode = _xml.getChild("comments");
   XML _animNode = _xml.getChild("anims");
   XML _animPosNode = _xml.getChild("animposmem");
-  
+
   // ------ Load Settings -------
   // Set last head position
   if (myMovie != null) {
@@ -253,45 +254,45 @@ void loadVData(String _f, VideoContainer _vCon) {
   if (_vCon.file == "") {
     _vCon.file = _settingsNode.getChild("file").getContent();
   }
-  
+
   // ------ Load Credit Keyframes -------
   // Get all credit keyframes
   if (_creditsNode != null) {
     XML[] _credits = _creditsNode.getChildren("credit");
-    
+
     // Fill Keyframe array with credit keyframes
     for (int i = 0; i < _credits.length; i++) {
       addKeyframe(_vCon.keyframes, KFCREDITS, _credits[i].getFloat("t"), _credits[i].getIntContent(), _credits[i].getInt("side"), "");
     }
   }
-  
+
   // ------ Load Agenda Events -------
   // Get all agenda events
   if (_agendasNode != null) {
     XML[] _agendas = _agendasNode.getChildren("agenda");
-    
+
     // Fill Keyframe array with agenda keyframes
     for (int i = 0; i < _agendas.length; i++) {
       addKeyframe(_vCon.keyframes, KFAGENDAS, _agendas[i].getFloat("t"), _agendas[i].getIntContent(), _agendas[i].getInt("side"), "");
     }
   }
-  
+
   // ------ Load Comment Events -------
   // Get all agenda events
   if (_commentsNode != null) {
     XML[] _comments = _commentsNode.getChildren("comment");
-    
+
     // Fill Keyframe array with comment keyframes
     for (int i = 0; i < _comments.length; i++) {
       addKeyframe(_vCon.keyframes, KFCOMMENTS, _comments[i].getFloat("t"), 0, LEFTPLAYER, _comments[i].getContent());
     }
   }
-  
+
   // ------ Load Anim Events -------
   // Get all agenda events
   if (_animNode != null) {
     XML[] _anims = _animNode.getChildren("anim");
-    
+
     // Fill Keyframe array with comment keyframes
     for (int i = 0; i < _anims.length; i++) {
       Keyframe tKf = addKeyframe(_vCon.keyframes, KFANIMS, _anims[i].getFloat("t"), 0, _anims[i].getInt("side"), _anims[i].getContent());
@@ -304,7 +305,7 @@ void loadVData(String _f, VideoContainer _vCon) {
       }
     }
   }
-  
+
   // ------ Load Anim Position Memors -------
   if (_animPosNode != null) {
     XML[] _animpos = _animPosNode.getChildren("animpos");
@@ -312,7 +313,7 @@ void loadVData(String _f, VideoContainer _vCon) {
       AnimPos _tapos = new AnimPos();
       _tapos.name = _animpos[i].getString("name");
       _tapos.side = _animpos[i].getInt("side");
-      
+
       XML _x = _animpos[i].getChild("x");
       if (_x == null) {
         _tapos.x = 0.0;
@@ -329,7 +330,7 @@ void loadVData(String _f, VideoContainer _vCon) {
       _vCon.animPosMem.add(_tapos);
     }
   }
-  
+
   println("Loaded " + _vCon.keyframes.size() + " Keyframes");
 }
 
@@ -338,7 +339,7 @@ void saveVData() {
   XML _xml;
   XML _temp;
   _xml = new XML("vdata");
-  
+
   Keyframe _tempKeyframe;
 
   XML _settingsNode = _xml.addChild("settings");
@@ -347,7 +348,7 @@ void saveVData() {
   XML _commentsNode = _xml.addChild("comments");
   XML _animNode = _xml.addChild("anims");
   XML _animPosNode = _xml.addChild("animposmem");
-  
+
   // ------ Save Settings -------
   // Save last head position
   if (videoCon != null) {
@@ -358,10 +359,10 @@ void saveVData() {
     _settingsNode.addChild("duration").setFloatContent(myMovie.duration());
   }
   _settingsNode.addChild("lastheadpos").setFloatContent(headPos);
-  
+
   // ------ Save Keyframes -------
   // Loop through Keyframes
-  
+
   for (int i = 0; i < keyframes.size(); i++) {
     _temp = null;
     _tempKeyframe = keyframes.get(i);
@@ -375,7 +376,7 @@ void saveVData() {
       _temp = _animNode.addChild("anim");
     } else {
       println("Unknown keyframe type " + _tempKeyframe.type + "!!");
-    }  
+    }
     if (_temp != null) {
       _temp.setFloat("t", _tempKeyframe.time);
       if (_tempKeyframe.type == KFCOMMENTS) {
@@ -395,7 +396,7 @@ void saveVData() {
       }
     }
   }
-  
+
   // ------ Save Anim Position -------
   if (animPosMem != null) {
     for (int i = 0; i < animPosMem.size(); i++) {
@@ -414,22 +415,22 @@ void saveVData() {
       }
     }
   }
-  
+
   // Save a new XML file
   saveXML(_xml, vDataPath);
   dirty = false;
 }
 
 void resetVData() {
-  //Resets the Video Data to a blank Template  
+  //Resets the Video Data to a blank Template
   headPos = 0f;
   keyframes = new ArrayList<Keyframe>();
   animPosMem = new ArrayList<AnimPos>();
-  
+
   // Add starting values
   addKeyframe(keyframes, KFCREDITS, 0.0, 5, LEFTPLAYER, "");
   addKeyframe(keyframes, KFCREDITS, 0.0, 5, RIGHTPLAYER, "");
-  
+
   addKeyframe(keyframes, KFAGENDAS, 0.0, 0, LEFTPLAYER, "");
   addKeyframe(keyframes, KFAGENDAS, 0.0, 0, RIGHTPLAYER, "");
 }

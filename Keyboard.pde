@@ -95,8 +95,16 @@ void keyPressedEditing() {
     } else {
       moveKeySelect(keyCode);
     }
-  } else if (keyCode==DOWN || keyCode==UP) {
-    if (!keyShift && !keyControl && !keyAlt) {
+  } else if (keyCode==DOWN) {
+    if (keyControl) {
+      setVol(movieVol-0.1f);
+    } else if (!keyShift && !keyControl && !keyAlt) {
+      moveKeySelect(keyCode);
+    }
+  } else if (keyCode==UP) {
+    if (keyControl) {
+      setVol(movieVol+0.025f);
+    } else if (!keyShift && !keyControl && !keyAlt) {
       moveKeySelect(keyCode);
     }
   } else if (key == 'n') {

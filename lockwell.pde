@@ -83,6 +83,7 @@ boolean blink; // This is to make some UI stuff blink
 int blinker;
 
 boolean moviePaused = false;
+Float movieVol = 1f;
 boolean debugOverlay = false; // An overlay for debugging stuff. Can be toggled with F12.
 boolean lastNoClick = true;
 boolean dialogMouseLockout = false; // Little hack because mouse kept registering as clicked after selectInput

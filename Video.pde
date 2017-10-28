@@ -53,7 +53,7 @@ void flipPause() {
     if (moviePaused) {
       play();
     } else {
-      pause();  
+      pause();
     }
   }
 }
@@ -66,7 +66,7 @@ void pause() {
       myMovie.pause();
       moviePaused = true;
       myMovie.read();
-      myMovie.jump(headPos);      
+      myMovie.jump(headPos);
     }
   }
 }
@@ -76,16 +76,16 @@ void play() {
     if (moviePaused) {
       println("Plaing...");
       headLocked = false;
-      
+
       myMovie.play();
       myMovie.read();
-      //myMovie.volume(0.1f); // TODO Debug
+      myMovie.volume(movieVol);
       moviePaused = false;
       keyboardSelect = null;
       if (dirty) {
         dirty = false;
         saveVData();
-      }     
+      }
     }
   }
 }
@@ -95,5 +95,12 @@ void stop() {
     myMovie.stop();
     myMovie.dispose();
     myMovie = null;
+  }
+}
+
+void setVol(Float _newVol) {
+  movieVol = constrain(_newVol, 0f, 1f);
+  if (myMovie != null) {
+    myMovie.volume(movieVol);
   }
 }
