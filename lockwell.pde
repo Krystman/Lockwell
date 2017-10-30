@@ -44,6 +44,12 @@ float videoY = 0;
 
 int menuY = 0;
 int menuHeight = 5 + 24 + 5;
+int volumeSliderWidth = 100;
+float volBarX = 10;
+float volBarW = volumeSliderWidth - (volBarX * 2);
+
+boolean volumeSliderOver = false;
+boolean volumeSliderClicked = false;
 
 // Tracker bar is a scrollbar at the bottom of the screen
 // It allows you to scroll through the video
@@ -204,6 +210,7 @@ void draw() {
       // Draw Bars
       drawDetailBar();
       drawTrackerBar();
+      drawVolume(); // I guess strictly not a bar
 
       if (inputMode == "TEXT") {
         drawInput();
@@ -238,7 +245,7 @@ void update() {
     }
 
     if (mousePressed && !dialogMouseLockout) {
-      // LMB
+      // LMBupdate
       if (lastNoClick) {
         updateMouseClick();
         lastNoClick = false;

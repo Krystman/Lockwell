@@ -318,3 +318,33 @@ void drawDebugOverlay() {
   t +=       "keyCode    - " + keyCode + "\n";
   text(t, thisX + thisPadding, thisY + thisPadding, thisWidth - (thisPadding * 2), thisHeight-(thisPadding*2));
 }
+
+// Draws the Volume Slider
+void drawVolume() {
+  float barY = 16;
+  float barH = 2;
+  color filledBar;
+  color tick;
+  fill(color1d);
+
+  //rect(width-volumeSliderWidth, menuY, volumeSliderWidth, menuHeight);
+  rect((width - volumeSliderWidth) + volBarX, menuY + barY, volBarW, barH);
+  float sliderX = (width - volumeSliderWidth) + volBarX;
+  sliderX += volBarW * movieVol;
+  if (volumeSliderOver && !volumeSliderClicked) {
+    filledBar = color2;
+    tick = color5;
+  } else if (volumeSliderClicked) {
+    tick = color5;
+    filledBar = color2;
+  } else {
+    tick = color1b;
+    filledBar = color1d;
+  }
+
+  fill(filledBar);
+  rect((width - volumeSliderWidth) + volBarX, menuY + barY -1, volBarW * movieVol, barH+2);
+
+  fill(tick);
+  rect(sliderX - 1, (menuY + barY) - 4, 2, barH + 8);
+}
