@@ -97,13 +97,13 @@ void keyPressedEditing() {
     }
   } else if (keyCode==DOWN) {
     if (keyControl) {
-      setVol(movieVol-0.1f);
+      setVol(movieVol-0.05f);
     } else if (!keyShift && !keyControl && !keyAlt) {
       moveKeySelect(keyCode);
     }
   } else if (keyCode==UP) {
     if (keyControl) {
-      setVol(movieVol+0.025f);
+      setVol(movieVol+0.05f);
     } else if (!keyShift && !keyControl && !keyAlt) {
       moveKeySelect(keyCode);
     }

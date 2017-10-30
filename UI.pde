@@ -735,6 +735,20 @@ void updateMouseOver() {
       }
     }
   }
+
+  // Check if Mouse is over volume slider
+  if (mouseX >= (width - volumeSliderWidth) &&
+      mouseX <= width &&
+      mouseY >= menuY &&
+      mouseY <= menuY + menuHeight) {
+
+        volumeSliderOver = true;
+        volumeSliderClicked = false;
+  } else {
+    volumeSliderOver = false;
+    volumeSliderClicked = false;
+  }
+
   trackerMousePos = getTrackerMousePos();
   detailMousePos = getDetailMousePos();
 }
@@ -822,6 +836,18 @@ void updateMouseClick() {
     if (detailMousePos != -1) {
       detailBarClick();
     }
+
+    // Check if Mouse is over volume slider
+    if (mouseX >= (width - volumeSliderWidth) &&
+        mouseX <= width &&
+        mouseY >= menuY &&
+        mouseY <= menuY + menuHeight) {
+
+          volumeSliderClick();
+    } else {
+      volumeSliderClicked = false;
+      volumeSliderOver = false;
+    }
   }
 }
 
@@ -858,6 +884,18 @@ void updateMousePressed() {
     trackerMousePos = getTrackerMousePos();
     if (trackerMousePos != -1) {
       setHeadPercent(trackerMousePos);
+    }
+
+    // Check if Mouse is over volume slider
+    if (mouseX >= (width - volumeSliderWidth) &&
+        mouseX <= width &&
+        mouseY >= menuY &&
+        mouseY <= menuY + menuHeight) {
+
+          volumeSliderClick();
+    } else {
+      volumeSliderClicked = false;
+      volumeSliderOver = false;
     }
   }
 }
@@ -1164,4 +1202,13 @@ void drawAniPosReminder() {
   textFont(smallRoboto);
   fill(color1b);
   text(t,_x+12,_y+4,_w-12,_h-4);
+}
+
+void volumeSliderClick() {
+  volumeSliderClicked = true;
+
+  float newVol = mouseX - ((width - volumeSliderWidth) + volBarX);
+  newVol = newVol / volBarW;
+  newVol = constrain(newVol,0f,1f);
+  setVol(newVol);
 }
