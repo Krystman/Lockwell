@@ -1,5 +1,7 @@
 // Todo:
-// - Right-click to manually clear history files
+// > Right-click to manually clear history files
+// > Export Multiple Checklist issue
+
 // - Keyboard controls on start screen
 // - Undo
 // - UI Notification system

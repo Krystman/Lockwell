@@ -31,6 +31,23 @@ void loadHistory() {
   }
 }
 
+void removeFromHistory(String _entry) {
+  String[] newHistory;
+  newHistory = new String[0];
+
+  for (int i = 0; i < history.length; i++) {
+    if (history[i] != _entry) {
+      newHistory = append(newHistory, history[i]);
+    } else {
+      println("Removed " + _entry + " from history.");
+    }
+  }
+  if (newHistory.length != history.length) {
+    history = newHistory;
+    saveHistory();
+  }
+}
+
 void loadConfig() {
   println("Loading config");
   if (!fileExists(dataPath("config.xml"))) {
