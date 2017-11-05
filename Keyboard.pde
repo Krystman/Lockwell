@@ -66,6 +66,10 @@ void keyPressedEditing() {
   } else if (keyCode==123) {
     // Toggle Debug Overlay
     debugOverlay = !debugOverlay;
+  } else if (keyCode == 90 && keyControl && !keyShift) {
+    undo();
+  } else if ((keyCode == 90 && keyControl && keyShift) || (keyCode == 89 && keyControl)) {
+    redo();
   }
 
   // Check if animation keyframe shortcut
@@ -87,6 +91,7 @@ void keyPressedEditing() {
     }
   }
 
+  // Keyboard input to manipulate UI
   if (keyCode==32) {
     // Space
     flipPause();

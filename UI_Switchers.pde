@@ -129,6 +129,8 @@ void switchToEdit() {
 
   createAnimMenus();
   createKeymap();
+
+  logUndo = true;
 }
 
 void switchToLoad() {

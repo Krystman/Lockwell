@@ -1,9 +1,56 @@
 // Functions to manipulate Video Data
 
+void undo() {
+  if (undoLevel > 0 && undoHistory != null && undoHistory.size() > 0) {
+    if (undoLevel == undoHistory.size()) {
+      undoSnapshot();
+      undoLevel = undoLevel - 1;
+    }
+    undoLevel = undoLevel - 1;
+    keyframes = undoHistory.get(undoLevel);
+  }
+  println("Undo to level " + undoLevel);
+}
+
+void redo() {
+  if (undoLevel < undoHistory.size()-1) {
+    undoLevel = undoLevel + 1;
+    keyframes = undoHistory.get(undoLevel);
+  }
+  println("Redo to level " + undoLevel);
+}
+
+void resetUndo() {
+  undoHistory = new ArrayList <ArrayList>();
+  undoLevel = 0;
+}
+
+void undoSnapshot() {
+  // Snapshots current state to undo list
+  ArrayList <Keyframe> _tempFrames;
+  Keyframe _tempFrame;
+
+  if (logUndo) {
+    _tempFrames = new ArrayList <Keyframe>();
+
+    if (keyframes != null) {
+      for (int i = 0; i < keyframes.size(); i++) {
+        _tempFrame = keyframes.get(i);
+        _tempFrames.add(_tempFrame.clone());
+      }
+    }
+
+    // Todo: What if undo level is lower than undoHistory size?
+    undoHistory.add(_tempFrames);
+    undoLevel = undoHistory.size();
+    println("Undo snapshot " + undoLevel);
+  }
+}
+
 // This creates a new Keyframe of a certain type
 Keyframe addKeyframe(ArrayList <Keyframe> _kf, int _type, float _time, int _value, int _side, String _stingVal) {
   Keyframe _tempKeyframe;
-  
+
   _tempKeyframe = new Keyframe();
   _tempKeyframe.type = _type;
   _tempKeyframe.time = _time;
@@ -12,19 +59,19 @@ Keyframe addKeyframe(ArrayList <Keyframe> _kf, int _type, float _time, int _valu
   _tempKeyframe.stringValue = _stingVal;
   _kf.add(_tempKeyframe);
   dirty = true;
-  
+
   return _tempKeyframe;
 }
 
 void addThisKeyframe(Keyframe _kf) {
   keyframes.add(_kf);
-  dirty = true;  
+  dirty = true;
 }
 
 // This deletes a keyframe
 void clearKeyframe(int _type, float _time, int _side) {
   Keyframe _tempFrame;
-  
+
   _tempFrame = getKeyframeExact(_type, _time, _side);
   if (_tempFrame != null) {
     keyframes.remove(_tempFrame);
@@ -36,7 +83,7 @@ void clearKeyframe(int _type, float _time, int _side) {
 ArrayList <Keyframe> getAnims(float _time, int _side) {
   Keyframe _tempFrame = null;
   ArrayList <Keyframe> ret = new ArrayList <Keyframe>();
-  
+
   if (keyframes != null) {
     for (int i = 0; i < keyframes.size(); i++) {
       _tempFrame = keyframes.get(i);
@@ -118,7 +165,7 @@ void rememberAnimPos(Keyframe _kf) {
       _tapos.side = _kf.side;
       animPosMem.add(_tapos);
     }
-    if (_tapos.x != _kf.x || _tapos.y != _kf.y) { 
+    if (_tapos.x != _kf.x || _tapos.y != _kf.y) {
       dirty = true;
       _tapos.x = _kf.x;
       _tapos.y = _kf.y;
@@ -131,7 +178,7 @@ void rememberAnimPos(Keyframe _kf) {
 Keyframe getKeyframe(int _type, float _time, int _side) {
   Keyframe _foundFrame = null;
   Keyframe _tempFrame = null;
-  
+
   if (keyframes != null) {
     for (int i = 0; i < keyframes.size(); i++) {
       _tempFrame = keyframes.get(i);
@@ -150,7 +197,7 @@ Keyframe getKeyframe(int _type, float _time, int _side) {
 // This gets a specific keyframe at a specific time, if it exists
 Keyframe getKeyframeExact(int _type, float _time, int _side) {
   Keyframe _tempFrame = null;
-  
+
   if (keyframes != null) {
     for (int i = 0; i < keyframes.size(); i++) {
       _tempFrame = keyframes.get(i);
@@ -164,9 +211,10 @@ Keyframe getKeyframeExact(int _type, float _time, int _side) {
 
 // This is what gets executed when you press a button to change the agenda points
 void agendaButt(int _side, int _d) {
+  undoSnapshot();
   Keyframe _lastKeyframe = null;
   Keyframe _newKeyframe = null;
-  
+
   // Check if there is a keyframe at current time
   // If no, create one
   if ((_side == LEFTPLAYER && selFrameAgendaLeft == null) || (_side == RIGHTPLAYER && selFrameAgendaRight == null)) {
@@ -182,7 +230,7 @@ void agendaButt(int _side, int _d) {
       selFrameAgendaRight = _newKeyframe;
     }
   }
-  
+
   // Increase Agenda value by one
   if (_side == LEFTPLAYER) {
     _newKeyframe = selFrameAgendaLeft;
@@ -194,9 +242,10 @@ void agendaButt(int _side, int _d) {
 
 // This is what gets executed when you press a button to change the credit points
 void creditButt(int _side, int _d) {
+  undoSnapshot();
   Keyframe _lastKeyframe = null;
   Keyframe _newKeyframe = null;
-  
+
   // Check if there is a keyframe at current time
   // If no, create one
   if ((_side == LEFTPLAYER && selFrameCreditLeft == null) || (_side == RIGHTPLAYER && selFrameCreditRight == null)) {
@@ -212,7 +261,7 @@ void creditButt(int _side, int _d) {
       selFrameCreditRight = _newKeyframe;
     }
   }
-  
+
   // Increase Agenda value by one
   if (_side == LEFTPLAYER) {
     _newKeyframe = selFrameCreditLeft;
@@ -224,10 +273,11 @@ void creditButt(int _side, int _d) {
 }
 
 // This is what gets executed after you typed in a comment
-void commentConfirm(String _str) { 
+void commentConfirm(String _str) {
+  undoSnapshot();
   // Check if there is a keyframe at current time
   // If no, create one
- 
+
   _str = trim(_str);
   if (_str.length() == 0) {
     if (selFrameComment != null) {
@@ -241,7 +291,7 @@ void commentConfirm(String _str) {
       selFrameComment.stringValue = _str;
     }
   }
-  dirty = true;  
+  dirty = true;
 }
 
 // This returns ANY keyframe time before the current head position if possible
@@ -249,7 +299,7 @@ void commentConfirm(String _str) {
 float getLastKeyframe() {
   Keyframe _foundFrame = null;
   Keyframe _tempFrame = null;
-  
+
   if (keyframes != null) {
     for (int i = 0; i < keyframes.size(); i++) {
       _tempFrame = keyframes.get(i);
@@ -273,7 +323,7 @@ float getLastKeyframe() {
 float getNextKeyframe() {
   Keyframe _foundFrame = null;
   Keyframe _tempFrame = null;
-  
+
   if (keyframes != null) {
     for (int i = 0; i < keyframes.size(); i++) {
       _tempFrame = keyframes.get(i);
@@ -289,13 +339,13 @@ float getNextKeyframe() {
   if (_foundFrame == null) {
     return headPos;
   }
-  return _foundFrame.time; 
+  return _foundFrame.time;
 }
 
 ArrayList <Keyframe> filterKeyframes(ArrayList <Keyframe> _kf, int _sideFilter, int _typeFilter) {
   ArrayList <Keyframe> filtered = new ArrayList <Keyframe>();
   Keyframe _tempFrame = null;
-  
+
   if (_kf != null) {
     for (int i = 0; i < _kf.size(); i++) {
       _tempFrame = _kf.get(i);
@@ -311,7 +361,7 @@ void sortByTime(ArrayList <Keyframe> _kf) {
   Keyframe _tempF1 = null;
   Keyframe _tempF2 = null;
   Boolean sorted;
- 
+
   // Lame-ass bubble sort.
   if (_kf != null) {
     for (int i = 0; i < _kf.size() - 1; i++) {
@@ -329,10 +379,10 @@ void sortByTime(ArrayList <Keyframe> _kf) {
         return;
       }
     }
-    
+
     // Debug test. Pls ignore.
     /*for (int i = 0; i < _kf.size(); i++) {
-      println(_kf.get(i).time); 
+      println(_kf.get(i).time);
     }*/
   }
 }

@@ -174,7 +174,6 @@ void loadMovie(String _f, VideoContainer _vCon) {
   myMovie.pause();
   myMovie.read();
   myMovie.jump(0);
-  switchToEdit();
   logHistory(_f);
 
   _vCon.keyframes = null;
@@ -200,6 +199,9 @@ void loadMovie(String _f, VideoContainer _vCon) {
   }
   keyframes = _vCon.keyframes;
   animPosMem = _vCon.animPosMem;
+
+  resetUndo();
+  switchToEdit();
 }
 
 void logHistory(String _f) {
@@ -247,6 +249,7 @@ void loadVData(String _f, VideoContainer _vCon) {
  // Load XML file with Video Data
   println("Loading " + _f);
 
+  logUndo = false;
   XML _xml;
   _xml = loadXML(_f);
 

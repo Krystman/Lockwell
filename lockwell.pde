@@ -119,6 +119,9 @@ ArrayList <Keyframe> selAnimsRight;
 ArrayList <Butt> butts;
 
 ArrayList <Keyframe> keyframes;
+ArrayList <ArrayList> undoHistory;
+int undoLevel = 0;
+boolean logUndo = false;
 ArrayList <AnimPos> animPosMem;
 VideoContainer videoCon;
 

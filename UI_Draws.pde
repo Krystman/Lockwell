@@ -311,6 +311,8 @@ void drawDebugOverlay() {
   textAlign(LEFT);
   String t = "UIMode     - " + UIMode + "\n";
   t +=       "InputMode  - " + inputMode + "\n";
+  t +=       "logUndo    - " + logUndo + "\n";
+  t +=       "undoLevel  - " + undoLevel + "\n";
   t +=       "keyShift   - " + keyShift + "\n";
   t +=       "keyControl - " + keyControl + "\n";
   t +=       "keyAlt     - " + keyAlt + "\n";

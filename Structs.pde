@@ -20,6 +20,20 @@ public class Keyframe {
   // -0.5 means the center of the clip is at the left or upper edge
   public float x = 0.0;
   public float y = 0.0;
+
+  Keyframe clone() {
+    Keyframe _tempKF = new Keyframe();
+    _tempKF.time = time;
+    _tempKF.duration = duration;
+    _tempKF.value = value;
+    _tempKF.stringValue = stringValue;
+    _tempKF.side = side;
+    _tempKF.type = type;
+    _tempKF.x = x;
+    _tempKF.y = y;
+
+    return _tempKF;
+  }
 }
 
 // This is to old video information so that multiple videos can be loaded
@@ -33,7 +47,6 @@ public class VideoContainer {
 }
 
 // This one is to hold library data when exporting to Final Cut XML
-
 public class Footage {
   public int value;
   public String stringValue;
