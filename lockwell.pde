@@ -1,7 +1,7 @@
 // Todo:
-// > Right-click to manually clear history files
 // > Export Multiple Checklist issue
 
+// - UI Element value as rects? (Beginning with Volume slider)
 // - Keyboard controls on start screen
 // - Undo
 // - UI Notification system
@@ -46,6 +46,7 @@ float videoY = 0;
 int menuY = 0;
 int menuHeight = 5 + 24 + 5;
 int volumeSliderWidth = 100;
+
 float volBarX = 10;
 float volBarW = volumeSliderWidth - (volBarX * 2);
 
@@ -174,9 +175,9 @@ void draw() {
   clear();
   background(color1);
 
-  if (UIMode=="LOAD") {
+  if (UIMode == "LOAD" || UIMode == "EXPORT") {
     drawButts();
-  } else if (UIMode=="EDIT") {
+  } else if (UIMode == "EDIT") {
     if (myMovie!=null) {
       if (myMovie.available()) {
         myMovie.read();

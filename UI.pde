@@ -709,8 +709,14 @@ void buttonCommand(String _verb, String _noun, Keyframe _kf) {
       selectInput("Select a video to load:", "fileSelected");
       lastNoClick = true;
     } else {
-      videoCon = new VideoContainer();
-      loadMovie(_noun, videoCon);
+      if (UIMode == "LOAD") {
+        // Load this video
+        videoCon = new VideoContainer();
+        loadMovie(_noun, videoCon);
+      } else if (UIMode == "EXPORT") {
+        // Toggle the corresponding checkbox
+        toggleExportCheckButt(_noun);
+      }
     }
   } else if (_verb == "AGENDA") {
     if (_noun == "L") {
@@ -765,9 +771,14 @@ void buttonCommand(String _verb, String _noun, Keyframe _kf) {
 void buttonCommandRight(String _verb, String _noun) {
   if (_verb == "LOAD") {
     if (_noun != "") {
-      // Delete that button here
-      removeFromHistory(_noun);
-      switchToLoad();
+      if (UIMode == "LOAD") {
+        // Delete that button here
+        removeFromHistory(_noun);
+        switchToLoad();
+      } else if (UIMode == "EXPORT") {
+        // Toggle the corresponding checkbox
+        toggleExportCheckButt(_noun);
+      }
     }
   } else if (_verb == "AGENDA") {
     if (_noun == "L") {
@@ -924,6 +935,20 @@ void animButt(Keyframe _kf) {
     inputPositioning = _ac.positioning;
   } else {
     inputPositioning = 0;
+  }
+}
+
+// This toggles an export checklist button for a given filename
+void toggleExportCheckButt(String _file) {
+  for (int i = 0; i < butts.size(); i++) {
+    Butt tButt = butts.get(i);
+    if (tButt.verb == "CHECKLIST" && tButt.noun == _file) {
+      if (tButt.t.equals("0")) {
+        tButt.t = "1";
+      } else {
+        tButt.t = "0";
+      }
+    }
   }
 }
 

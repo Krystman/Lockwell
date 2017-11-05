@@ -183,6 +183,7 @@ void switchToLoad() {
 }
 
 void switchToExport() {
+  UIMode = "EXPORT";
   for (int i = 0; i < butts.size(); i++) {
     Butt tButt = butts.get(i);
     if (tButt.verb == "CHECKLIST") {

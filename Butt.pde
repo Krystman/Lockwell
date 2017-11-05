@@ -10,23 +10,23 @@ class Butt {
   public String verb = "";
   public String noun = "";
   public int side;
-  
+
   public boolean visible = true;
   public boolean caret = false;
   public boolean dirty = false;
-  
+
   // This is a bit of a hack
   // It's a keyframe a button represents
   // So far, it's only used for Anims
   // We use it only to show the progress of an animation
   public Keyframe aniKeyframe;
-  
+
   public KeyMap keyMap;
-  
+
   private color overFill;
   private color overStroke;
   private color overText;
-  
+
   private color outFill;
   private color outStroke;
   private color outText;
@@ -34,28 +34,28 @@ class Butt {
   private color clickFill;
   private color clickStroke;
   private color clickText;
-  
+
   private PFont thisFont;
-  
+
   Butt(String _t, float _x, float _y, float _w, float _h) {
     t = _t;
     x = _x;
     y = _y;
     w = _w;
-    h = _h; 
+    h = _h;
     setStyle("");
     keyMap = new KeyMap();
   }
-  
+
   void setStyle(String _style) {
     if (_style == "LIST") {
       style = "LIST";
       thisFont = smallRoboto;
-      
+
       overFill = color3;
       overStroke = color3;
       overText = color1;
-  
+
       outFill = color1;
       outStroke = color1;
       outText = color4;
@@ -66,11 +66,11 @@ class Butt {
     } else if (_style == "CHECKLIST") {
       style = "CHECKLIST";
       thisFont = smallRoboto;
-      
+
       overFill = color3;
       overStroke = color3;
       overText = color1;
-  
+
       outFill = color1;
       outStroke = color1;
       outText = color4;
@@ -81,11 +81,11 @@ class Butt {
     } else if (_style == "AGENDA") {
       style = "AGENDA";
       thisFont = agendaRoboto;
-      
+
       overFill = color5;
       overStroke = -1;
       overText = #000000;
-  
+
       outFill = -1;
       outStroke = -1;
       outText = color5;
@@ -96,11 +96,11 @@ class Butt {
     } else if (_style == "CREDIT") {
       style = "CREDIT";
       thisFont = credRoboto;
-      
+
       overFill = color5;
       overStroke = -1;
       overText = #000000;
-  
+
       outFill = -1;
       outStroke = -1;
       outText = color5;
@@ -111,11 +111,11 @@ class Butt {
     } else if (_style == "ANIML" || _style == "ANIMR") {
       style = _style;
       thisFont = animRoboto;
-      
+
       overFill = color5;
       overStroke = -1;
       overText = #000000;
-  
+
       outFill = -1;
       outStroke = -1;
       outText = color5;
@@ -126,11 +126,11 @@ class Butt {
     } else if (_style == "COMMENT") {
       style = "COMMENT";
       thisFont = commentRoboto;
-      
+
       overFill = color5;
       overStroke = -1;
       overText = #000000;
-  
+
       outFill = color(0,0,0,128);
       outStroke = -1;
       outText = color5;
@@ -144,7 +144,7 @@ class Butt {
       overFill = color5;
       overStroke = -1;
       overText = #000000;
-  
+
       outFill = -1;
       outStroke = -1;
       outText = color5;
@@ -155,11 +155,11 @@ class Butt {
     } else {
       style = "";
       thisFont = smallRoboto;
-      
+
       overFill = color2;
       overStroke = color2;
       overText = color1;
-  
+
       outFill = color1;
       outStroke = color1b;
       outText = color1b;
@@ -169,15 +169,15 @@ class Butt {
       clickText = color1;
     }
   }
-  
+
   void update() {
-    
+
   }
-  
+
   void drawMe() {
     color textColor = color2;
     int yOffset = 0;
-    
+
     textFont(thisFont);
     strokeWeight(1.2);
 
@@ -205,14 +205,14 @@ class Butt {
       }
       if (outStroke == -1) { noStroke(); } else {
         stroke(outStroke);
-      }  
+      }
     }
-    
+
     rect(x, y+yOffset, w, h, r);
-    
+
     fill(textColor);
     noStroke();
-    
+
     if(style == "LIST") {
       textAlign(LEFT);
       text(t,x+10,y+h/2+5+yOffset);
@@ -237,9 +237,9 @@ class Butt {
       float _cx = x+w/2;
       float _cy = yOffset+y+h/2;
       float _cr = 5;
-      quad(_cx, _cy-_cr, 
-           _cx-_cr, _cy, 
-           _cx, _cy+_cr, 
+      quad(_cx, _cy-_cr,
+           _cx-_cr, _cy,
+           _cx, _cy+_cr,
            _cx+_cr, _cy);
     } else if (style == "COMMENT") {
       textAlign(CENTER);
@@ -263,7 +263,7 @@ class Butt {
       } else {
         text(t,x+6,y+3+yOffset,w-12,h-3);
       }
-      
+
     } else if (style == "ANIMR") {
       textAlign(RIGHT);
       if (aniKeyframe != null) {
@@ -274,10 +274,10 @@ class Butt {
       } else {
         text(t,x+6,y+3+yOffset,w-(12+6),h-3);
       }
-      
+
     } else {
       textAlign(CENTER);
       text(t,x+w/2,yOffset+y+h/2+5+yOffset);
     }
   }
-} 
+}
