@@ -26,10 +26,29 @@ void keyPressed() {
 }
 
 void keyPressedMenu() {
-  // Nothing there yet
   if (key=='q') {
     // A little debug print
     println("You are in a Menu right now");
+  } else if (keyCode == DOWN || keyCode == UP || keyCode == RIGHT || keyCode == LEFT) {
+    // Moving around with the keyboard
+    moveKeySelect(keyCode);
+  } else if (keyCode==ENTER || keyCode == RETURN) {
+    if (keyboardSelect != null) {
+      keyboardSelect.state = "CLICK";
+      keyboardSelect.sustain = 3;
+      if (keyboardSelect.verb == "CHECKLIST") {
+        // This is such a hack
+        // We're doing it here because buttonComand has no reference to the button
+        // Might be wise to just pass butt to buttonCommand in the future
+        if (keyboardSelect.t.equals("0")) {
+          keyboardSelect.t = "1";
+        } else {
+          keyboardSelect.t = "0";
+        }
+      } else {
+        buttonCommandEnter(keyboardSelect.verb,keyboardSelect.noun,keyboardSelect.aniKeyframe);
+      }
+    }
   }
 }
 

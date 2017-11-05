@@ -23,6 +23,7 @@ Butt menuExport;
 Butt keyboardSelect;
 
 KeyMap nullMap;
+KeyMap exportNullMap;
 
 ArrayList <Butt> animButtsL;
 ArrayList <Butt> animButtsR;
@@ -160,6 +161,82 @@ void detailBarClick() {
 }
 
 void createKeymap() {
+
+  // Create keymap
+  creditButtL.keyMap.right = creditButtR;
+  creditButtL.keyMap.up = agendaButtL;
+  creditButtL.keyMap.down = addAniButtL;
+
+  creditButtR.keyMap.left = creditButtL;
+  creditButtR.keyMap.up = agendaButtR;
+  creditButtR.keyMap.down = addAniButtR;
+
+  addAniButtL.keyMap.right = addAniButtR;
+  addAniButtL.keyMap.up = creditButtL;
+  addAniButtL.keyMap.down = commentButt;
+
+  addAniButtR.keyMap.left = addAniButtL;
+  addAniButtR.keyMap.up = creditButtR;
+  addAniButtR.keyMap.down = commentButt;
+
+  agendaButtL.keyMap.right = agendaButtR;
+  agendaButtL.keyMap.down = creditButtL;
+
+  agendaButtR.keyMap.left = agendaButtL;
+  agendaButtR.keyMap.down = creditButtR;
+
+  commentButt.keyMap.left = addAniButtL;
+  commentButt.keyMap.right = addAniButtR;
+  commentButt.keyMap.up = addAniButtL;
+
+  Butt tButt = null;
+  Butt lastButt = null;
+  if (animButtsL.size() != 0) {
+    for (int i = 0; i < animButtsL.size(); i++) {
+      tButt = animButtsL.get(i);
+      if (tButt.verb == "EDITANI") {
+        if (lastButt == null) {
+          tButt.keyMap.up = addAniButtL;
+          addAniButtL.keyMap.down = tButt;
+        } else {
+          tButt.keyMap.up = lastButt;
+          lastButt.keyMap.down = tButt;
+        }
+        tButt.keyMap.right = addAniButtR;
+        lastButt = tButt;
+      }
+    }
+    lastButt.keyMap.down = commentButt;
+    commentButt.keyMap.left = lastButt;
+    commentButt.keyMap.up = lastButt;
+  }
+  tButt = null;
+  lastButt = null;
+  if (animButtsR.size() != 0) {
+    for (int i = 0; i < animButtsR.size(); i++) {
+      tButt = animButtsR.get(i);
+      if (tButt.verb == "EDITANI") {
+        if (lastButt == null) {
+          tButt.keyMap.up = addAniButtR;
+          addAniButtR.keyMap.down = tButt;
+        } else {
+          tButt.keyMap.up = lastButt;
+          lastButt.keyMap.down = tButt;
+        }
+        tButt.keyMap.right = addAniButtL;
+        lastButt = tButt;
+      }
+    }
+    lastButt.keyMap.down = commentButt;
+    commentButt.keyMap.right = lastButt;
+  }
+
+  nullMap.left = creditButtL;
+  nullMap.right = creditButtR;
+  nullMap.down = commentButt;
+}
+
+void createMenuKeymap() {
 
   // Create keymap
   creditButtL.keyMap.right = creditButtR;
@@ -615,6 +692,8 @@ void updateMouseClick() {
         if (mouseButton == LEFT) {
           if (tButt.verb == "CHECKLIST") {
             // This is such a hack
+            // We're doing it here because buttonComand has no reference to the button
+            // Might be wise to just pass butt to buttonCommand in the future
             if (tButt.t.equals("0")) {
               tButt.t = "1";
             } else {
@@ -837,6 +916,9 @@ boolean buttonCommandMinus(String _verb, String _noun, Keyframe _kf) {
 
 boolean buttonCommandEnter(String _verb, String _noun, Keyframe _kf) {
   if (_verb == "LOAD") {
+    buttonCommand(_verb, _noun, _kf);
+    return true;
+  } else if (_verb == "EXPORTMULT" || _verb == "EXPORTCANCEL" || _verb == "EXPORTCONFIRM") {
     buttonCommand(_verb, _noun, _kf);
     return true;
   } else if (_verb == "COMMENT") {

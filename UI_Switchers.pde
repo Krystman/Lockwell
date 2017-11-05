@@ -125,6 +125,7 @@ void switchToEdit() {
   selAnimsRight = new ArrayList<Keyframe>();
 
   nullMap = new KeyMap();
+  keyboardSelect = null;
 
   createAnimMenus();
   createKeymap();
@@ -133,8 +134,19 @@ void switchToEdit() {
 void switchToLoad() {
   int j;
 
-  Butt tButt;
-  Butt tButt2;
+  Butt tButt = null;
+  Butt tButt2 = null;
+  Butt tButtLast = null;
+  Butt tButt2Last = null;
+  Butt tButtFirst = null;
+  Butt tButt2First = null;
+
+  // For loading
+  Butt tButtLoad;
+  Butt tButtExpMult;
+  // For exporting
+  Butt tButtExp;
+  Butt tButtCancel;
 
   UIMode = "LOAD";
   inputMode = "MENU";
@@ -142,27 +154,38 @@ void switchToLoad() {
 
   purgeButts();
 
-  tButt = new Butt("LOAD VIDEO",24,24,94,24);
-  tButt.verb = "LOAD";
-  tButt.noun = "";
-  butts.add(tButt);
+  tButtLoad = new Butt("LOAD VIDEO",24,24,94,24);
+  tButtLoad.verb = "LOAD";
+  tButtLoad.noun = "";
+  butts.add(tButtLoad);
 
-  tButt = new Butt("EXPORT MULTIPLE",123,24,130,24);
-  tButt.verb = "EXPORTMULT";
-  tButt.noun = "";
-  butts.add(tButt);
+  tButtExpMult = new Butt("EXPORT MULTIPLE",123,24,130,24);
+  tButtExpMult.verb = "EXPORTMULT";
+  tButtExpMult.noun = "";
+  butts.add(tButtExpMult);
 
-  tButt = new Butt("EXPORT",24,24,94,24);
-  tButt.verb = "EXPORTCONFIRM";
-  tButt.noun = "";
-  tButt.visible = false;
-  butts.add(tButt);
+  tButtExp = new Butt("EXPORT",24,24,94,24);
+  tButtExp.verb = "EXPORTCONFIRM";
+  tButtExp.noun = "";
+  tButtExp.visible = false;
+  butts.add(tButtExp);
 
-  tButt = new Butt("CANCEL",123,24,94,24);
-  tButt.verb = "EXPORTCANCEL";
-  tButt.noun = "";
-  tButt.visible = false;
-  butts.add(tButt);
+  tButtCancel = new Butt("CANCEL",123,24,94,24);
+  tButtCancel.verb = "EXPORTCANCEL";
+  tButtCancel.noun = "";
+  tButtCancel.visible = false;
+  butts.add(tButtCancel);
+
+  // Keymap for keyboard navigation
+  tButtLoad.keyMap.left = tButtExpMult;
+  tButtLoad.keyMap.right = tButtExpMult;
+  tButtExpMult.keyMap.left = tButtLoad;
+  tButtExpMult.keyMap.right = tButtLoad;
+
+  tButtExp.keyMap.left = tButtCancel;
+  tButtExp.keyMap.right = tButtCancel;
+  tButtCancel.keyMap.left = tButtExp;
+  tButtCancel.keyMap.right = tButtExp;
 
   j = 0;
   for (int i = history.length-1; i >= 0; i--) {
@@ -171,6 +194,15 @@ void switchToLoad() {
     tButt.verb = "LOAD";
     tButt.noun = history[i];
     butts.add(tButt);
+    if (tButtLast != null) {
+      tButtLast.keyMap.down = tButt;
+      tButt.keyMap.up = tButtLast;
+    } else {
+      tButtFirst = tButt;
+      tButtLoad.keyMap.down = tButtFirst;
+      tButtExpMult.keyMap.down = tButtFirst;
+      tButtFirst.keyMap.up = tButtLoad;
+    }
 
     tButt2 = new Butt("0",24,64+25*j,24,24);
     tButt2.setStyle("CHECKLIST");
@@ -178,8 +210,38 @@ void switchToLoad() {
     tButt2.noun = history[i];
     tButt2.visible = false;
     butts.add(tButt2);
+    if (tButt2Last != null) {
+      tButt2Last.keyMap.down = tButt2;
+      tButt2.keyMap.up = tButt2Last;
+    } else {
+      tButt2First = tButt2;
+      tButtExp.keyMap.down = tButt2First;
+      tButtCancel.keyMap.down = tButt2First;
+      tButt2First.keyMap.up = tButtExp;
+    }
+
     j++;
+    tButtLast = tButt;
+    tButt2Last = tButt2;
   }
+  if (tButtLast != null) {
+    tButtLast.keyMap.down = tButtLoad;
+    tButt2Last.keyMap.down = tButtExp;
+  }
+
+  nullMap = new KeyMap();
+  nullMap.left = tButtLoad;
+  nullMap.right = tButtExpMult;
+  nullMap.down = tButtFirst;
+  nullMap.up = tButt;
+
+  exportNullMap = new KeyMap();
+  exportNullMap.left = tButtExp;
+  exportNullMap.right = tButtCancel;
+  exportNullMap.down = tButt2First;
+  exportNullMap.up = tButt2;
+
+  keyboardSelect = null;
 }
 
 void switchToExport() {
@@ -195,4 +257,6 @@ void switchToExport() {
       tButt.sustain = 15;
     }
   }
+  keyboardSelect = null;
+  nullMap = exportNullMap;
 }

@@ -1,8 +1,6 @@
 // Todo:
-// > Export Multiple Checklist issue
-
 // - UI Element value as rects? (Beginning with Volume slider)
-// - Keyboard controls on start screen
+
 // - Undo
 // - UI Notification system
 // - Stats display
@@ -238,6 +236,13 @@ void update() {
     blink = false;
   } else {
     blinker = 0;
+  }
+
+  // Making sure no invisible buttons are selected
+  if (keyboardSelect != null) {
+    if (keyboardSelect.visible == false) {
+      keyboardSelect = null;
+    }
   }
 
   if (inputMode == "MENU" || inputMode == "EDITING") {
